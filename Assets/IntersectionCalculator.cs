@@ -382,7 +382,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
         for (int i = 0; i < toEnable.Count; i++)
         {
-            if (toEnable[i].transform != null)
+            if (toEnable[i].transform != null && toEnable[i].GetComponent<Rigidbody2D>() != null)
             {
                 toEnable[i].GetComponent<Rigidbody2D>().isKinematic = false;
             }
