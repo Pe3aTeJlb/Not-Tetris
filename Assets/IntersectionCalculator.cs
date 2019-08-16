@@ -252,8 +252,6 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         inside2 = false;
     }
 
- 
-
     void LinecastCut(Vector2 lineStart, Vector2 lineEnd, int layerMask = Physics2D.AllLayers)
     {
 
@@ -271,8 +269,6 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
         foreach (GameObject go in gameObjectsToCut)
         {
-
-           
 
             if (fuckPhysics == true)
             {
@@ -410,9 +406,6 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         
     }
 
-
-
-
     public int CompareTo(object obj)
     {
         throw new NotImplementedException();
@@ -437,5 +430,4 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         StartCoroutine(ClearLine());
     }
 
-   
-    }
+}

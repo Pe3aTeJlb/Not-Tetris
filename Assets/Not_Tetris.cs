@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -48,7 +47,6 @@ public class Not_Tetris : MonoBehaviour
         nextTetramino = Random.Range(0, Tetrominoes.Length);
         Preview[nextTetramino].SetActive(true);
         SpawnNewTetramino();
-        //NewTetromino();
 
     }
 
@@ -87,13 +85,6 @@ public class Not_Tetris : MonoBehaviour
 
     }
 
-  
-
-
-
-
-
-
     public void NewTetromino()
     {
 
@@ -108,7 +99,6 @@ public class Not_Tetris : MonoBehaviour
 
         if (gameover == false)
         {
-           // int a = Random.Range(0, Tetrominoes.Length);
 
             tetramino = Instantiate(Tetrominoes[nextTetramino], spawn.transform.position, Quaternion.identity);
             tetramino.name = serialName.ToString();
@@ -121,18 +111,19 @@ public class Not_Tetris : MonoBehaviour
 
     }
 
-
-        public void GameOver() {
+    public void GameOver()
+    {
 
         if (Score > topScore)
         {
             PlayerPrefs.SetInt("PhysicsHighScore", Score);
         }
         StartCoroutine(Over());
-       // SceneManager.LoadScene("Main",LoadSceneMode.Single);
+
     }
 
     public IEnumerator Over() {
+
         gameover = true;
         rb.gameObject.tag = "floor";
         rb.gravityScale = 1;
@@ -140,6 +131,7 @@ public class Not_Tetris : MonoBehaviour
         floor.SetActive(false);
         yield return new WaitForSeconds(3);
         SceneManager.LoadScene("Main", LoadSceneMode.Single);
+
     }
 
 }

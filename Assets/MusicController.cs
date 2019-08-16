@@ -7,17 +7,12 @@ public class MusicController : MonoBehaviour
     public AudioSource audioSource;
     public int prevTrack;
     int prevs;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
     void Update()
     {
         if (audioSource.isPlaying == false) { SelectTrack(); }
     }
+
     void SelectTrack()
     {
 
