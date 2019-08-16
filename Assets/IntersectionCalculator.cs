@@ -374,10 +374,14 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         yield return new WaitForSeconds(.5f);
 
         for (int i = 0; i < toDelete.Count; i++) {
-            if (toDelete[i].transform != null)
+            try
             {
-                toDelete[i].layer = 10;
+                if (toDelete[i].transform != null)
+                {
+                    toDelete[i].layer = 10;
+                }
             }
+            catch (Exception e) { Debug.Log(e); }
         }
 
         for (int i = 0; i < toEnable.Count; i++)
