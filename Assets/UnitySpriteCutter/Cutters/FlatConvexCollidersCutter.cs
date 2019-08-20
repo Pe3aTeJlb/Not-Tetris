@@ -16,6 +16,7 @@ namespace UnitySpriteCutter.Cutters {
 		}
 
 		public static CutResult Cut( Vector2 lineStart, Vector2 lineEnd, Collider2D[] colliders ) {
+
 			CutResult result = new CutResult();
 			result.firstSideColliderRepresentations = new List<PolygonColliderParametersRepresentation>();
 			result.secondSideColliderRepresentations = new List<PolygonColliderParametersRepresentation>();
@@ -23,7 +24,9 @@ namespace UnitySpriteCutter.Cutters {
 			foreach ( Collider2D collider in colliders ) {
 
 				List<Vector2[]> paths = ColliderPathsCreator.GetPolygonColliderPathsFrom( collider );
+
 				foreach ( Vector2[] path in paths ) {
+
 					ShapeCutter.CutResult cutResult = ShapeCutter.CutShapeIntoTwo( lineStart, lineEnd, path );
 
 					if ( cutResult.firstSidePoints.Length > 0 ) {

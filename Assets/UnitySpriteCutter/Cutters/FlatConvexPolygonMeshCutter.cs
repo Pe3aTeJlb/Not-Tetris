@@ -32,13 +32,21 @@ namespace UnitySpriteCutter.Cutters {
 
 		static Vector2[] ConvertVerticesToShape( Vector3[] vertices ) {
 			Vector2[] shape = new Vector2[ vertices.Length ];
-			float z = vertices[ 0 ].z;
-			for ( int i = 0; i < vertices.Length; i++ ) {
-				if ( vertices[ i ].z != z ) {
-					throw new System.Exception( "Given mesh isn't flat! " + z + " vs " + vertices[ i ].z );
-				}
-				shape[ i ] = vertices[ i ];
-			}
+            float z = 0;
+            try
+            {
+                z = vertices[0].z;
+                for (int i = 0; i < vertices.Length; i++)
+                {
+                    if (vertices[i].z != z)
+                    {
+                        throw new System.Exception("Given mesh isn't flat! " + z + " vs " + vertices[i].z);
+                    }
+                    shape[i] = vertices[i];
+                }
+            }
+            catch (System.Exception e) { Debug.Log(e); }
+			
 			return shape;
 		}
 

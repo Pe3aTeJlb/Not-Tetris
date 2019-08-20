@@ -2,8 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnitySpriteCutter;
 using UnityEngine.UI;
+using UnitySpriteCutter;
 
 public class IntersectionCalculator : MonoBehaviour, IComparable
 {
@@ -29,45 +29,82 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
     public float win;
     public Text text;
     public SpriteRenderer sp;
+    public Image img;
+    public RectTransform rt;
 
     GameObject current;
 
     public bool fuckPhysics;
     float segmentArea, mass;
 
+    public bool Cut;
 
     public void Start()
     {
+
         sp = this.GetComponent<SpriteRenderer>();
+        rt = img.gameObject.GetComponent<RectTransform>();
+        rt.sizeDelta = new Vector2(2 / win * squareArea, 1);
+
     }
 
     public void Update()
     {
+
         text.text = "" + squareArea;
 
         if (Input.GetKeyDown(KeyCode.A))
         {
             Time.timeScale = 0;
         }
+
         if (Input.GetKeyDown(KeyCode.S))
         {
+
             Time.timeScale = 1;
+            list.Clear();
+            intersectionSegments.Clear();
+            toDelete.Clear();
+            toEnable.Clear();
+
+            Not_Tetris.Score += Mathf.RoundToInt(10 * squareArea);
+
+            squareArea = 0;
+            ready = false;
+            requareOnce = 0;
+
+            sp.enabled = false;
+            current.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+            Not_Tetris.Lines += 1;
+
         }
+
     }
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        StartCoroutine(CheckVelocity(collision));
+
+        try
+        {
+            StartCoroutine(CheckVelocity(collision));
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e);
+        }
+
     }
 
     public void OnTriggerStay2D(Collider2D collision)
     {
-            if (toDelete.Contains(collision.gameObject) != true  && collision.gameObject.tag == "shadow" && list.Contains(collision.gameObject))
-            {
-                toDelete.Add(collision.gameObject);
-            }
 
-        if ( intersectionSegments.ContainsKey(collision.gameObject) == true && collision.GetComponent<Rigidbody2D>().velocity.magnitude > 0.1f) {
+        if (toDelete.Contains(collision.gameObject) != true && (collision.gameObject.tag == "shadow" || collision.gameObject.tag == "tetramino") && list.Contains(collision.gameObject) && collision.GetComponent<PolygonCollider2D>().bounds.center.y < upperBoundStart.y && collision.GetComponent<PolygonCollider2D>().bounds.center.y > lowerBoundStart.y)
+        {
+            toDelete.Add(collision.gameObject);
+        }
+
+        if (intersectionSegments.ContainsKey(collision.gameObject) == true && collision.GetComponent<Rigidbody2D>().velocity.magnitude > 0.1f)
+        {
 
             squareArea -= intersectionSegments[collision.gameObject];
             intersectionSegments.Remove(collision.gameObject);
@@ -79,38 +116,49 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
     public void OnTriggerExit2D(Collider2D collision)
     {
-        if (toDelete.Contains(collision.gameObject) == true) {
+
+        if (toDelete.Contains(collision.gameObject) == true)
+        {
             toDelete.Remove(collision.gameObject);
         }
-        if (list.Contains(collision.gameObject) == true) {
+        if (list.Contains(collision.gameObject) == true)
+        {
             list.Remove(collision.gameObject);
         }
-        if (intersectionSegments.ContainsKey(collision.gameObject) == true) {
+        if (intersectionSegments.ContainsKey(collision.gameObject) == true)
+        {
             squareArea -= intersectionSegments[collision.gameObject];
             intersectionSegments.Remove(collision.gameObject);
         }
+
     }
 
     public IEnumerator CheckVelocity(Collider2D collision)
     {
-        
-        yield return new WaitUntil(() => collision.GetComponent<Rigidbody2D>().velocity.magnitude < 0.05f);
 
-        if (collision.gameObject.GetComponent<MeshRenderer>() != null)
+        try
         {
-            collision.gameObject.GetComponent<MeshRenderer>().enabled = true;
-        }
+            yield return new WaitUntil(() => collision.GetComponent<Rigidbody2D>().velocity.magnitude < 0.05f);
 
-        if (list.Contains(collision.gameObject) != true && (collision.gameObject.tag == "floor" || collision.gameObject.tag == "shadow"))
-        {
-            list.Add(collision.gameObject);
-            FindBounds(collision);
+            if (collision.gameObject.GetComponent<MeshRenderer>() != null)
+            {
+                collision.gameObject.GetComponent<MeshRenderer>().enabled = true;
+            }
+
+            if (list.Contains(collision.gameObject) != true && (collision.gameObject.tag == "floor" || collision.gameObject.tag == "shadow"))
+            {
+                list.Add(collision.gameObject);
+                FindBounds(collision);
+            }
         }
+        finally { }
+
     }
 
-//находим границы и составляем массив
+    //находим границы и составляем массив
     public void FindBounds(Collider2D collision)
     {
+
         collision.gameObject.layer = 9;
 
         inside1 = false;
@@ -123,7 +171,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
         for (int i = 0; i < pl.points.Length; i++)
         {
-           buffVector[i] = pl.transform.TransformPoint(pl.points[i]);
+            buffVector[i] = pl.transform.TransformPoint(pl.points[i]);
         }
 
         for (int i = 0; i < buffVector.Length; i++)
@@ -136,6 +184,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
         if (buff > upperBoundStart.y)
         {
+
             RaycastHit2D[] hits = Physics2D.LinecastAll(upperBoundStart, upperBoundEnd, CalculationMask);
             RaycastHit2D[] reversHits = Physics2D.LinecastAll(upperBoundEnd, upperBoundStart, CalculationMask);
 
@@ -143,12 +192,15 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
             {
                 intersectionAreaPoints.Add(hits[0].point);
             }
+
             if (reversHits.Length != 0)
             {
                 intersectionAreaPoints.Add(reversHits[0].point);
             }
+
         }
-        else {
+        else
+        {
             inside1 = true;
         }
 
@@ -161,11 +213,12 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         }
 
         if (buff < lowerBoundStart.y)
-        { 
+        {
             RaycastHit2D[] hits2 = Physics2D.LinecastAll(lowerBoundStart, lowerBoundEnd, CalculationMask);
             RaycastHit2D[] reversHits2 = Physics2D.LinecastAll(lowerBoundEnd, lowerBoundStart, CalculationMask);
 
-            if (hits2.Length != 0) {
+            if (hits2.Length != 0)
+            {
                 intersectionAreaPoints.Add(hits2[0].point);
             }
             if (reversHits2.Length != 0)
@@ -173,18 +226,17 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
                 intersectionAreaPoints.Add(reversHits2[0].point);
             }
         }
-        else {
+        else
+        {
             inside2 = true;
         }
-
-
 
         for (int i = 0; i < buffVector.Length; i++)
         {
             if (buffVector[i].y > lowerBoundStart.y && buffVector[i].y < upperBoundStart.y)
             {
-                buffVector[i].x = ((int)(buffVector[i].x * 10)/10f);
-                buffVector[i].y = ((int)(buffVector[i].y * 10)/10f);
+                buffVector[i].x = ((int)(buffVector[i].x * 10) / 10f);
+                buffVector[i].y = ((int)(buffVector[i].y * 10) / 10f);
                 intersectionAreaPoints.Add(buffVector[i]);
             }
         }
@@ -194,7 +246,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
             collision.gameObject.layer = 8;
             buffVector = new Vector2[0];
             toDelete.Add(collision.gameObject);
-            
+
             CalculateIntersection(collision);
         }
         else
@@ -210,37 +262,42 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
     public void CalculateIntersection(Collider2D collision)
     {
-     
+
         float buff_squareArea = 0;
 
         if (intersectionAreaPoints.Count > 3)
         {
             for (int i = 0; i < intersectionAreaPoints.Count - 2; i++)
             {
-             
+
                 buff_squareArea += SquareByGeron(intersectionAreaPoints[i], intersectionAreaPoints[i + 1], intersectionAreaPoints[i + 2]);
             }
         }
 
         intersectionSegments.Add(collision.gameObject, buff_squareArea);
         squareArea += buff_squareArea;
+
         text.text = "" + squareArea;
+        byte bt = (byte)(255 - (int)((255 / win) * squareArea));
+        rt.sizeDelta = new Vector2(2 / win * squareArea, 1);
+        img.color = new Color32(bt, bt, bt, 255);
+
         ClearIntersectionData();
 
         if (squareArea >= win)
         {
             if (requareOnce < 1)
             {
-
+                rt.sizeDelta = new Vector2(2 / win * squareArea, 1);
                 requareOnce++;
- 
+
                 sp.enabled = true;
                 current = GameObject.FindGameObjectWithTag("tetramino");
                 current.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
 
                 StartCoroutine(wait());
             }
-          
+
         }
     }
 
@@ -280,7 +337,8 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
                 mass = go.GetComponent<Rigidbody2D>().mass;
 
             }
-            else{
+            else
+            {
 
                 segmentArea = 4;
                 if (intersectionSegments.ContainsKey(go))
@@ -298,6 +356,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
                 gameObject = go,
                 gameObjectCreationMode = SpriteCutterInput.GameObjectCreationMode.CUT_OFF_ONE,
             });
+
 
             if (output != null && output.secondSideGameObject != null)
             {
@@ -323,12 +382,14 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
                         output.firstSideGameObject.GetComponent<Rigidbody2D>().mass = mass - (mass * segmentArea / 4);
                     }
                 }
-                else {
+                else
+                {
 
-                 float mass1 = mass * segmentArea / 4;
+                    float mass1 = mass * segmentArea / 4;
                     float mass2 = mass - (mass * segmentArea / 4);
 
-                    if (mass1 < 0.2f) {
+                    if (mass1 < 0.2f)
+                    {
                         mass1 = 0.2f;
                     }
                     if (mass2 < 0.2f)
@@ -338,7 +399,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
                     if (output.firstSideGameObject.GetComponent<Collider2D>().bounds.size.magnitude > output.secondSideGameObject.GetComponent<Collider2D>().bounds.size.magnitude)
                     {
-                        output.firstSideGameObject.GetComponent<Rigidbody2D>().mass =mass1;
+                        output.firstSideGameObject.GetComponent<Rigidbody2D>().mass = mass1;
                         output.secondSideGameObject.GetComponent<Rigidbody2D>().mass = mass2;
                     }
                     else
@@ -354,7 +415,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
             }
         }
-        
+
         ready = true;
     }
 
@@ -366,16 +427,19 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
     public IEnumerator ClearLine()
     {
+
         yield return new WaitUntil(() => ready == true);
         yield return new WaitForSeconds(.5f);
 
-        for (int i = 0; i < toDelete.Count; i++) {
+        Time.timeScale = 0;
+
+        for (int i = 0; i < toDelete.Count; i++)
+        {
             try
             {
-                if (toDelete[i].transform != null)
-                {
-                    toDelete[i].layer = 10;
-                }
+
+                toDelete[i].layer = 10;
+
             }
             catch (Exception e) { Debug.Log(e); }
         }
@@ -388,22 +452,21 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
             }
         }
 
-        list.Clear();
-        intersectionSegments.Clear();
-        toDelete.Clear();
-        toEnable.Clear();
+        //list.Clear();
+        //intersectionSegments.Clear();
+        //toDelete.Clear();
+        //toEnable.Clear();
 
-        Not_Tetris.Score += Mathf.RoundToInt(10 * squareArea);
+        //Not_Tetris.Score += Mathf.RoundToInt(10 * squareArea);
 
-        squareArea = 0;
-        ready = false;
-        requareOnce = 0;
+        //squareArea = 0;
+        //ready = false;
+        //requareOnce = 0;
 
-        sp.enabled = false;
-        current.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
-        Not_Tetris.Lines += 1;
-        
-        
+        //sp.enabled = false;
+        //current.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+        //Not_Tetris.Lines += 1;
+
     }
 
     public int CompareTo(object obj)
@@ -413,6 +476,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
     public float SquareByGeron(Vector2 FirstPoint, Vector2 SecondPoint, Vector2 ThirdPoint)
     {
+
         float FirstSide = (FirstPoint - SecondPoint).magnitude;
         float SecondSide = (SecondPoint - ThirdPoint).magnitude;
         float ThirdSide = (ThirdPoint - FirstPoint).magnitude;
@@ -420,14 +484,18 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         float halfPerimetr = (FirstSide + SecondSide + ThirdSide) / 2;
 
         return (Mathf.Sqrt(halfPerimetr * (halfPerimetr - FirstSide) * (halfPerimetr - SecondSide) * (halfPerimetr - ThirdSide)));
+
     }
 
-    public IEnumerator wait() {
+    public IEnumerator wait()
+    {
+
         LinecastCut(upperBoundStart, upperBoundEnd, CuttingMask);
         yield return new WaitForSeconds(0.1f);
         LinecastCut(lowerBoundStart, lowerBoundEnd, CuttingMask);
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.3f);
         StartCoroutine(ClearLine());
+
     }
 
 }

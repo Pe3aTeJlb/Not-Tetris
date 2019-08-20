@@ -5,11 +5,11 @@ public class CollisionDetector : MonoBehaviour
     int n = 0;
     public Rigidbody2D rb;
 
+
     void Start()
     {
         rb = this.GetComponent<Rigidbody2D>();
     }
-
 
     public void OnCollisionEnter2D(Collision2D collision)
     {
