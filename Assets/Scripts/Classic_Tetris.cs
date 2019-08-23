@@ -160,18 +160,18 @@ public class Classic_Tetris : MonoBehaviour
     public void Turn_Right()
     {
 
-        tetramino.transform.RotateAround(tetramino.transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), 90);
+        tetramino.transform.RotateAround(tetramino.transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), -90);
         if (!ValidMove())
-            tetramino.transform.RotateAround(tetramino.transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), -90);
+            tetramino.transform.RotateAround(tetramino.transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), 90);
 
     }
 
     public void Turn_Left()
     {
  
-        tetramino.transform.RotateAround(tetramino.transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), -90);
+        tetramino.transform.RotateAround(tetramino.transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), 90);
         if (!ValidMove())
-            tetramino.transform.RotateAround(tetramino.transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), 90);
+            tetramino.transform.RotateAround(tetramino.transform.TransformPoint(rotationPoint), new Vector3(0, 0, 1), -90);
 
     }
 

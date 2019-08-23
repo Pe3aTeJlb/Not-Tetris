@@ -62,20 +62,20 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         {
 
             Time.timeScale = 1;
-            list.Clear();
-            intersectionSegments.Clear();
-            toDelete.Clear();
-            toEnable.Clear();
+            //list.Clear();
+            //intersectionSegments.Clear();
+            //toDelete.Clear();
+            //toEnable.Clear();
 
-            Not_Tetris.Score += Mathf.RoundToInt(10 * squareArea);
+            //Not_Tetris.Score += Mathf.RoundToInt(10 * squareArea);
 
-            squareArea = 0;
-            ready = false;
-            requareOnce = 0;
+            //squareArea = 0;
+            //ready = false;
+            //requareOnce = 0;
 
-            sp.enabled = false;
-            current.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
-            Not_Tetris.Lines += 1;
+            //sp.enabled = false;
+            //current.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+            //Not_Tetris.Lines += 1;
 
         }
 
@@ -98,10 +98,11 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
     public void OnTriggerStay2D(Collider2D collision)
     {
 
-        if (toDelete.Contains(collision.gameObject) != true && (collision.gameObject.tag == "shadow" || collision.gameObject.tag == "tetramino") && list.Contains(collision.gameObject) && collision.GetComponent<PolygonCollider2D>().bounds.center.y < upperBoundStart.y && collision.GetComponent<PolygonCollider2D>().bounds.center.y > lowerBoundStart.y)
-        {
-            toDelete.Add(collision.gameObject);
-        }
+            //if (toDelete.Contains(collision.gameObject) != true && (collision.gameObject.tag == "shadow" || collision.gameObject.tag == "tetramino") && list.Contains(collision.gameObject) && collision.GetComponent<PolygonCollider2D>().bounds.center.y < upperBoundStart.y && collision.GetComponent<PolygonCollider2D>().bounds.center.y > lowerBoundStart.y)
+            if (toDelete.Contains(collision.gameObject) != true && (collision.gameObject.tag == "shadow" || collision.gameObject.tag == "tetramino")  && collision.GetComponent<PolygonCollider2D>().bounds.center.y < upperBoundStart.y && collision.GetComponent<PolygonCollider2D>().bounds.center.y > lowerBoundStart.y)
+            {
+              toDelete.Add(collision.gameObject);
+            }
 
         if (intersectionSegments.ContainsKey(collision.gameObject) == true && collision.GetComponent<Rigidbody2D>().velocity.magnitude > 0.1f)
         {
@@ -150,6 +151,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
                 list.Add(collision.gameObject);
                 FindBounds(collision);
             }
+
         }
         finally { }
 
@@ -245,7 +247,11 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         {
             collision.gameObject.layer = 8;
             buffVector = new Vector2[0];
-            toDelete.Add(collision.gameObject);
+
+            if (toDelete.Contains(collision.gameObject) != true)
+            {
+                toDelete.Add(collision.gameObject);
+            }
 
             CalculateIntersection(collision);
         }
@@ -431,7 +437,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         yield return new WaitUntil(() => ready == true);
         yield return new WaitForSeconds(.5f);
 
-        Time.timeScale = 0;
+       // Time.timeScale = 0;
 
         for (int i = 0; i < toDelete.Count; i++)
         {
@@ -439,6 +445,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
             {
 
                 toDelete[i].layer = 10;
+               
 
             }
             catch (Exception e) { Debug.Log(e); }
@@ -452,20 +459,20 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
             }
         }
 
-        //list.Clear();
-        //intersectionSegments.Clear();
-        //toDelete.Clear();
-        //toEnable.Clear();
+        list.Clear();
+        intersectionSegments.Clear();
+        toDelete.Clear();
+        toEnable.Clear();
 
-        //Not_Tetris.Score += Mathf.RoundToInt(10 * squareArea);
+        Not_Tetris.Score += Mathf.RoundToInt(10 * squareArea);
 
-        //squareArea = 0;
-        //ready = false;
-        //requareOnce = 0;
+        squareArea = 0;
+        ready = false;
+        requareOnce = 0;
 
-        //sp.enabled = false;
-        //current.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
-        //Not_Tetris.Lines += 1;
+        sp.enabled = false;
+        current.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+        Not_Tetris.Lines += 1;
 
     }
 

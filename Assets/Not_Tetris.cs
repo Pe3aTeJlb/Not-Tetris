@@ -45,6 +45,7 @@ public class Not_Tetris : MonoBehaviour
 
         root = this.gameObject;
         nextTetramino = Random.Range(0, Tetrominoes.Length);
+        //nextTetramino = 0;
         Preview[nextTetramino].SetActive(true);
         SpawnNewTetramino();
 
@@ -90,6 +91,7 @@ public class Not_Tetris : MonoBehaviour
 
         Preview[nextTetramino].SetActive(false);
         nextTetramino = Random.Range(0, Tetrominoes.Length);
+        //nextTetramino = 0;
         Preview[nextTetramino].SetActive(true);
 
     }

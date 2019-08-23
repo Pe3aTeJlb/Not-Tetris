@@ -83,12 +83,13 @@ namespace UnitySpriteCutter {
 			                         meshCutResult.secondSideMesh, collidersCutResults.secondSideColliderRepresentations );
 
 			SpriteCutterGameObject firstSideResult = null;
-			if ( input.gameObjectCreationMode == SpriteCutterInput.GameObjectCreationMode.CUT_INTO_TWO ) {
-				firstSideResult = SpriteCutterGameObject.CreateAsCopyOf( input.gameObject, true );
-				PrepareResultGameObject( firstSideResult, spriteRenderer, meshRenderer,
-				                         meshCutResult.firstSideMesh, collidersCutResults.firstSideColliderRepresentations );
+			//if ( input.gameObjectCreationMode == SpriteCutterInput.GameObjectCreationMode.CUT_INTO_TWO ) {
+			//	firstSideResult = SpriteCutterGameObject.CreateAsCopyOf( input.gameObject, true );
+			//	PrepareResultGameObject( firstSideResult, spriteRenderer, meshRenderer,
+			//	                         meshCutResult.firstSideMesh, collidersCutResults.firstSideColliderRepresentations );
 
-			} else if ( input.gameObjectCreationMode == SpriteCutterInput.GameObjectCreationMode.CUT_OFF_ONE ) {
+			//} else
+            if ( input.gameObjectCreationMode == SpriteCutterInput.GameObjectCreationMode.CUT_OFF_ONE ) {
 				firstSideResult = SpriteCutterGameObject.CreateAs( input.gameObject );
 				if ( spriteRenderer != null ) {
 					RendererParametersRepresentation tempParameters = new RendererParametersRepresentation();
