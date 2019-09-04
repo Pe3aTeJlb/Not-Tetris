@@ -5,9 +5,9 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{D6E266C6-3D1F-28C8-9FEB-2A01E44DBF77}</ProjectGuid>
+    <ProjectGuid>{10F63727-5A73-6727-032B-7FF41A3F962E}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AssemblyName>Unity.Analytics.DataPrivacy</AssemblyName>
+    <AssemblyName>Assembly-CSharp</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
@@ -47,6 +47,12 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Unity.Timeline.Editor">
+      <HintPath>Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Timeline">
+      <HintPath>Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
+    </Reference>
     <Reference Include="Managed/UnityEngine/UnityEngine">
       <HintPath>D:\Documents\Dennis\UnityEditors\2019.1.10f1\Editor\Data\Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>
@@ -224,27 +230,6 @@
     <Reference Include="UnityEngine.UI">
       <HintPath>D:/Documents/Dennis/UnityEditors/2019.1.10f1/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEditor.UI">
-      <HintPath>D:/Documents/Dennis/UnityEditors/2019.1.10f1/Editor/Data/UnityExtensions/Unity/GUISystem/Editor/UnityEditor.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.VR">
-      <HintPath>D:/Documents/Dennis/UnityEditors/2019.1.10f1/Editor/Data/UnityExtensions/Unity/UnityVR/Editor/UnityEditor.VR.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.Graphs">
-      <HintPath>D:/Documents/Dennis/UnityEditors/2019.1.10f1/Editor/Data/Managed/UnityEditor.Graphs.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.WindowsStandalone.Extensions">
-      <HintPath>D:/Documents/Dennis/UnityEditors/2019.1.10f1/Editor/Data/PlaybackEngines/windowsstandalonesupport/UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.Android.Extensions">
-      <HintPath>D:/Documents/Dennis/UnityEditors/2019.1.10f1/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
-      <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/16.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.Advertisements">
-      <HintPath>D:/Documents/Dennis/Not-Tetris.git/Library/PackageCache/com.unity.ads@2.0.8/Editor/UnityEditor.Advertisements.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.Analytics.Editor">
       <HintPath>D:/Documents/Dennis/Not-Tetris.git/Library/PackageCache/com.unity.analytics@3.3.2/Unity.Analytics.Editor.dll</HintPath>
     </Reference>
@@ -253,9 +238,6 @@
     </Reference>
     <Reference Include="Unity.Analytics.Tracker">
       <HintPath>D:/Documents/Dennis/Not-Tetris.git/Library/PackageCache/com.unity.analytics@3.3.2/Unity.Analytics.Tracker.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.Purchasing">
-      <HintPath>D:/Documents/Dennis/Not-Tetris.git/Library/PackageCache/com.unity.purchasing@2.0.6/Editor/UnityEditor.Purchasing.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>D:\Documents\Dennis\UnityEditors\2019.1.10f1\Editor\Data\NetStandard\ref\2.0.0\netstandard.dll</HintPath>
@@ -604,9 +586,49 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Packages\com.unity.analytics\DataPrivacy\AssemblyInfo.cs" />
-    <Compile Include="Packages\com.unity.analytics\DataPrivacy\DataPrivacy.cs" />
-    <Compile Include="Packages\com.unity.analytics\DataPrivacy\DataPrivacyButton.cs" />
+    <ProjectReference Include="Unity.TextMeshPro.Editor.csproj">
+      <Project>{3A848AB7-9891-EDDA-D555-BF184C2F81F4}</Project>
+      <Name>Unity.TextMeshPro.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.CollabProxy.Editor.csproj">
+      <Project>{C12CEEC6-100C-58A2-DE36-314E4DE5E40B}</Project>
+      <Name>Unity.CollabProxy.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.TextMeshPro.csproj">
+      <Project>{07A21C90-D344-AE1A-8456-9910C203B41A}</Project>
+      <Name>Unity.TextMeshPro</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.Analytics.DataPrivacy.csproj">
+      <Project>{D6E266C6-3D1F-28C8-9FEB-2A01E44DBF77}</Project>
+      <Name>Unity.Analytics.DataPrivacy</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\GameOverDetector.cs" />
+    <Compile Include="Assets\IntersectionCalculator.cs" />
+    <Compile Include="Assets\Menu.cs" />
+    <Compile Include="Assets\MusicController.cs" />
+    <Compile Include="Assets\Not_Tetris.cs" />
+    <Compile Include="Assets\Scripts\Classic_Tetris.cs" />
+    <Compile Include="Assets\Scripts\CollisionDetector.cs" />
+    <Compile Include="Assets\Scripts\Left.cs" />
+    <Compile Include="Assets\Scripts\Right.cs" />
+    <Compile Include="Assets\Scripts\Speed.cs" />
+    <Compile Include="Assets\Scripts\Terminator.cs" />
+    <Compile Include="Assets\Scripts\TLeft.cs" />
+    <Compile Include="Assets\Scripts\TRight.cs" />
+    <Compile Include="Assets\UnitySpriteCutter\Cutters\ColliderPathsCreator.cs" />
+    <Compile Include="Assets\UnitySpriteCutter\Cutters\FlatConvexCollidersCutter.cs" />
+    <Compile Include="Assets\UnitySpriteCutter\Cutters\FlatConvexPolygonMeshCutter.cs" />
+    <Compile Include="Assets\UnitySpriteCutter\Cutters\ShapeCutter.cs" />
+    <Compile Include="Assets\UnitySpriteCutter\LinecastCutter.cs" />
+    <Compile Include="Assets\UnitySpriteCutter\MouseInputRepresentationBehaviour.cs" />
+    <Compile Include="Assets\UnitySpriteCutter\SpriteCutter.cs" />
+    <Compile Include="Assets\UnitySpriteCutter\SpriteCutterGameObject.cs" />
+    <Compile Include="Assets\UnitySpriteCutter\Tools\PolygonColliderParametersRepresentation.cs" />
+    <Compile Include="Assets\UnitySpriteCutter\Tools\RendererParametersRepresentation.cs" />
+    <Compile Include="Assets\UnitySpriteCutter\Tools\SafeSpriteRendererRemoverBehaviour.cs" />
+    <Compile Include="Assets\UnitySpriteCutter\Tools\SpriteMeshContructor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Packages\com.unity.collab-proxy\Editor\Resources\Styles\CollabHistoryCommon.uss" />

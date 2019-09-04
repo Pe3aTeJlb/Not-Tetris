@@ -2,57 +2,65 @@
 
 public class Menu : MonoBehaviour
 {
-    public GameObject Cup1, Cup2, menu,canvas, triggers,buttonsForClassic,buttonsForPhysics,terminator;
-    public GameObject background1;
+    public GameObject ClassicCup, PhysicCup, menu, Canvas, Triggers, ButtonsForClassic, ButtonsForPhysics, Terminator;
     public static bool fuckPhysics;
-    
+
+    public Transform camera;
+    public Vector3 CameraLeftUpperCorner;
+    public float CupLeftUpperCorner;
+
     void Start()
     {
-
+        Debug.Log(Camera.main.pixelRect);
+        CameraLeftUpperCorner = Camera.main.ScreenToWorldPoint(new Vector3(0f, Camera.main.pixelHeight, 0));
+        
         menu.SetActive(true);
-        Cup1.SetActive(false);
-        Cup2.SetActive(false);
-        background1.SetActive(false);
-        triggers.SetActive(false);
-        buttonsForClassic.SetActive(false);
-        buttonsForPhysics.SetActive(false);
-        terminator.SetActive(false);
+        ClassicCup.SetActive(false);
+        PhysicCup.SetActive(false);
+        Triggers.SetActive(false);
+        ButtonsForClassic.SetActive(false);
+        ButtonsForPhysics.SetActive(false);
+        Terminator.SetActive(false);
         
     }
 
     public void Classic()
     {
 
+       // camera.position = new Vector3(camera.position.x - CameraLeftUpperCorner.x - CupLeftUpperCorner, camera.position.y, camera.position.z);
+
         menu.SetActive(false);
-        Cup1.SetActive(true);
-        buttonsForClassic.SetActive(true);
-        background1.SetActive(true);
-        canvas.GetComponent<Classic_Tetris>().enabled = true;
+        ClassicCup.SetActive(true);
+        ButtonsForClassic.SetActive(true);
+        Canvas.GetComponent<Classic_Tetris>().enabled = true;
 
     }
 
     public void Not_Classic()
     {
 
+      //  camera.position = new Vector3(camera.position.x - CameraLeftUpperCorner.x - 2.5f, camera.position.y, camera.position.z);
+
         menu.SetActive(false);
-        Cup2.SetActive(true);
-        buttonsForPhysics.SetActive(true);
-        triggers.SetActive(true);
-        terminator.SetActive(true);
+        PhysicCup.SetActive(true);
+        ButtonsForPhysics.SetActive(true);
+        Triggers.SetActive(true);
+        Terminator.SetActive(true);
         fuckPhysics = false;
-        canvas.GetComponent<Not_Tetris>().enabled = true;
+        Canvas.GetComponent<Not_Tetris>().enabled = true;
 
     }
+
     public void FuckPhysics()
     {
 
         menu.SetActive(false);
-        Cup2.SetActive(true);
-        buttonsForPhysics.SetActive(true);
-        triggers.SetActive(true);
-        terminator.SetActive(true);
+        PhysicCup.SetActive(true);
+        ButtonsForPhysics.SetActive(true);
+        Triggers.SetActive(true);
+        Terminator.SetActive(true);
         fuckPhysics = true;
-        canvas.GetComponent<Not_Tetris>().enabled = true;
+        Canvas.GetComponent<Not_Tetris>().enabled = true;
 
     }
 

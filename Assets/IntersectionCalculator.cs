@@ -29,8 +29,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
     public float win;
     public Text text;
     public SpriteRenderer sp;
-    public Image img;
-    public RectTransform rt;
+    public SpriteRenderer fillingIcon, fillingIcon2;
 
     GameObject current;
 
@@ -43,8 +42,8 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
     {
 
         sp = this.GetComponent<SpriteRenderer>();
-        rt = img.gameObject.GetComponent<RectTransform>();
-        rt.sizeDelta = new Vector2(2 / win * squareArea, 1);
+        fillingIcon.size = new Vector2((2 / win * squareArea), 1f);
+        fillingIcon2.size = new Vector2((2 / win * squareArea), 1f);
 
     }
 
@@ -284,9 +283,13 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         squareArea += buff_squareArea;
 
         text.text = "" + squareArea;
+
+
         byte bt = (byte)(255 - (int)((255 / win) * squareArea));
-        rt.sizeDelta = new Vector2(2 / win * squareArea, 1);
-        img.color = new Color32(bt, bt, bt, 255);
+        fillingIcon.size = new Vector2((2 / win * squareArea), 1f);
+        fillingIcon.color = new Color32(bt, bt, bt, 255);
+        fillingIcon2.size = new Vector2((2 / win * squareArea), 1f);
+        fillingIcon2.color = new Color32(bt, bt, bt, 255);
 
         ClearIntersectionData();
 
@@ -294,7 +297,8 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         {
             if (requareOnce < 1)
             {
-                rt.sizeDelta = new Vector2(2 / win * squareArea, 1);
+                fillingIcon.size = new Vector2((2 / win * squareArea), 1f);
+                fillingIcon2.size = new Vector2((2 / win * squareArea), 1f);
                 requareOnce++;
 
                 sp.enabled = true;

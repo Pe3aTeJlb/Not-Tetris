@@ -186,8 +186,8 @@ TextureImporter:
   spritePixelsToUnits: 8
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
-  alphaUsage: 1
-  alphaIsTransparency: 1
+  alphaUsage: 0
+  alphaIsTransparency: 0
   spriteTessellationDetail: -1
   textureType: 8
   textureShape: 1
@@ -220,9 +220,9 @@ TextureImporter:
     androidETC2FallbackOverride: 0
   - serializedVersion: 2
     buildTarget: Android
-    maxTextureSize: 128
+    maxTextureSize: 32
     resizeAlgorithm: 0
-    textureFormat: 34
+    textureFormat: 7
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0

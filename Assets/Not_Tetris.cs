@@ -7,7 +7,7 @@ public class Not_Tetris : MonoBehaviour
 {
     public static GameObject root;
 
-    public int moveSpeed, rotSpeed, startSpeed, accelSpeed,angularSpeed;
+    public int moveSpeed, rotSpeed, startSpeed, accelSpeed, angularSpeed;
     public static int s_startSpeed;
 
     public bool PC;
@@ -15,6 +15,7 @@ public class Not_Tetris : MonoBehaviour
     public  GameObject[] Tetrominoes2;
     public static GameObject[] Tetrominoes;
     public static GameObject tetramino, spawn;
+
     public GameObject[] Preview;
     public static int nextTetramino;
 
@@ -37,7 +38,7 @@ public class Not_Tetris : MonoBehaviour
         topScore_text.text = "" + topScore;
         line_text.text = "" + Lines;
         level_text.text = "" + Level;
-        score_text.text = "" + Score;
+        score_text.text = "0";
 
         s_startSpeed = startSpeed;
         spawn = GameObject.FindGameObjectWithTag("spawn");

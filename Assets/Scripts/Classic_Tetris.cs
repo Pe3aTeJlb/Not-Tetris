@@ -33,6 +33,7 @@ public class Classic_Tetris : MonoBehaviour
         topScore_text.text = "" + topScore;
         line_text.text = "" + Lines;
         level_text.text = "" + Level;
+        score_text.text = "" + Score;
 
         nextTetramino = Random.Range(0, Tetrominoes.Length);
         Preview[nextTetramino].SetActive(true);
