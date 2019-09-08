@@ -33,7 +33,6 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
     GameObject current;
 
-    public bool fuckPhysics;
     float segmentArea, mass;
 
     public bool Cut;
@@ -337,8 +336,6 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         foreach (GameObject go in gameObjectsToCut)
         {
 
-            if (fuckPhysics == true)
-            {
                 segmentArea = 4;
                 if (intersectionSegments.ContainsKey(go))
                 {
@@ -346,18 +343,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
                 }
                 mass = go.GetComponent<Rigidbody2D>().mass;
 
-            }
-            else
-            {
-
-                segmentArea = 4;
-                if (intersectionSegments.ContainsKey(go))
-                {
-                    segmentArea = intersectionSegments[go];
-                }
-                mass = go.GetComponent<Rigidbody2D>().mass;
-
-            }
+            
 
             SpriteCutterOutput output = SpriteCutter.Cut(new SpriteCutterInput()
             {
@@ -379,21 +365,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
                 output.firstSideGameObject.GetComponent<Rigidbody2D>().isKinematic = true;
                 output.secondSideGameObject.GetComponent<Rigidbody2D>().isKinematic = true;
 
-                if (fuckPhysics == true)
-                {
-                    if (output.firstSideGameObject.GetComponent<Collider2D>().bounds.size.magnitude > output.secondSideGameObject.GetComponent<Collider2D>().bounds.size.magnitude)
-                    {
-                        output.firstSideGameObject.GetComponent<Rigidbody2D>().mass = mass * segmentArea / 4;
-                        output.secondSideGameObject.GetComponent<Rigidbody2D>().mass = mass - (mass * segmentArea / 4);
-                    }
-                    else
-                    {
-                        output.secondSideGameObject.GetComponent<Rigidbody2D>().mass = mass * segmentArea / 4;
-                        output.firstSideGameObject.GetComponent<Rigidbody2D>().mass = mass - (mass * segmentArea / 4);
-                    }
-                }
-                else
-                {
+
 
                     float mass1 = mass * segmentArea / 4;
                     float mass2 = mass - (mass * segmentArea / 4);
@@ -418,7 +390,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
                         output.firstSideGameObject.GetComponent<Rigidbody2D>().mass = mass1;
                     }
 
-                }
+                
 
                 toEnable.Add(output.firstSideGameObject);
                 toEnable.Add(output.secondSideGameObject);

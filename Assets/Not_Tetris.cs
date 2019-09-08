@@ -26,8 +26,10 @@ public class Not_Tetris : MonoBehaviour
     public static int Lines, Score, topScore;
     public int Level;
 
-    public GameObject floor;
+    public GameObject floor,terminator;
     public static bool gameover = false;
+
+    
 
     void Start()
     {
@@ -127,6 +129,7 @@ public class Not_Tetris : MonoBehaviour
 
     public IEnumerator Over() {
 
+        terminator.SetActive(false);
         gameover = true;
         rb.gameObject.tag = "floor";
         rb.gravityScale = 1;
