@@ -2,9 +2,9 @@
 
 public class CollisionDetector : MonoBehaviour
 {
+
     int n = 0;
     public Rigidbody2D rb;
-
 
     void Start()
     {
@@ -19,7 +19,8 @@ public class CollisionDetector : MonoBehaviour
             if (n < 1)
             {
                 Not_Tetris.SpawnNewTetramino();
-                this.tag = "floor";
+                //this.tag = "floor";
+                this.tag = "shadow";
                 rb.gravityScale = 1;
                 this.enabled = false;
                 n++;

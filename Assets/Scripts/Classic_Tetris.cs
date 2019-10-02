@@ -27,7 +27,7 @@ public class Classic_Tetris : MonoBehaviour
     void Start()
     {
  
-        Level = 1;
+        Level = 0;
         needLines = 10;
         topScore =  PlayerPrefs.GetInt("HighScore", 0);
         topScore_text.text = "" + topScore;
@@ -38,6 +38,10 @@ public class Classic_Tetris : MonoBehaviour
         nextTetramino = Random.Range(0, Tetrominoes.Length);
         Preview[nextTetramino].SetActive(true);
         SpawnNewTetramino();
+
+        for (int i = 0; i < Menu.Level; i++) {
+            LevelUp();
+        }
         
     }
 
@@ -311,7 +315,7 @@ public class Classic_Tetris : MonoBehaviour
 
         if (fallTime > 0.1f)
         {
-            fallTime = fallTime - 0.05f;
+            fallTime = fallTime - 0.02f;
         }
         else {
             fallTime = fallTime - 0.01f;

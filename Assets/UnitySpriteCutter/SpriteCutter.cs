@@ -32,6 +32,7 @@ namespace UnitySpriteCutter {
 			/// Instead, SpriteCutter creates two new gameObjects with first and second side of the cut.
 			/// </summary>
 			CUT_INTO_TWO = 1,
+
 		}
 		public GameObjectCreationMode gameObjectCreationMode;
 
@@ -40,7 +41,8 @@ namespace UnitySpriteCutter {
 	public class SpriteCutterOutput {
 		public GameObject firstSideGameObject;
 		public GameObject secondSideGameObject;
-	}
+        //public GameObject thirdSideGameObject;
+    }
 
 	public static class SpriteCutter {
 

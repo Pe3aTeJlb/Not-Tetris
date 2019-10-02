@@ -10,4 +10,5 @@ public class Terminator : MonoBehaviour
     {
         Destroy(collision.gameObject);
     }
+
 }

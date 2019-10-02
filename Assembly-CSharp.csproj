@@ -62,14 +62,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\GameOverDetector.cs" />
     <Compile Include="Assets\IntersectionCalculator.cs" />
     <Compile Include="Assets\Menu.cs" />
-    <Compile Include="Assets\MusicController.cs" />
-    <Compile Include="Assets\Not_Tetris.cs" />
     <Compile Include="Assets\Scripts\Classic_Tetris.cs" />
     <Compile Include="Assets\Scripts\CollisionDetector.cs" />
+    <Compile Include="Assets\Scripts\GameOverDetector.cs" />
     <Compile Include="Assets\Scripts\Left.cs" />
+    <Compile Include="Assets\Scripts\MusicController.cs" />
+    <Compile Include="Assets\Scripts\Not_Tetris.cs" />
     <Compile Include="Assets\Scripts\Right.cs" />
     <Compile Include="Assets\Scripts\Speed.cs" />
     <Compile Include="Assets\Scripts\Terminator.cs" />
@@ -87,6 +87,7 @@
     <Compile Include="Assets\UnitySpriteCutter\Tools\RendererParametersRepresentation.cs" />
     <Compile Include="Assets\UnitySpriteCutter\Tools\SafeSpriteRendererRemoverBehaviour.cs" />
     <Compile Include="Assets\UnitySpriteCutter\Tools\SpriteMeshContructor.cs" />
+    <None Include="Assets\layers.txt" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>D:/Documents/Dennis/Not-Tetris.git/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
