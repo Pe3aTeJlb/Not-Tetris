@@ -4248,7 +4248,6 @@ MonoBehaviour:
   topScore_text: {fileID: 1339588570}
   level_text: {fileID: 640027051}
   line_text: {fileID: 1820027683}
-  Level: 0
   floor: {fileID: 3104944785838325998}
   terminator: {fileID: 1473727915}
 --- !u!114 &445971000
@@ -6932,7 +6931,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 445971000}
         m_MethodName: Right
         m_Mode: 1
         m_Arguments:
@@ -8205,7 +8204,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 445971000}
         m_MethodName: Turn_Left
         m_Mode: 1
         m_Arguments:
@@ -8799,7 +8798,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &933375889
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8906,7 +8905,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 445971000}
         m_MethodName: Left
         m_Mode: 1
         m_Arguments:
@@ -17805,7 +17804,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 445971000}
         m_MethodName: Turn_Right
         m_Mode: 1
         m_Arguments:

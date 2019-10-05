@@ -36,6 +36,8 @@ public class Not_Tetris : MonoBehaviour
 
         gameover = false;
         Level = 1;
+        Score = 0;
+        Lines = 0;
         topScore = PlayerPrefs.GetInt("PhysicsHighScore", 0);
 
         static_line_text = line_text;
@@ -44,8 +46,7 @@ public class Not_Tetris : MonoBehaviour
 
         topScore_text.text = "" + topScore;
         static_line_text.text = "" + Lines;
-        static_level_text.text = "" + Level;
-        Score = 0;
+        static_level_text.text = "Irrelevant";
         static_score_text.text = "" + Score;
 
         s_startSpeed = startSpeed;
@@ -126,8 +127,9 @@ public class Not_Tetris : MonoBehaviour
     public static void UpdateUI() {
 
         static_line_text.text = "" + Lines;
-        static_level_text.text = "" + Level;
+        //static_level_text.text = "" + Level;
         static_score_text.text = "" + Score;
+        
 
     }
 

@@ -88,8 +88,10 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
        
         try
         {
-            //StartCoroutine(CheckVelocity(collision));
-            KekVelocity(collision);
+           
+                StartCoroutine(CheckVelocity(collision));
+                //KekVelocity(collision);
+            
             
         }
         catch (Exception e)
@@ -102,7 +104,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
     public void OnTriggerStay2D(Collider2D collision)
     {
 
-        KekVelocity(collision);
+       // KekVelocity(collision);
 
 
         //if (toDelete.Contains(collision.gameObject) != true && (collision.gameObject.tag == "shadow" || collision.gameObject.tag == "tetramino") && list.Contains(collision.gameObject) && collision.GetComponent<PolygonCollider2D>().bounds.center.y < upperBoundStart.y && collision.GetComponent<PolygonCollider2D>().bounds.center.y > lowerBoundStart.y)
@@ -111,14 +113,14 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
               toDelete.Add(collision.gameObject);
         }
 
-        if (intersectionSegments.ContainsKey(collision.gameObject) == true && list.Contains(collision.gameObject) && collision.gameObject.tag == "shadow"  && collision.GetComponent<Rigidbody2D>().velocity.magnitude > 0.8f)
+        if (intersectionSegments.ContainsKey(collision.gameObject) == true && list.Contains(collision.gameObject) && (collision.gameObject.tag == "shadow") && collision.GetComponent<Rigidbody2D>().velocity.magnitude > 0.8f)
         {
             //Debug.Log("Recalculate " + collision.gameObject.name + " " + collision.GetComponent<Rigidbody2D>().velocity.magnitude);
             squareArea -= intersectionSegments[collision.gameObject];
             intersectionSegments.Remove(collision.gameObject);
             list.Remove(collision.gameObject);
-            //StartCoroutine(CheckVelocity(collision));
-            KekVelocity(collision);
+            StartCoroutine(CheckVelocity(collision));
+            //KekVelocity(collision);
         }
 
 
@@ -148,7 +150,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
     public void KekVelocity(Collider2D collision) {
 
-        //Debug.Log("KekVelocity");
+        Debug.Log("KekVelocity");
 
         if (collision.GetComponent<Rigidbody2D>().velocity.magnitude < 0.05f) {
 
@@ -157,7 +159,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
                 collision.gameObject.GetComponent<MeshRenderer>().enabled = true;
             }
 
-            if (list.Contains(collision.gameObject) != true && (collision.gameObject.tag == "floor" || collision.gameObject.tag == "shadow"))
+            if (list.Contains(collision.gameObject) != true && collision.gameObject.tag == "shadow")
             {
                 list.Add(collision.gameObject);
                 FindBounds(collision);
@@ -169,7 +171,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
     public IEnumerator CheckVelocity(Collider2D collision)
     {
-       // Debug.Log("CheckVelocity");
+        Debug.Log("CheckVelocity");
         try
         {
             yield return new WaitUntil(() => collision.GetComponent<Rigidbody2D>().velocity.magnitude < 0.05f);
@@ -179,7 +181,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
                 collision.gameObject.GetComponent<MeshRenderer>().enabled = true;
             }
 
-            if (list.Contains(collision.gameObject) != true && (collision.gameObject.tag == "floor" || collision.gameObject.tag == "shadow"))
+            if (list.Contains(collision.gameObject) != true && collision.gameObject.tag == "shadow")
             {
                 list.Add(collision.gameObject);
                 FindBounds(collision);
@@ -483,6 +485,10 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         toDelete.Clear();
         toEnable.Clear();
 
+        Not_Tetris.Score += Mathf.RoundToInt(10 * squareArea);
+        Not_Tetris.Lines += 1;
+        Not_Tetris.UpdateUI();
+
         squareArea = 0;
         ready = false;
         requareOnce = 0;
@@ -491,9 +497,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         SetFillingLine();
         current.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
 
-        Not_Tetris.Score += Mathf.RoundToInt(10 * squareArea);
-        Not_Tetris.Lines += 1;
-        Not_Tetris.UpdateUI();
+       
 
     }
 
