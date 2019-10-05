@@ -41,7 +41,7 @@ public class Menu : MonoBehaviour
 
     public void Update()
     {
-        fps.text = "" + 1 / Time.deltaTime;
+        //fps.text = "" + 1 / Time.deltaTime;
 
         if (Input.GetKeyDown(KeyCode.Escape) && pause == true && canPause == true)
         {

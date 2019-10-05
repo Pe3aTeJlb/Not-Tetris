@@ -12,7 +12,7 @@ public class Not_Tetris : MonoBehaviour
 
     public bool PC;
 
-    public  GameObject[] Tetrominoes2;
+    public GameObject[] Tetrominoes2;
     public static GameObject[] Tetrominoes;
     public static GameObject tetramino, spawn;
 
@@ -23,13 +23,13 @@ public class Not_Tetris : MonoBehaviour
     public static int serialName = 0;
 
     public Text score_text, topScore_text, level_text, line_text;
-    public static int Lines, Score, topScore;
-    public int Level;
+    public static Text static_score_text, static_level_text, static_line_text;
+    public static int Lines, Score, topScore, Level;
 
-    public GameObject floor,terminator;
+    public GameObject floor, terminator;
     public static bool gameover = false;
 
-    
+
 
     void Start()
     {
@@ -37,11 +37,16 @@ public class Not_Tetris : MonoBehaviour
         gameover = false;
         Level = 1;
         topScore = PlayerPrefs.GetInt("PhysicsHighScore", 0);
+
+        static_line_text = line_text;
+        static_level_text = level_text;
+        static_score_text = score_text;
+
         topScore_text.text = "" + topScore;
-        line_text.text = "" + Lines;
-        level_text.text = "" + Level;
+        static_line_text.text = "" + Lines;
+        static_level_text.text = "" + Level;
         Score = 0;
-        score_text.text = "" + Score;
+        static_score_text.text = "" + Score;
 
         s_startSpeed = startSpeed;
         spawn = GameObject.FindGameObjectWithTag("spawn");
@@ -57,8 +62,8 @@ public class Not_Tetris : MonoBehaviour
 
     void Update()
     {
-    
-        if (Input.GetKey(KeyCode.LeftArrow)|| Input.GetKeyDown(KeyCode.LeftArrow) || Left.use == true)
+
+        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.LeftArrow) || Left.use == true)
         {
             rb.AddForce(Vector3.left * moveSpeed);
         }
@@ -78,15 +83,16 @@ public class Not_Tetris : MonoBehaviour
         {
             rb.AddForce(Vector3.down * accelSpeed);
         }
-        else { rb.velocity = new Vector2(rb.velocity.x,-3); }
+        else { rb.velocity = new Vector2(rb.velocity.x, -3); }
 
         if (rb.angularVelocity > angularSpeed) { rb.angularVelocity = angularSpeed; }
         if (rb.angularVelocity < -angularSpeed) { rb.angularVelocity = -angularSpeed; }
 
-
+        /*
         line_text.text = "" + Lines;
         level_text.text = "" + Level;
         score_text.text = "" + Score;
+        */
 
     }
 
@@ -114,6 +120,14 @@ public class Not_Tetris : MonoBehaviour
 
             root.GetComponent<Not_Tetris>().NewTetromino();
         }
+
+    }
+
+    public static void UpdateUI() {
+
+        static_line_text.text = "" + Lines;
+        static_level_text.text = "" + Level;
+        static_score_text.text = "" + Score;
 
     }
 
