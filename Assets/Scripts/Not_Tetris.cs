@@ -75,12 +75,12 @@ public class Not_Tetris : MonoBehaviour
         }
         else if (Input.GetKey(KeyCode.Z) || Input.GetKeyDown(KeyCode.Z) || TLeft.use == true)
         {
-            if (StaticRotation == false) { rb.AddTorque(moveSpeed); }
+            if (StaticRotation == false) { rb.AddTorque(rotSpeed); }
             else if (StaticRotation == true) {tetramino.transform.Rotate(0, 0, RotationSpeed * Time.deltaTime);}
         }
         else if (Input.GetKey(KeyCode.X) || Input.GetKeyDown(KeyCode.X) || TRight.use == true)
         {
-            if (StaticRotation == false) { rb.AddTorque(-moveSpeed); }
+            if (StaticRotation == false) { rb.AddTorque(-rotSpeed); }
             else if (StaticRotation == true) { tetramino.transform.Rotate(0, 0,-RotationSpeed*Time.deltaTime); }
         }
 

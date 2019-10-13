@@ -9,7 +9,7 @@ public class Speed : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     void Start() {
         down = false;
     }
-  
+
     public void OnPointerDown(PointerEventData eventData)
     {
         down = true;
