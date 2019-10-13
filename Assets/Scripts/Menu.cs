@@ -86,6 +86,23 @@ public class Menu : MonoBehaviour
         Triggers.SetActive(true);
         Terminator.SetActive(true);
         menuCanvas.GetComponent<Not_Tetris>().enabled = true;
+        Not_Tetris.StaticRotation = false;
+
+    }
+
+    public void Not_Classic_StaticRot()
+    {
+
+        buttonsCanvas.SetActive(true);
+        infoCanvas.SetActive(true);
+        canPause = true;
+        menu.SetActive(false);
+        PhysicCup.SetActive(true);
+        ButtonsForPhysics.SetActive(true);
+        Triggers.SetActive(true);
+        Terminator.SetActive(true);
+        menuCanvas.GetComponent<Not_Tetris>().enabled = true;
+        Not_Tetris.StaticRotation = true;
 
     }
 

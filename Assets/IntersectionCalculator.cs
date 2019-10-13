@@ -37,7 +37,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
     float segmentArea, mass;
 
     public bool Cut;
-
+    int f = 0;
     public void Start()
     {
 
@@ -130,6 +130,8 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
     public void OnTriggerExit2D(Collider2D collision)
     {
 
+        StopCoroutine(CheckVelocity(collision));
+
         if (toDelete.Contains(collision.gameObject) == true)
         {
             toDelete.Remove(collision.gameObject);
@@ -141,19 +143,19 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         if (intersectionSegments.ContainsKey(collision.gameObject) == true)
         {
             squareArea -= intersectionSegments[collision.gameObject];
-            if (squareArea < 0) { squareArea = 0; }
             intersectionSegments.Remove(collision.gameObject);
             SetFillingLine();
         }
+
 
     }
 
     public void KekVelocity(Collider2D collision) {
 
-        Debug.Log("KekVelocity");
+       
 
         if (collision.GetComponent<Rigidbody2D>().velocity.magnitude < 0.05f) {
-
+            Debug.Log("KekVelocity");
             if (collision.gameObject.GetComponent<MeshRenderer>() != null)
             {
                 collision.gameObject.GetComponent<MeshRenderer>().enabled = true;
@@ -171,11 +173,11 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
     public IEnumerator CheckVelocity(Collider2D collision)
     {
-        Debug.Log("CheckVelocity");
+       
         try
         {
             yield return new WaitUntil(() => collision.GetComponent<Rigidbody2D>().velocity.magnitude < 0.05f);
-
+           
             if (collision.gameObject.GetComponent<MeshRenderer>() != null)
             {
                 collision.gameObject.GetComponent<MeshRenderer>().enabled = true;
@@ -183,6 +185,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
             if (list.Contains(collision.gameObject) != true && collision.gameObject.tag == "shadow")
             {
+               // Debug.Log("CheckVelocity " + this.gameObject.name);
                 list.Add(collision.gameObject);
                 FindBounds(collision);
             }
@@ -410,7 +413,8 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
                 output.firstSideGameObject.GetComponent<Rigidbody2D>().isKinematic = true;
                 output.secondSideGameObject.GetComponent<Rigidbody2D>().isKinematic = true;
 
-
+                f++;
+                Debug.Log("Iteration "+f+"\n" +"Place: " + this.name + "\n" + output.firstSideGameObject.name + "\n" + output.secondSideGameObject.name);
 
                     float mass1 = mass * segmentArea / 4;
                     float mass2 = mass - (mass * segmentArea / 4);
@@ -523,7 +527,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
     {
 
         LinecastCut(upperBoundStart, upperBoundEnd, CuttingMask);
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.3f);
         LinecastCut(lowerBoundStart, lowerBoundEnd, CuttingMask);
         yield return new WaitForSeconds(0.3f);
         StartCoroutine(ClearLine());
@@ -531,12 +535,15 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
     }
 
     public void SetFillingLine() {
+
+        if (squareArea < 0) { squareArea = 0; print("<0"); }
+
         byte bt = 0;
 
         if ((255 - (int)((255 / win) * squareArea)) >= 0)
         {
              bt = (byte)(255 - (int)((255 / win) * squareArea));
-             Debug.Log(bt);
+            // Debug.Log(bt);
         }
         else{ bt = 0; }
         

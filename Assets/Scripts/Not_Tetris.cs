@@ -29,7 +29,9 @@ public class Not_Tetris : MonoBehaviour
     public GameObject floor, terminator;
     public static bool gameover = false;
 
+    public static bool StaticRotation;
 
+    public float RotationSpeed;
 
     void Start()
     {
@@ -46,7 +48,7 @@ public class Not_Tetris : MonoBehaviour
 
         topScore_text.text = "" + topScore;
         static_line_text.text = "" + Lines;
-        static_level_text.text = "Irrelevant";
+        static_level_text.text = "-";
         static_score_text.text = "" + Score;
 
         s_startSpeed = startSpeed;
@@ -73,11 +75,13 @@ public class Not_Tetris : MonoBehaviour
         }
         else if (Input.GetKey(KeyCode.Z) || Input.GetKeyDown(KeyCode.Z) || TLeft.use == true)
         {
-            rb.AddTorque(moveSpeed);
+            if (StaticRotation == false) { rb.AddTorque(moveSpeed); }
+            else if (StaticRotation == true) {tetramino.transform.Rotate(0, 0, RotationSpeed * Time.deltaTime);}
         }
         else if (Input.GetKey(KeyCode.X) || Input.GetKeyDown(KeyCode.X) || TRight.use == true)
         {
-            rb.AddTorque(-moveSpeed);
+            if (StaticRotation == false) { rb.AddTorque(-moveSpeed); }
+            else if (StaticRotation == true) { tetramino.transform.Rotate(0, 0,-RotationSpeed*Time.deltaTime); }
         }
 
         if (Input.GetKey(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Speed.down == true)
@@ -149,7 +153,7 @@ public class Not_Tetris : MonoBehaviour
 
         terminator.SetActive(false);
         gameover = true;
-        rb.gameObject.tag = "floor";
+        rb.gameObject.tag = "shadow";
         rb.gravityScale = 1;
         rb = null;
         floor.SetActive(false);
