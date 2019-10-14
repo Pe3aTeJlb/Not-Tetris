@@ -4224,7 +4224,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 30
-  rotSpeed: 15
+  rotSpeed: 30
   startSpeed: 150
   accelSpeed: 30
   angularSpeed: 150

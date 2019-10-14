@@ -142,6 +142,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         }
         if (intersectionSegments.ContainsKey(collision.gameObject) == true)
         {
+            list.Remove(collision.gameObject);
             squareArea -= intersectionSegments[collision.gameObject];
             intersectionSegments.Remove(collision.gameObject);
             SetFillingLine();
@@ -176,18 +177,21 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
        
         try
         {
-            yield return new WaitUntil(() => collision.GetComponent<Rigidbody2D>().velocity.magnitude < 0.05f);
-           
-            if (collision.gameObject.GetComponent<MeshRenderer>() != null)
+            if (collision.gameObject != null)
             {
-                collision.gameObject.GetComponent<MeshRenderer>().enabled = true;
-            }
+                yield return new WaitUntil(() => collision.GetComponent<Rigidbody2D>().velocity.magnitude < 0.05f);
 
-            if (list.Contains(collision.gameObject) != true && collision.gameObject.tag == "shadow")
-            {
-               // Debug.Log("CheckVelocity " + this.gameObject.name);
-                list.Add(collision.gameObject);
-                FindBounds(collision);
+                if (collision.gameObject.GetComponent<MeshRenderer>() != null)
+                {
+                    collision.gameObject.GetComponent<MeshRenderer>().enabled = true;
+                }
+
+                if (list.Contains(collision.gameObject) != true && collision.gameObject.tag == "shadow")
+                {
+                    // Debug.Log("CheckVelocity " + this.gameObject.name);
+                    list.Add(collision.gameObject);
+                    FindBounds(collision);
+                }
             }
 
         }
@@ -344,6 +348,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         fillingIcon2.size = new Vector2((2 / win * squareArea), 1f);
         fillingIcon2.color = new Color32(bt, bt, bt, 255);
         */
+
         SetFillingLine();
 
         if (squareArea >= win)
@@ -536,7 +541,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
     public void SetFillingLine() {
 
-        if (squareArea < 0) { squareArea = 0; print("<0"); }
+        if (squareArea < 0.05f) { squareArea = 0; print("<0"); }
 
         byte bt = 0;
 
