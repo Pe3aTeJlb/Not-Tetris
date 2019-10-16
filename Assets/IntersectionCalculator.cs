@@ -38,13 +38,16 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
     public bool Cut;
     int f = 0;
+
+    Coroutine Velocity;
+
+
     public void Start()
     {
 
         sp = this.GetComponent<SpriteRenderer>();
         SetFillingLine();
-       // fillingIcon.size = new Vector2((2 / win * squareArea), 1f);
-        //fillingIcon2.size = new Vector2((2 / win * squareArea), 1f);
+        print("Game Start");
 
     }
 
@@ -88,11 +91,8 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
        
         try
         {
-           
-                StartCoroutine(CheckVelocity(collision));
-                //KekVelocity(collision);
-            
-            
+            Velocity = StartCoroutine(CheckVelocity(collision));
+
         }
         catch (Exception e)
         {
@@ -103,9 +103,6 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
     public void OnTriggerStay2D(Collider2D collision)
     {
-
-       // KekVelocity(collision);
-
 
         //if (toDelete.Contains(collision.gameObject) != true && (collision.gameObject.tag == "shadow" || collision.gameObject.tag == "tetramino") && list.Contains(collision.gameObject) && collision.GetComponent<PolygonCollider2D>().bounds.center.y < upperBoundStart.y && collision.GetComponent<PolygonCollider2D>().bounds.center.y > lowerBoundStart.y)
         if (toDelete.Contains(collision.gameObject) != true && (collision.gameObject.tag == "shadow" || collision.gameObject.tag == "tetramino")  && collision.GetComponent<PolygonCollider2D>().bounds.center.y < upperBoundStart.y && collision.GetComponent<PolygonCollider2D>().bounds.center.y > lowerBoundStart.y)
@@ -119,8 +116,8 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
             squareArea -= intersectionSegments[collision.gameObject];
             intersectionSegments.Remove(collision.gameObject);
             list.Remove(collision.gameObject);
-            StartCoroutine(CheckVelocity(collision));
-            //KekVelocity(collision);
+            //StartCoroutine(CheckVelocity(collision));
+            Velocity = StartCoroutine(CheckVelocity(collision));
         }
 
 
@@ -129,9 +126,14 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
     public void OnTriggerExit2D(Collider2D collision)
     {
+        //Debug.Log("Stop" + collision.gameObject.name);
+        //StopCoroutine(CheckVelocity(collision));
+        StopCoroutine(Velocity);
 
-        StopCoroutine(CheckVelocity(collision));
 
+        try
+        {
+         
         if (toDelete.Contains(collision.gameObject) == true)
         {
             toDelete.Remove(collision.gameObject);
@@ -148,27 +150,10 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
             SetFillingLine();
         }
 
-
-    }
-
-    public void KekVelocity(Collider2D collision) {
-
-       
-
-        if (collision.GetComponent<Rigidbody2D>().velocity.magnitude < 0.05f) {
-            Debug.Log("KekVelocity");
-            if (collision.gameObject.GetComponent<MeshRenderer>() != null)
-            {
-                collision.gameObject.GetComponent<MeshRenderer>().enabled = true;
-            }
-
-            if (list.Contains(collision.gameObject) != true && collision.gameObject.tag == "shadow")
-            {
-                list.Add(collision.gameObject);
-                FindBounds(collision);
-            }
-
         }
+        catch (Exception e) { Debug.Log(e); }
+
+
 
     }
 
@@ -188,7 +173,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
                 if (list.Contains(collision.gameObject) != true && collision.gameObject.tag == "shadow")
                 {
-                    // Debug.Log("CheckVelocity " + this.gameObject.name);
+                    Debug.Log("CheckVelocity " + this.gameObject.name);
                     list.Add(collision.gameObject);
                     FindBounds(collision);
                 }
@@ -202,7 +187,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
     //находим границы и составляем массив
     public void FindBounds(Collider2D collision)
     {
-        //Debug.Log("Founding Bounds");
+        Debug.Log("Founding Bounds");
         collision.gameObject.layer = 9;
 
         inside1 = false;
@@ -341,22 +326,13 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         inside1 = false;
         inside2 = false;
 
-        /*
-        byte bt = (byte)(255 - (int)((255 / win) * squareArea));
-        fillingIcon.size = new Vector2((2 / win * squareArea), 1f);
-        fillingIcon.color = new Color32(bt, bt, bt, 255);
-        fillingIcon2.size = new Vector2((2 / win * squareArea), 1f);
-        fillingIcon2.color = new Color32(bt, bt, bt, 255);
-        */
-
         SetFillingLine();
 
         if (squareArea >= win)
         {
             if (requareOnce < 1)
             {
-                //fillingIcon.size = new Vector2((2 / win * squareArea), 1f);
-                //fillingIcon2.size = new Vector2((2 / win * squareArea), 1f);
+               
                 SetFillingLine();
                 requareOnce++;
 
@@ -474,8 +450,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
             try
             {
 
-                toDelete[i].layer = 10;
-               
+                toDelete[i].layer = 10; 
 
             }
             catch (Exception e) { Debug.Log(e); }
@@ -505,8 +480,6 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         sp.enabled = false;
         SetFillingLine();
         current.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
-
-       
 
     }
 
