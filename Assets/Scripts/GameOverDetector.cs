@@ -3,10 +3,13 @@
 public class GameOverDetector : MonoBehaviour
 {
     public GameObject root;
+    private string cache;
 
     public void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "floor" || collision.gameObject.tag == "shadow") {
+        cache = collision.gameObject.tag;
+
+        if (cache == "floor" || cache == "shadow") {
            root.GetComponent<Not_Tetris>().GameOver();
         }
 
