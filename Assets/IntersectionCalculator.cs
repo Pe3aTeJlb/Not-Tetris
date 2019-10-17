@@ -14,7 +14,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
     public Vector2 upperBoundStart, upperBoundEnd, lowerBoundStart, lowerBoundEnd;
     public LayerMask CalculationMask, CuttingMask;
 
-    public Vector2[] buffVector;
+    public List<Vector2> buffVector = new List<Vector2>();
     public float buff;
 
 
@@ -147,6 +147,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
     //находим границы и составляем массив
     public void FindBounds(Collider2D collision)
     {
+        collision.gameObject.layer = 9;
 
         bool upstart=false, upstop = false, lowstart = false, lowstop = false;
 
@@ -155,44 +156,76 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         RaycastHit2D[] hits2 = Physics2D.LinecastAll(lowerBoundStart, lowerBoundEnd, CalculationMask);
         RaycastHit2D[] reversHits2 = Physics2D.LinecastAll(lowerBoundEnd, lowerBoundStart, CalculationMask);
 
-        Debug.Log("Founding Bounds");
-        collision.gameObject.layer = 9;
-
+       // Debug.Log(hits[0] + " " + reversHits[0] + " " + hits2[0] + " " + reversHits2[0]);
+        
         inside1 = false;
         inside2 = false;
 
         PolygonCollider2D pl = collision.gameObject.GetComponent<PolygonCollider2D>();
 
-        buffVector = collision.gameObject.GetComponent<PolygonCollider2D>().points;
-        buff = buffVector[0].y;
+       // for (int i = 0; i < pl.points.Length; i++) {
+      //      buffVector.Add(pl.points[i]);
+       // }
+
+       // buff = buffVector[0].y;
 
         for (int i = 0; i < pl.points.Length; i++)
         {
-            buffVector[i] = pl.transform.TransformPoint(pl.points[i]);
-            buffList.Add(pl.transform.TransformPoint(pl.points[i]));
+            buffVector.Add(pl.transform.TransformPoint(pl.points[i]));
         }
 
-        for (int i = 0; i < buffVector.Length; i++)
+        buffVector.Add(buffVector[0]);
+
+        Debug.Log(buffVector.Count);
+     
+        for (int i = 0; i < buffVector.Count; i++)
         {
             if (buffVector[i].y > upperBoundStart.y && upstart != true) {
 
+                Debug.Log("Iteration " + i + "\n" + "buffV.y > upper " + hits[0].point);
                 upstart = true;
                 intersectionAreaPoints.Add(hits[0].point);
 
             }
-            if (buffVector[i].y < lowerBoundStart.y && upstart == true) {
+            else if (buffVector[i].y < upperBoundStart.y && upstart == true) {
 
-                upstop = true;
+                Debug.Log("Iteration " + i + "\n" + "buffV.y < upper " + reversHits[0].point + " " + buffVector[i]);
+                upstart = false;
             
                 intersectionAreaPoints.Add(reversHits[0].point);
                 intersectionAreaPoints.Add(buffVector[i]);
 
             }
-            else { intersectionAreaPoints.Add(buffVector[i]); }
+            else if (buffVector[i].y < lowerBoundStart.y && lowstart != true)
+            {
+
+                Debug.Log("Iteration " + i + "\n" + "buffV.y < lower " + reversHits2[0].point);
+                lowstart = true;
+                intersectionAreaPoints.Add(reversHits2[0].point);
+
+            }
+            else if (buffVector[i].y > lowerBoundStart.y && lowstart == true)
+            {
+                Debug.Log("Iteration " + i + "\n" + "buffV.y > lower " + hits2[0].point + " " + buffVector[i]);
+                lowstop = false;
+
+                intersectionAreaPoints.Add(hits2[0].point);
+                intersectionAreaPoints.Add(buffVector[i]);
+
+            }
+            else if(lowstart == false && upstart == false){
+                Debug.Log("Iteration " + i + "\n" + "just add " + buffVector[i]);
+                intersectionAreaPoints.Add(buffVector[i]);
+            }
+
+            Debug.Log("ttt" + intersectionAreaPoints[i]);
 
         }
 
+       // intersectionAreaPoints.Remove(intersectionAreaPoints[intersectionAreaPoints.Count-1]);
+        collision.gameObject.layer = 8;
 
+        //Triangulated = Triangulation.GetResult(intersectionAreaPoints);
 
 
         /*
