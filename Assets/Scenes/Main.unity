@@ -272,7 +272,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &38801046
 Transform:
   m_ObjectHideFlags: 0
@@ -329,8 +329,6 @@ MonoBehaviour:
   fillingIcon: {fileID: 1279134432}
   fillingIcon2: {fileID: 281763885}
   Cut: 0
-  Triangulated: []
-  buffList: []
 --- !u!61 &38801048
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1071,7 +1069,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &100714697
 Transform:
   m_ObjectHideFlags: 0
@@ -1128,8 +1126,6 @@ MonoBehaviour:
   fillingIcon: {fileID: 42270191}
   fillingIcon2: {fileID: 1420730755}
   Cut: 0
-  Triangulated: []
-  buffList: []
 --- !u!61 &100714699
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1434,8 +1430,6 @@ MonoBehaviour:
   fillingIcon: {fileID: 605512211}
   fillingIcon2: {fileID: 320245107}
   Cut: 0
-  Triangulated: []
-  buffList: []
 --- !u!1 &144709475
 GameObject:
   m_ObjectHideFlags: 0
@@ -1534,7 +1528,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &157623944
 Transform:
   m_ObjectHideFlags: 0
@@ -1591,8 +1585,6 @@ MonoBehaviour:
   fillingIcon: {fileID: 352025364}
   fillingIcon2: {fileID: 1284710812}
   Cut: 0
-  Triangulated: []
-  buffList: []
 --- !u!61 &157623946
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5384,7 +5376,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &531769530
 Transform:
   m_ObjectHideFlags: 0
@@ -5441,8 +5433,6 @@ MonoBehaviour:
   fillingIcon: {fileID: 517270253}
   fillingIcon2: {fileID: 695635463}
   Cut: 0
-  Triangulated: []
-  buffList: []
 --- !u!61 &531769532
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -6094,7 +6084,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &612305203
 Transform:
   m_ObjectHideFlags: 0
@@ -6151,8 +6141,6 @@ MonoBehaviour:
   fillingIcon: {fileID: 2143125805}
   fillingIcon2: {fileID: 1867960784}
   Cut: 0
-  Triangulated: []
-  buffList: []
 --- !u!61 &612305205
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -6477,7 +6465,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &685436733
 Transform:
   m_ObjectHideFlags: 0
@@ -6609,8 +6597,6 @@ MonoBehaviour:
   fillingIcon: {fileID: 78168415}
   fillingIcon2: {fileID: 523847909}
   Cut: 0
-  Triangulated: []
-  buffList: []
 --- !u!1 &695635461
 GameObject:
   m_ObjectHideFlags: 0
@@ -6863,7 +6849,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &721468052
 Transform:
   m_ObjectHideFlags: 0
@@ -6920,8 +6906,6 @@ MonoBehaviour:
   fillingIcon: {fileID: 765877419}
   fillingIcon2: {fileID: 2062294089}
   Cut: 0
-  Triangulated: []
-  buffList: []
 --- !u!61 &721468054
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -7831,7 +7815,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &783507268
 Transform:
   m_ObjectHideFlags: 0
@@ -7888,8 +7872,6 @@ MonoBehaviour:
   fillingIcon: {fileID: 1691570486}
   fillingIcon2: {fileID: 1109605581}
   Cut: 0
-  Triangulated: []
-  buffList: []
 --- !u!61 &783507270
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -8063,7 +8045,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &806359609
 Transform:
   m_ObjectHideFlags: 0
@@ -8120,8 +8102,6 @@ MonoBehaviour:
   fillingIcon: {fileID: 441745732}
   fillingIcon2: {fileID: 1596221916}
   Cut: 0
-  Triangulated: []
-  buffList: []
 --- !u!61 &806359611
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -9207,7 +9187,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &962811280
 Transform:
   m_ObjectHideFlags: 0
@@ -9264,8 +9244,6 @@ MonoBehaviour:
   fillingIcon: {fileID: 1604695619}
   fillingIcon2: {fileID: 144709477}
   Cut: 0
-  Triangulated: []
-  buffList: []
 --- !u!61 &962811282
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -9491,7 +9469,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &974879165
 Transform:
   m_ObjectHideFlags: 0
@@ -9548,8 +9526,6 @@ MonoBehaviour:
   fillingIcon: {fileID: 1088464431}
   fillingIcon2: {fileID: 1317358076}
   Cut: 0
-  Triangulated: []
-  buffList: []
 --- !u!61 &974879167
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -10429,7 +10405,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1074788027
 Transform:
   m_ObjectHideFlags: 0
@@ -10486,8 +10462,6 @@ MonoBehaviour:
   fillingIcon: {fileID: 1365662974}
   fillingIcon2: {fileID: 2131319946}
   Cut: 0
-  Triangulated: []
-  buffList: []
 --- !u!61 &1074788029
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -11789,7 +11763,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1261372120
 Transform:
   m_ObjectHideFlags: 0
@@ -11846,8 +11820,6 @@ MonoBehaviour:
   fillingIcon: {fileID: 1068027862}
   fillingIcon2: {fileID: 1722457905}
   Cut: 0
-  Triangulated: []
-  buffList: []
 --- !u!61 &1261372122
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -12555,7 +12527,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1326093742
 Transform:
   m_ObjectHideFlags: 0
@@ -12612,8 +12584,6 @@ MonoBehaviour:
   fillingIcon: {fileID: 1686894199}
   fillingIcon2: {fileID: 1220544016}
   Cut: 0
-  Triangulated: []
-  buffList: []
 --- !u!61 &1326093744
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -13328,7 +13298,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1366793355
 Transform:
   m_ObjectHideFlags: 0
@@ -13385,8 +13355,6 @@ MonoBehaviour:
   fillingIcon: {fileID: 540601264}
   fillingIcon2: {fileID: 2141875295}
   Cut: 0
-  Triangulated: []
-  buffList: []
 --- !u!61 &1366793357
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -13725,7 +13693,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1426047145
 Transform:
   m_ObjectHideFlags: 0
@@ -13782,8 +13750,6 @@ MonoBehaviour:
   fillingIcon: {fileID: 1345872890}
   fillingIcon2: {fileID: 795464722}
   Cut: 0
-  Triangulated: []
-  buffList: []
 --- !u!61 &1426047147
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -14018,7 +13984,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1435427718
 Transform:
   m_ObjectHideFlags: 0
@@ -14075,8 +14041,6 @@ MonoBehaviour:
   fillingIcon: {fileID: 2097024554}
   fillingIcon2: {fileID: 202569912}
   Cut: 0
-  Triangulated: []
-  buffList: []
 --- !u!61 &1435427720
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -14720,7 +14684,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1541619706
 Transform:
   m_ObjectHideFlags: 0
@@ -14777,8 +14741,6 @@ MonoBehaviour:
   fillingIcon: {fileID: 977506507}
   fillingIcon2: {fileID: 505263447}
   Cut: 0
-  Triangulated: []
-  buffList: []
 --- !u!61 &1541619708
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -15682,7 +15644,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1729183747
 Transform:
   m_ObjectHideFlags: 0
@@ -15739,8 +15701,6 @@ MonoBehaviour:
   fillingIcon: {fileID: 369207523}
   fillingIcon2: {fileID: 1619562253}
   Cut: 0
-  Triangulated: []
-  buffList: []
 --- !u!61 &1729183749
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -44,16 +44,20 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
     byte bt = 0;
     int data = 0;
 
-    public List<Vector2> Triangulated = new List<Vector2>();
-    public List<Vector2> buffList = new List<Vector2>();
-
-
     public void Start()
     {
 
         sp = this.GetComponent<SpriteRenderer>();
         SetFillingLine();
 
+    }
+
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            intersectionAreaPoints.Clear();
+            buffVector.Clear();
+        }
     }
 
     public void OnTriggerEnter2D(Collider2D collision)
@@ -149,7 +153,8 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
     {
         collision.gameObject.layer = 9;
 
-        bool upstart=false, upstop = false, lowstart = false, lowstop = false;
+        bool upstart=false, lowstart = false;
+        bool clockwise = false;
 
         RaycastHit2D[] hits = Physics2D.LinecastAll(upperBoundStart, upperBoundEnd, CalculationMask);
         RaycastHit2D[] reversHits = Physics2D.LinecastAll(upperBoundEnd, upperBoundStart, CalculationMask);
@@ -158,16 +163,10 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
        // Debug.Log(hits[0] + " " + reversHits[0] + " " + hits2[0] + " " + reversHits2[0]);
         
-        inside1 = false;
-        inside2 = false;
+       // inside1 = false;
+       // inside2 = false;
 
         PolygonCollider2D pl = collision.gameObject.GetComponent<PolygonCollider2D>();
-
-       // for (int i = 0; i < pl.points.Length; i++) {
-      //      buffVector.Add(pl.points[i]);
-       // }
-
-       // buff = buffVector[0].y;
 
         for (int i = 0; i < pl.points.Length; i++)
         {
@@ -176,58 +175,122 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
         buffVector.Add(buffVector[0]);
 
-        Debug.Log(buffVector.Count);
+        Debug.Log("Founding Bound in " + this.name);
+
+        Debug.Log("Vector length " + buffVector.Count);
+
+        float dich = 0;
+
+        for (int i = 0; i < buffVector.Count-1; i++) {
+
+            dich += (buffVector[i].x * buffVector[i + 1].y) - (buffVector[i + 1].x * buffVector[i].y);
+        }
+
+        Debug.Log("dich " + dich);
+        if (dich > 0) { Debug.Log("!clocwise");  clockwise = false; } else { Debug.Log("clocwise"); clockwise = true; }
      
         for (int i = 0; i < buffVector.Count; i++)
         {
-            if (buffVector[i].y > upperBoundStart.y && upstart != true) {
-
-                Debug.Log("Iteration " + i + "\n" + "buffV.y > upper " + hits[0].point);
-                upstart = true;
-                intersectionAreaPoints.Add(hits[0].point);
-
-            }
-            else if (buffVector[i].y < upperBoundStart.y && upstart == true) {
-
-                Debug.Log("Iteration " + i + "\n" + "buffV.y < upper " + reversHits[0].point + " " + buffVector[i]);
-                upstart = false;
-            
-                intersectionAreaPoints.Add(reversHits[0].point);
-                intersectionAreaPoints.Add(buffVector[i]);
-
-            }
-            else if (buffVector[i].y < lowerBoundStart.y && lowstart != true)
+            if (clockwise)
             {
+                if (buffVector[i].y > upperBoundStart.y && upstart != true)
+                {
 
-                Debug.Log("Iteration " + i + "\n" + "buffV.y < lower " + reversHits2[0].point);
-                lowstart = true;
-                intersectionAreaPoints.Add(reversHits2[0].point);
+                    Debug.Log("Iteration " + i + "\n" + "buffV.y > upper " + hits[0].point);
+                    upstart = true;
+                    intersectionAreaPoints.Add(hits[0].point);
+
+                }
+                else if (buffVector[i].y < upperBoundStart.y && upstart == true)
+                {
+
+                    Debug.Log("Iteration " + i + "\n" + "buffV.y < upper " + reversHits[0].point + " " + buffVector[i]);
+                    upstart = false;
+
+                    intersectionAreaPoints.Add(reversHits[0].point);
+                    intersectionAreaPoints.Add(buffVector[i]);
+
+                }
+                else if (buffVector[i].y < lowerBoundStart.y && lowstart != true)
+                {
+
+                    Debug.Log("Iteration " + i + "\n" + "buffV.y < lower " + reversHits2[0].point);
+                    lowstart = true;
+                    intersectionAreaPoints.Add(reversHits2[0].point);
+
+                }
+                else if (buffVector[i].y > lowerBoundStart.y && lowstart == true)
+                {
+                    Debug.Log("Iteration " + i + "\n" + "buffV.y > lower " + hits2[0].point + " " + buffVector[i]);
+                    lowstart = false;
+
+                    intersectionAreaPoints.Add(hits2[0].point);
+                    intersectionAreaPoints.Add(buffVector[i]);
+
+                }
+                else if (lowstart == false && upstart == false)
+                {
+                    Debug.Log("Iteration " + i + "\n" + "just add " + buffVector[i]);
+                    intersectionAreaPoints.Add(buffVector[i]);
+                }
+            }
+            else {
+
+                if (buffVector[i].y > upperBoundStart.y && upstart != true)
+                {
+
+                    Debug.Log("Iteration " + i + "\n" + "buffV.y > upper " + reversHits[0].point);
+                    upstart = true;
+                    intersectionAreaPoints.Add(reversHits[0].point);
+
+                }
+                else if (buffVector[i].y < upperBoundStart.y && buffVector[i].y < lowerBoundStart.y && upstart == true)
+                {
+
+                    Debug.Log("Iteration " + i + "\n" + "buffV.y < upper " + hits[0].point + " " + buffVector[i]);
+                    upstart = false;
+
+                    intersectionAreaPoints.Add(hits[0].point);
+                    intersectionAreaPoints.Add(buffVector[i]);
+
+                }
+                else if (buffVector[i].y < lowerBoundStart.y && lowstart != true)
+                {
+
+                    Debug.Log("Iteration " + i + "\n" + "buffV.y < lower " + hits2[0].point);
+                    lowstart = true;
+                    intersectionAreaPoints.Add(hits2[0].point);
+
+                }
+                else if (buffVector[i].y > lowerBoundStart.y && buffVector[i].y < upperBoundStart.y && lowstart == true)
+                {
+                    Debug.Log("Iteration " + i + "\n" + "buffV.y > lower " + reversHits2[0].point + " " + buffVector[i]);
+                    lowstart = false;
+
+                    intersectionAreaPoints.Add(reversHits2[0].point);
+                    intersectionAreaPoints.Add(buffVector[i]);
+
+                }
+                else if (lowstart == false && upstart == false)
+                {
+                    Debug.Log("Iteration " + i + "\n" + "just add " + buffVector[i]);
+                    intersectionAreaPoints.Add(buffVector[i]);
+                }
 
             }
-            else if (buffVector[i].y > lowerBoundStart.y && lowstart == true)
-            {
-                Debug.Log("Iteration " + i + "\n" + "buffV.y > lower " + hits2[0].point + " " + buffVector[i]);
-                lowstop = false;
-
-                intersectionAreaPoints.Add(hits2[0].point);
-                intersectionAreaPoints.Add(buffVector[i]);
-
-            }
-            else if(lowstart == false && upstart == false){
-                Debug.Log("Iteration " + i + "\n" + "just add " + buffVector[i]);
-                intersectionAreaPoints.Add(buffVector[i]);
-            }
-
-            Debug.Log("ttt" + intersectionAreaPoints[i]);
 
         }
 
-       // intersectionAreaPoints.Remove(intersectionAreaPoints[intersectionAreaPoints.Count-1]);
         collision.gameObject.layer = 8;
 
-        //Triangulated = Triangulation.GetResult(intersectionAreaPoints);
+        if (toDelete.Contains(collision.gameObject) != true)
+        {
+            toDelete.Add(collision.gameObject);
+        }
 
+        CalculateIntersection(collision);
 
+        #region
         /*
         ////
         for (int i = 0; i < buffVector.Length; i++)
@@ -324,37 +387,39 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
             //CalculateIntersection(collision);
         }
         */
+#endregion
 
     }
 
     public void CalculateIntersection(Collider2D collision)
     {
 
-        //Triangulated = Triangulation.GetResult(intersectionAreaPoints);
         //Debug.Log("Calculation Started");
 
         float buff_squareArea = 0;
-        
-        
-        if (intersectionAreaPoints.Count > 3)
+
+        for (int i = 0; i < intersectionAreaPoints.Count - 1; i++)
         {
-            for (int i = 0; i < intersectionAreaPoints.Count - 2; i++)
-            {
-                buff_squareArea += SquareByGeron(intersectionAreaPoints[i], intersectionAreaPoints[i + 1], intersectionAreaPoints[i + 2]);
-            }
+            buff_squareArea += (intersectionAreaPoints[i].x * intersectionAreaPoints[i + 1].y) - (intersectionAreaPoints[i + 1].x * intersectionAreaPoints[i].y);
         }
-            
-        //Debug.Log("Square Area" + buff_squareArea);
+
+        buff_squareArea = Mathf.Abs(buff_squareArea) / 2;
+
+        Debug.Log("Square Area" + buff_squareArea);
 
         intersectionSegments.Add(collision.gameObject, buff_squareArea);
         squareArea += buff_squareArea;
 
         text.text = "" + squareArea;
 
-        buff = 0;
-        intersectionAreaPoints.Clear();
-        inside1 = false;
-        inside2 = false;
+        
+        //buffVector.Clear();
+      //  intersectionAreaPoints.Clear();
+
+
+        //buff = 0;
+        // inside1 = false;
+        // inside2 = false;
 
         SetFillingLine();
 
@@ -516,6 +581,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         throw new NotImplementedException();
     }
 
+    /*
     public float SquareByGeron(Vector2 FirstPoint, Vector2 SecondPoint, Vector2 ThirdPoint)
     {
 
@@ -528,6 +594,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         return (Mathf.Sqrt(halfPerimetr * (halfPerimetr - FirstSide) * (halfPerimetr - SecondSide) * (halfPerimetr - ThirdSide)));
 
     }
+    */
 
     public IEnumerator wait()
     {

@@ -5,6 +5,7 @@ public static class Triangulation
 {
     public static List<Vector2> GetResult(List<Vector2> points)
     {
+        Debug.Log("Get");
         var results = new List<Vector2>();
         var checkPoints = new List<Vector2>();
         for (int j = points.Count - 1; j >= 0; j--)
