@@ -41,7 +41,6 @@ namespace UnitySpriteCutter {
 	public class SpriteCutterOutput {
 		public GameObject firstSideGameObject;
 		public GameObject secondSideGameObject;
-        //public GameObject thirdSideGameObject;
     }
 
 	public static class SpriteCutter {
@@ -74,7 +73,7 @@ namespace UnitySpriteCutter {
 			} else {
 				collidersCutResults =
 					CutColliders( localLineStart, localLineEnd, input.gameObject.GetComponents<Collider2D>() );
-
+                
 				if ( collidersCutResults.DidNotCut() ) {
 					return null;
 				}

@@ -71,15 +71,18 @@ namespace UnitySpriteCutter.Cutters {
 					InfiniteLine lastTwoPointsLine = new InfiniteLine( previousPoint, point );
 					Vector2 intersectionPoint = cuttingLine.IntersectionWithOtherLine( lastTwoPointsLine );
 					firstSide.Add( intersectionPoint );
+                    //Debug.Log("FirstSide+Second "+intersectionPoint);
 					secondSide.Add( intersectionPoint );
 					intersectionsFound++;
 				}
 
 				if ( cuttingLine.PointBelowLine( point ) ) {
 					firstSide.Add( point );
-				} else {
+                    //Debug.Log("FirstSide " + point);
+                } else {
 					secondSide.Add( point );
-				}
+                    //Debug.Log("SecondtSide " + point);
+                }
 			}
 
 			if ( intersectionsFound > 2 ) {
