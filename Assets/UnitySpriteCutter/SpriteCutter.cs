@@ -19,19 +19,22 @@ namespace UnitySpriteCutter {
 		/// By default, objects are cut only if their colliders can be cut with given line.
 		/// If set to true, colliders doesn't matter and aren't cut.
 		/// </summary>
-		public bool dontCutColliders;
+		//public bool dontCutColliders;
 
 		public enum GameObjectCreationMode {
-			/// <summary>
-			/// The original gameObject is converted into the "firstSide" gameObject.
-			/// Use this, if you want to cut off a new gameObject from an existing one. Default value.
-			/// </summary>
-			CUT_OFF_ONE = 0,
+            /// <summary>
+            /// The original gameObject is converted into the "firstSide" gameObject.
+            /// Use this, if you want to cut off a new gameObject from an existing one. Default value.
+            /// </summary>
+
+            CUT_OFF_ONE = 0,
+
 			/// <summary>
 			/// The original gameObject stays as it was before cutting.
 			/// Instead, SpriteCutter creates two new gameObjects with first and second side of the cut.
 			/// </summary>
-			CUT_INTO_TWO = 1,
+			
+            CUT_INTO_TWO = 1,
 
 		}
 		public GameObjectCreationMode gameObjectCreationMode;
@@ -68,32 +71,39 @@ namespace UnitySpriteCutter {
 			}
 
 			FlatConvexCollidersCutter.CutResult collidersCutResults;
-			if ( input.dontCutColliders ) {
-				collidersCutResults = new FlatConvexCollidersCutter.CutResult();
-			} else {
+
+			//if ( input.dontCutColliders ) {
+				//collidersCutResults = new FlatConvexCollidersCutter.CutResult();
+			//} else {
 				collidersCutResults =
 					CutColliders( localLineStart, localLineEnd, input.gameObject.GetComponents<Collider2D>() );
                 
 				if ( collidersCutResults.DidNotCut() ) {
 					return null;
 				}
-			}
+			//}
 
 			SpriteCutterGameObject secondSideResult = SpriteCutterGameObject.CreateAsCopyOf( input.gameObject, true );
 			PrepareResultGameObject( secondSideResult, spriteRenderer, meshRenderer,
 			                         meshCutResult.secondSideMesh, collidersCutResults.secondSideColliderRepresentations );
 
-			SpriteCutterGameObject firstSideResult = null;
-			//if ( input.gameObjectCreationMode == SpriteCutterInput.GameObjectCreationMode.CUT_INTO_TWO ) {
-			//	firstSideResult = SpriteCutterGameObject.CreateAsCopyOf( input.gameObject, true );
-			//	PrepareResultGameObject( firstSideResult, spriteRenderer, meshRenderer,
-			//	                         meshCutResult.firstSideMesh, collidersCutResults.firstSideColliderRepresentations );
 
-			//} else
-            if ( input.gameObjectCreationMode == SpriteCutterInput.GameObjectCreationMode.CUT_OFF_ONE ) {
-				firstSideResult = SpriteCutterGameObject.CreateAs( input.gameObject );
-				if ( spriteRenderer != null ) {
+            //if ( input.gameObjectCreationMode == SpriteCutterInput.GameObjectCreationMode.CUT_INTO_TWO ) {
+            //	firstSideResult = SpriteCutterGameObject.CreateAsCopyOf( input.gameObject, true );
+            //	PrepareResultGameObject( firstSideResult, spriteRenderer, meshRenderer,
+            //	                         meshCutResult.firstSideMesh, collidersCutResults.firstSideColliderRepresentations );
+
+            //} else
+            // if ( input.gameObjectCreationMode == SpriteCutterInput.GameObjectCreationMode.CUT_OFF_ONE ) {
+
+            // SpriteCutterGameObject firstSideResult = SpriteCutterGameObject.CreateAs( input.gameObject );
+
+            SpriteCutterGameObject firstSideResult = SpriteCutterGameObject.CreateAs(input.gameObject);
+
+            if ( spriteRenderer != null ) {
+
 					RendererParametersRepresentation tempParameters = new RendererParametersRepresentation();
+
 					tempParameters.CopyFrom( spriteRenderer );
 					SafeSpriteRendererRemoverBehaviour.get.RemoveAndWaitOneFrame( spriteRenderer, onFinish: () => {
 						PrepareResultGameObject( firstSideResult, tempParameters,
@@ -104,12 +114,13 @@ namespace UnitySpriteCutter {
 					PrepareResultGameObject( firstSideResult, spriteRenderer, meshRenderer,
 					                         meshCutResult.firstSideMesh, collidersCutResults.firstSideColliderRepresentations );
 				}
-			}
+		//	}
 
-			return new SpriteCutterOutput() {
-				firstSideGameObject = firstSideResult.gameObject,
-				secondSideGameObject = secondSideResult.gameObject,
-			};
+            return new SpriteCutterOutput()
+            {
+                firstSideGameObject = firstSideResult.gameObject,
+                secondSideGameObject = secondSideResult.gameObject,
+        };
 		}
 
 		static FlatConvexPolygonMeshCutter.CutResult CutSpriteOrMeshRenderer( Vector2 lineStart, Vector2 lineEnd, SpriteRenderer spriteRenderer, MeshRenderer meshRenderer ) {

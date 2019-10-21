@@ -10,6 +10,7 @@ TagManager:
   - tetramino
   - shadow
   - wall
+  - fragment
   layers:
   - Default
   - TransparentFX

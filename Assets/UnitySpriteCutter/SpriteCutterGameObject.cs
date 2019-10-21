@@ -21,7 +21,7 @@ namespace UnitySpriteCutter {
 		public static SpriteCutterGameObject CreateAs( GameObject origin ) {
 			SpriteCutterGameObject result = new SpriteCutterGameObject();
 			result.gameObject = origin;
-            result.gameObject.tag = "floor";
+            result.gameObject.tag = origin.tag;
 			return result;
 		}
 

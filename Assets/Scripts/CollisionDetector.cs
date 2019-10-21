@@ -14,13 +14,13 @@ public class CollisionDetector : MonoBehaviour
     public void OnCollisionEnter2D(Collision2D collision)
     {
 
-        if (collision.gameObject.tag == "floor" || collision.gameObject.tag == "shadow")
+        if (collision.gameObject.tag == "floor" || collision.gameObject.tag == "fragment")
         {
             if (n < 1)
             {
                 Not_Tetris.SpawnNewTetramino();
-                //this.tag = "floor";
-                this.tag = "shadow";
+                this.tag = "floor";
+                //this.tag = "shadow";
                 rb.gravityScale = 1;
                 this.enabled = false;
                 n++;

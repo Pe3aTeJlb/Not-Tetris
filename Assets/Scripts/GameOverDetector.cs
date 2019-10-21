@@ -9,7 +9,7 @@ public class GameOverDetector : MonoBehaviour
     {
         cache = collision.gameObject.tag;
 
-        if (cache == "floor" || cache == "shadow") {
+        if (cache == "floor" || cache == "fragment") {
            root.GetComponent<Not_Tetris>().GameOver();
         }
 

@@ -10,7 +10,8 @@ namespace UnitySpriteCutter.Cutters {
 			public List<PolygonColliderParametersRepresentation> firstSideColliderRepresentations;
 			public List<PolygonColliderParametersRepresentation> secondSideColliderRepresentations;
 
-			public bool DidNotCut() {
+
+            public bool DidNotCut() {
 				return ( firstSideColliderRepresentations.Count == 0 || secondSideColliderRepresentations.Count == 0 );
 			}
 		}
@@ -34,12 +35,14 @@ namespace UnitySpriteCutter.Cutters {
 						repr.CopyParametersFrom( collider );
 						repr.paths.Add( cutResult.firstSidePoints );
 						result.firstSideColliderRepresentations.Add( repr );
+                       
 					}
 					if ( cutResult.secondSidePoints.Length > 0 ) {
 						PolygonColliderParametersRepresentation repr = new PolygonColliderParametersRepresentation();
 						repr.CopyParametersFrom( collider );
 						repr.paths.Add( cutResult.secondSidePoints );
 						result.secondSideColliderRepresentations.Add( repr );
+                     
 					}
 
 				}

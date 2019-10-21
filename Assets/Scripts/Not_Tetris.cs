@@ -93,12 +93,6 @@ public class Not_Tetris : MonoBehaviour
         if (rb.angularVelocity > angularSpeed) { rb.angularVelocity = angularSpeed; }
         if (rb.angularVelocity < -angularSpeed) { rb.angularVelocity = -angularSpeed; }
 
-        /*
-        line_text.text = "" + Lines;
-        level_text.text = "" + Level;
-        score_text.text = "" + Score;
-        */
-
     }
 
     public void NewTetromino()
@@ -131,10 +125,8 @@ public class Not_Tetris : MonoBehaviour
     public static void UpdateUI() {
 
         static_line_text.text = "" + Lines;
-        //static_level_text.text = "" + Level;
         static_score_text.text = "" + Score;
         
-
     }
 
     public void GameOver()
@@ -153,7 +145,7 @@ public class Not_Tetris : MonoBehaviour
 
         terminator.SetActive(false);
         gameover = true;
-        rb.gameObject.tag = "shadow";
+        rb.gameObject.tag = "fragment";
         rb.gravityScale = 1;
         rb = null;
         floor.SetActive(false);
