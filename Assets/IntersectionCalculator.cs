@@ -91,7 +91,6 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
        
         try
         {
-            //Debug.Log("calculate " + collision.gameObject.name);
             Velocity = StartCoroutine(CheckVelocity(collision));
         }
         catch (Exception e)
@@ -103,13 +102,20 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
     public void OnTriggerStay2D(Collider2D collision)
     {
-        if (list.Contains(collision.gameObject) == false && (collision.gameObject.tag == "fragment" || collision.gameObject.tag == "floor") && toDelete.Contains(collision.gameObject)==false ) {
-            //Velocity = StartCoroutine(CheckVelocity(collision));
+        if (
+            list.Contains(collision.gameObject) == false && 
+            (collision.gameObject.tag == "fragment" || collision.gameObject.tag == "floor") && 
+            toDelete.Contains(collision.gameObject)==false &&
+            collision.GetComponent<Rigidbody2D>().velocity.magnitude > 0.1f
+            )
+        {
+           // Debug.Log("Some shit happens in " + this.name + " with " + collision.gameObject.name);
+            Velocity = StartCoroutine(CheckVelocity(collision));
         }
 
         if (intersectionSegments.ContainsKey(collision.gameObject) == true && list.Contains(collision.gameObject) && (collision.gameObject.tag == "fragment" || collision.gameObject.tag == "floor") && collision.GetComponent<Rigidbody2D>().velocity.magnitude > 0.8f)
         {
-            Debug.Log("Recalculate " + collision.gameObject.name + " " + collision.GetComponent<Rigidbody2D>().velocity.magnitude);
+            //Debug.Log("Recalculate " + collision.gameObject.name + " " + collision.GetComponent<Rigidbody2D>().velocity.magnitude);
             squareArea -= intersectionSegments[collision.gameObject];
             intersectionSegments.Remove(collision.gameObject);
             list.Remove(collision.gameObject);
@@ -121,7 +127,8 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
     public void OnTriggerExit2D(Collider2D collision)
     {
-       // Debug.Log("Exit " + collision.gameObject.name + " from line " + this.name);
+        // Debug.Log("Exit " + collision.gameObject.name + " from line " + this.name);
+        //Debug.Log("Stop corutin in " + this.name);
         StopCoroutine(Velocity);
         
         if (toDelete.Contains(collision.gameObject) == true)
@@ -194,7 +201,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         }
         buffVector.Add(buffVector[0]);
 
-       // Debug.Log("Founding Bound in " + this.name + " GO " + collision.gameObject.name);
+       Debug.Log("Founding Bound in " + this.name + " GO " + collision.gameObject.name);
        // Debug.Log("Vector length " + buffVector.Count);
 
         float dich = 0;
@@ -204,7 +211,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
             dich += (buffVector[i].x * buffVector[i + 1].y) - (buffVector[i + 1].x * buffVector[i].y);
         }
 
-       // Debug.Log("dich " + dich);
+        Debug.Log("dich " + dich);
         if (dich > 0) {
             clockwise = false;
         }
@@ -219,17 +226,16 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
                 if (buffVector[i].y > upperBoundStart.y && upstart != true && reversHits.Length != 0)
                 {
 
-                 //   Debug.Log("Iteration " + i + "\n" + "buffV.y > upper " + reversHits[0].point);
+                    Debug.Log("Iteration " + i + "\n" + "buffV.y > upper " + reversHits[0].point);
                     upstart = true;
                     inside1 = false;
                     intersectionAreaPoints.Add(reversHits[0].point);
-                    
 
                 }
                 else if (buffVector[i].y < upperBoundStart.y && upstart == true && hits.Length != 0)
                 {
 
-                  //  Debug.Log("Iteration " + i + "\n" + "buffV.y < upper " + hits[0].point);
+                   Debug.Log("Iteration " + i + "\n" + "buffV.y < upper " + hits[0].point);
 
                     upstart = false;
                     intersectionAreaPoints.Add(hits[0].point);
@@ -237,14 +243,14 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
                     if (buffVector[i].y > lowerBoundStart.y)
                     {
-                          //  Debug.Log("Additionally, cause higher than lower bound " + buffVector[i]);
+                           Debug.Log("Additionally, cause higher than lower bound " + buffVector[i]);
                             forGodsakeItAddedSomething = true;
                             intersectionAreaPoints.Add(buffVector[i]);
 
                     }
                     else if(hits2.Length!=0) {
 
-                            //Debug.Log("lower than lowerbound");
+                            Debug.Log("lower than lowerbound");
                             lowstart = true;
                             intersectionAreaPoints.Add(hits2[0].point);
                             
@@ -254,7 +260,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
                 else if (buffVector[i].y < lowerBoundStart.y && lowstart != true && hits2.Length != 0)
                 {
                 
-                   // Debug.Log("Iteration " + i + "\n" + "buffV.y < lower " + hits2[0].point);
+                    Debug.Log("Iteration " + i + "\n" + "buffV.y < lower " + hits2[0].point);
                     lowstart = true;
                     inside2 = false;
                     intersectionAreaPoints.Add(hits2[0].point);
@@ -262,38 +268,47 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
                 }
                 else if (buffVector[i].y > lowerBoundStart.y && lowstart == true && reversHits2.Length != 0)
                 {
-                  //  Debug.Log("Iteration " + i + "\n" + "buffV.y > lower " + reversHits2[0].point);
+                    Debug.Log("Iteration " + i + "\n" + "buffV.y > lower " + reversHits2[0].point);
 
                     lowstart = false;
                     intersectionAreaPoints.Add(reversHits2[0].point);
                    
                     if (buffVector[i].y < upperBoundStart.y)
                     {
-                          //  Debug.Log("Additionally, cause lower than higherbound " + buffVector[i]);
+                           Debug.Log("Additionally, cause lower than higherbound " + buffVector[i]);
                             forGodsakeItAddedSomething = true;
                             intersectionAreaPoints.Add(buffVector[i]);
                         
                     }
                     else if(reversHits.Length != 0) {
-                         //   Debug.Log("higher than upperbound");
+                            Debug.Log("higher than upperbound");
                             upstart = true;
                             intersectionAreaPoints.Add(reversHits[0].point);
                     }
 
                 }
-                else if (lowstart == false && upstart == false)
+                else if (buffVector[i].y < upperBoundStart.y && buffVector[i].y > lowerBoundStart.y)
                 {
                     forGodsakeItAddedSomething = true;
-                    //Debug.Log("Iteration " + i + "\n" + "just add " + buffVector[i]);
+                    Debug.Log("Iteration " + i + "\n" + "just add " + buffVector[i]);
                     intersectionAreaPoints.Add(buffVector[i]);
-                    
+
                 }
 
+            /*
+            else if (lowstart == false && upstart == false)
+            {
+                forGodsakeItAddedSomething = true;
+                Debug.Log("Iteration " + i + "\n" + "just add " + buffVector[i]);
+                intersectionAreaPoints.Add(buffVector[i]);
+
+            }
+            */
         }
 
         if (forGodsakeItAddedSomething == false && reversHits.Length != 0 && hits.Length != 0 && hits2.Length != 0 && reversHits2.Length != 0)
         {
-            // Debug.Log("No valid points, u algorithm sucks");
+             Debug.Log("No valid points, u algorithm sucks");
                 intersectionAreaPoints.Clear();
                 intersectionAreaPoints.Add(reversHits[0].point);
                 intersectionAreaPoints.Add(hits[0].point);
@@ -493,10 +508,12 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         ready = false;
         requareOnce = 0;
 
+        /*
         for (int i = lineNumber - 1; i < 20; i++)
         {
             UpperLines[i].ClearUpperLines();
         }
+        */
 
         sp.enabled = false;
         SetFillingLine();
@@ -506,7 +523,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
     public void ClearUpperLines() {
 
-        //list.Clear();
+        list.Clear();
         toDelete.Clear();
         toEnable.Clear();
         buffVector.Clear();
@@ -528,7 +545,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         yield return new WaitForSeconds(0.3f);
         LinecastCut(lowerBoundStart, lowerBoundEnd, CuttingMask);
         yield return new WaitForSeconds(0.3f);
-        Time.timeScale = 0;
+       // Time.timeScale = 0;
         StartCoroutine(ClearLine());
 
     }
