@@ -211,7 +211,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
             dich += (buffVector[i].x * buffVector[i + 1].y) - (buffVector[i + 1].x * buffVector[i].y);
         }
 
-        Debug.Log("dich " + dich);
+       Debug.Log("dich " + dich);
         if (dich > 0) {
             clockwise = false;
         }
@@ -221,7 +221,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
      
         for (int i = 0; i < buffVector.Count; i++)
         {
-           // Debug.Log("Iteration " + i + " to catch one bug");
+            Debug.Log("Iteration " + i + " to catch one bug");
 
                 if (buffVector[i].y > upperBoundStart.y && upstart != true && reversHits.Length != 0)
                 {
@@ -317,8 +317,6 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
                 intersectionAreaPoints.Add(reversHits[0].point);
             
         }
-
-       
 
         if (toDelete.Contains(collision.gameObject) != true && ( (inside1 == true && inside2 == true) && (reversHits.Length == 0 && hits.Length == 0 && hits2.Length == 0 && reversHits2.Length == 0)) )
         {
@@ -418,9 +416,6 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
                 output.firstSideGameObject.GetComponent<Rigidbody2D>().isKinematic = true;
                 output.secondSideGameObject.GetComponent<Rigidbody2D>().isKinematic = true;
 
-                f++;
-              //  Debug.Log("Iteration " + f + "\n" + "Place: " + this.name + "\n" + output.firstSideGameObject.name + "\n" + output.secondSideGameObject.name);
-
                 float mass1 = mass * segmentArea / 4;
                 float mass2 = mass - (mass * segmentArea / 4);
 
@@ -447,15 +442,8 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
                 PolygonCollider2D rb1 = output.firstSideGameObject.GetComponent<PolygonCollider2D>();
                 PolygonCollider2D rb2 = output.secondSideGameObject.GetComponent<PolygonCollider2D>();
 
-              //  Debug.Log(output.firstSideGameObject.name + " center at " + rb1.bounds.center.y);
-              //  Debug.Log(output.secondSideGameObject.name + " center at " + rb2.bounds.center.y);
-
                 StartCoroutine(wait2(output.firstSideGameObject, output.secondSideGameObject));
 
-                toEnable.Add(output.firstSideGameObject);
-                toEnable.Add(output.secondSideGameObject);
-
-            
             }
         }
 
@@ -473,8 +461,6 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
         yield return new WaitUntil(() => ready == true);
         yield return new WaitForSeconds(.5f);
-
-       // Time.timeScale = 0;
 
         for (int i = 0; i < toDelete.Count; i++)
         {
@@ -545,29 +531,35 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         yield return new WaitForSeconds(0.3f);
         LinecastCut(lowerBoundStart, lowerBoundEnd, CuttingMask);
         yield return new WaitForSeconds(0.3f);
-       // Time.timeScale = 0;
+        Time.timeScale = 0;
         StartCoroutine(ClearLine());
 
     }
 
     public IEnumerator wait2(GameObject a, GameObject b)
     {
-      //  Debug.Log("AAAA");
         yield return new WaitForSeconds(0.1f);
 
         PolygonCollider2D rb1 = a.GetComponent<PolygonCollider2D>();
         PolygonCollider2D rb2 = b.GetComponent<PolygonCollider2D>();
         
-       // Debug.Log(a.name +" center at " + rb1.bounds.center.y);
-       // Debug.Log(b.name +" center at " + rb2.bounds.center.y);
+        //Debug.Log(a.name +" bounds " + rb1.bounds.size.x + " " + rb1.bounds.size.y);
+       // Debug.Log(b.name +" bounds " + rb2.bounds.size.x + " " + rb2.bounds.size.y);
 
-        if (toDelete.Contains(a) != true && rb1.bounds.center.y < upperBoundStart.y && rb1.bounds.center.y > lowerBoundStart.y) {
+        if (toDelete.Contains(a) != true && rb1.bounds.center.y < upperBoundStart.y && rb1.bounds.center.y > lowerBoundStart.y)
+        {
             toDelete.Add(a);
+            if (rb2.bounds.size.y < 0.1f) { toDelete.Add(b); }
         }
+ 
         if (toDelete.Contains(b) != true && rb2.bounds.center.y < upperBoundStart.y && rb2.bounds.center.y > lowerBoundStart.y)
         {
             toDelete.Add(b);
+            if (rb1.bounds.size.y < 0.1f) { toDelete.Add(a); }
         }
+
+        toEnable.Add(a);
+        toEnable.Add(b);
 
     }
 
@@ -576,7 +568,6 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         if (squareArea < 0.1f || list.Count==0)
         {
             squareArea = 0;
-            //print("<0"); 
         }
 
         data = 255 - Mathf.FloorToInt((255 / win) * squareArea);
@@ -584,7 +575,6 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         if (data >= 0)
         {
              bt = (byte)data;
-            // Debug.Log(bt);
         }
         else{ bt = 0; }
 
