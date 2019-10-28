@@ -320,7 +320,7 @@ MonoBehaviour:
   toEnable: []
   UpperLines: []
   ready: 0
-  win: 8.5
+  win: 7.5
   text: {fileID: 1250082424}
   sp: {fileID: 0}
   fillingIcon: {fileID: 1279134432}
@@ -1116,7 +1116,7 @@ MonoBehaviour:
   toEnable: []
   UpperLines: []
   ready: 0
-  win: 8.5
+  win: 7.5
   text: {fileID: 59360296}
   sp: {fileID: 0}
   fillingIcon: {fileID: 42270191}
@@ -1419,7 +1419,7 @@ MonoBehaviour:
   toEnable: []
   UpperLines: []
   ready: 0
-  win: 8.5
+  win: 7.5
   text: {fileID: 308444973}
   sp: {fileID: 0}
   fillingIcon: {fileID: 605512211}
@@ -1573,7 +1573,7 @@ MonoBehaviour:
   toEnable: []
   UpperLines: []
   ready: 0
-  win: 8.5
+  win: 7.5
   text: {fileID: 1206180201}
   sp: {fileID: 0}
   fillingIcon: {fileID: 352025364}
@@ -5420,7 +5420,7 @@ MonoBehaviour:
   toEnable: []
   UpperLines: []
   ready: 0
-  win: 8.5
+  win: 7.5
   text: {fileID: 756968512}
   sp: {fileID: 0}
   fillingIcon: {fileID: 517270253}
@@ -6127,7 +6127,7 @@ MonoBehaviour:
   toEnable: []
   UpperLines: []
   ready: 0
-  win: 8.5
+  win: 7.5
   text: {fileID: 1380884923}
   sp: {fileID: 0}
   fillingIcon: {fileID: 2143125805}
@@ -6582,7 +6582,7 @@ MonoBehaviour:
   toEnable: []
   UpperLines: []
   ready: 0
-  win: 8.5
+  win: 7.5
   text: {fileID: 404082427}
   sp: {fileID: 0}
   fillingIcon: {fileID: 78168415}
@@ -6890,7 +6890,7 @@ MonoBehaviour:
   toEnable: []
   UpperLines: []
   ready: 0
-  win: 8.5
+  win: 7.5
   text: {fileID: 2038963083}
   sp: {fileID: 0}
   fillingIcon: {fileID: 765877419}
@@ -7855,7 +7855,7 @@ MonoBehaviour:
   toEnable: []
   UpperLines: []
   ready: 0
-  win: 8.5
+  win: 7.5
   text: {fileID: 1279053371}
   sp: {fileID: 0}
   fillingIcon: {fileID: 1691570486}
@@ -8084,7 +8084,7 @@ MonoBehaviour:
   toEnable: []
   UpperLines: []
   ready: 0
-  win: 8.5
+  win: 7.5
   text: {fileID: 810880573}
   sp: {fileID: 0}
   fillingIcon: {fileID: 441745732}
@@ -9225,7 +9225,7 @@ MonoBehaviour:
   toEnable: []
   UpperLines: []
   ready: 0
-  win: 8.5
+  win: 7.5
   text: {fileID: 74236867}
   sp: {fileID: 0}
   fillingIcon: {fileID: 1604695619}
@@ -9506,7 +9506,7 @@ MonoBehaviour:
   toEnable: []
   UpperLines: []
   ready: 0
-  win: 8.5
+  win: 7.5
   text: {fileID: 1510904154}
   sp: {fileID: 0}
   fillingIcon: {fileID: 1088464431}
@@ -10441,7 +10441,7 @@ MonoBehaviour:
   toEnable: []
   UpperLines: []
   ready: 0
-  win: 8.5
+  win: 7.5
   text: {fileID: 298396840}
   sp: {fileID: 0}
   fillingIcon: {fileID: 1365662974}
@@ -11798,7 +11798,7 @@ MonoBehaviour:
   toEnable: []
   UpperLines: []
   ready: 0
-  win: 8.5
+  win: 7.5
   text: {fileID: 719873035}
   sp: {fileID: 0}
   fillingIcon: {fileID: 1068027862}
@@ -12561,7 +12561,7 @@ MonoBehaviour:
   toEnable: []
   UpperLines: []
   ready: 0
-  win: 8.5
+  win: 7.5
   text: {fileID: 989475246}
   sp: {fileID: 0}
   fillingIcon: {fileID: 1686894199}
@@ -13331,7 +13331,7 @@ MonoBehaviour:
   toEnable: []
   UpperLines: []
   ready: 0
-  win: 8.5
+  win: 7.5
   text: {fileID: 890269740}
   sp: {fileID: 0}
   fillingIcon: {fileID: 540601264}
@@ -13725,7 +13725,7 @@ MonoBehaviour:
   toEnable: []
   UpperLines: []
   ready: 0
-  win: 8.5
+  win: 7.5
   text: {fileID: 101971467}
   sp: {fileID: 0}
   fillingIcon: {fileID: 1345872890}
@@ -14015,7 +14015,7 @@ MonoBehaviour:
   toEnable: []
   UpperLines: []
   ready: 0
-  win: 8.5
+  win: 7.5
   text: {fileID: 379257118}
   sp: {fileID: 0}
   fillingIcon: {fileID: 2097024554}
@@ -14714,7 +14714,7 @@ MonoBehaviour:
   toEnable: []
   UpperLines: []
   ready: 0
-  win: 8.5
+  win: 7.5
   text: {fileID: 2084645173}
   sp: {fileID: 0}
   fillingIcon: {fileID: 977506507}
@@ -15673,7 +15673,7 @@ MonoBehaviour:
   toEnable: []
   UpperLines: []
   ready: 0
-  win: 8.5
+  win: 7.5
   text: {fileID: 1033789347}
   sp: {fileID: 0}
   fillingIcon: {fileID: 369207523}
