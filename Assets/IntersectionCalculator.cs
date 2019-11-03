@@ -59,6 +59,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
         text.text = "" + squareArea;
 
+#if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Space)) {
             //intersectionAreaPoints.Clear();
             //buffVector.Clear();
@@ -79,6 +80,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
             Time.timeScale = 0;
         }
+#endif
 
     }
 
@@ -87,6 +89,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         SetFillingLine();
     }
 
+#if UNITY_EDITOR
     public static void ClearLog()
     {
         Assembly assembly = Assembly.GetAssembly(typeof(SceneView));
@@ -111,6 +114,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         }
 
     }
+#endif
 
     public void OnTriggerStay2D(Collider2D collision)
     {
@@ -118,7 +122,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
             list.Contains(collision.gameObject) == false &&
             (collision.gameObject.tag == "fragment" || collision.gameObject.tag == "floor") &&
             toDelete.Contains(collision.gameObject) == false 
-            && GlobalObserver.Deleting == false
+            //&& GlobalObserver.Deleting == false
             )
         {
             Velocity = StartCoroutine(CheckVelocity(collision));
@@ -143,7 +147,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
             (collision.gameObject.tag == "fragment" || collision.gameObject.tag == "floor") && 
             collision.GetComponent<Rigidbody2D>().velocity.magnitude > 0.4f)
         {
-            Debug.Log("Recalculate " + collision.gameObject.name + " in line " + this.name);
+            //Debug.Log("Recalculate " + collision.gameObject.name + " in line " + this.name);
             squareArea -= intersectionSegments[collision.gameObject];
             intersectionSegments.Remove(collision.gameObject);
             list.Remove(collision.gameObject);
@@ -396,8 +400,10 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
                 Rigidbody2D newRigidbody = output.secondSideGameObject.AddComponent<Rigidbody2D>();
                 newRigidbody.gravityScale = 1;
 
-                output.firstSideGameObject.GetComponent<Rigidbody2D>().isKinematic = true;
-                output.secondSideGameObject.GetComponent<Rigidbody2D>().isKinematic = true;
+               // output.firstSideGameObject.GetComponent<Rigidbody2D>().isKinematic = true;
+              //  output.secondSideGameObject.GetComponent<Rigidbody2D>().isKinematic = true;
+                output.firstSideGameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+                output.secondSideGameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
 
                 float mass1 = mass * segmentArea / 4;
                 float mass2 = mass - (mass * segmentArea / 4);
@@ -451,7 +457,8 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
             {
                 if (toEnable[i].transform != null && toEnable[i].GetComponent<Rigidbody2D>() != null)
                 {
-                    toEnable[i].GetComponent<Rigidbody2D>().isKinematic = false;
+                    //toEnable[i].GetComponent<Rigidbody2D>().isKinematic = false;
+                    toEnable[i].GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
                 }
             }
             catch (Exception e) { Debug.LogWarning(e); }
@@ -496,7 +503,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         yield return new WaitForSeconds(0.3f);
         yield return new WaitUntil(() => ready == true);
         yield return new WaitForSeconds(.5f);
-        Time.timeScale = 0;
+        //Time.timeScale = 0;
         //StartCoroutine(ClearLine());
         ClearLine();
 
