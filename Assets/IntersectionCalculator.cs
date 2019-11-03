@@ -16,8 +16,6 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
     public LayerMask CalculationMask, CuttingMask;
 
     public List<Vector2> buffVector = new List<Vector2>();
-    //public float buff;
-
 
     public List<Vector2> intersectionAreaPoints = new List<Vector2>();
     public List<GameObject> list = new List<GameObject>();
@@ -37,11 +35,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
     float segmentArea, mass;
 
-    public bool Cut;
-   // int f = 0;
-
     Coroutine Velocity;
-   // Coroutine Velocity2;
 
     byte bt = 0;
     int data = 0;
@@ -50,6 +44,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
     public bool deleting = false;
 
     public int lineNumber;
+
 
     public void Start()
     {
@@ -132,20 +127,23 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
         if (
              GlobalObserver.Deleting == true &&
-        (collision.gameObject.tag == "fragment") &&
-        toDelete.Contains(collision.gameObject) == false && 
-        collision.gameObject.GetComponent<PolygonCollider2D>().bounds.center.y > lowerBoundStart.y &&
-        collision.gameObject.GetComponent<PolygonCollider2D>().bounds.center.y < upperBoundStart.y
-        )
+            (collision.gameObject.tag == "fragment") &&
+            toDelete.Contains(collision.gameObject) == false && 
+            collision.gameObject.GetComponent<PolygonCollider2D>().bounds.center.y > lowerBoundStart.y &&
+            collision.gameObject.GetComponent<PolygonCollider2D>().bounds.center.y < upperBoundStart.y
+            )
         {
-            //Debug.Log("\n" + " ssss " + "\n");
             toDelete.Add(collision.gameObject);
         }
 
 
-        if (intersectionSegments.ContainsKey(collision.gameObject) == true && list.Contains(collision.gameObject) && (collision.gameObject.tag == "fragment" || collision.gameObject.tag == "floor") && collision.GetComponent<Rigidbody2D>().velocity.magnitude > 0.4f)
+        if (
+            intersectionSegments.ContainsKey(collision.gameObject) == true && 
+            list.Contains(collision.gameObject) &&
+            (collision.gameObject.tag == "fragment" || collision.gameObject.tag == "floor") && 
+            collision.GetComponent<Rigidbody2D>().velocity.magnitude > 0.4f)
         {
-            //Debug.Log("Recalculate " + collision.gameObject.name + " " + collision.GetComponent<Rigidbody2D>().velocity.magnitude);
+            Debug.Log("Recalculate " + collision.gameObject.name + " in line " + this.name);
             squareArea -= intersectionSegments[collision.gameObject];
             intersectionSegments.Remove(collision.gameObject);
             list.Remove(collision.gameObject);
@@ -171,7 +169,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
             SetFillingLine();
         }
 
-        if (intersectionSegments.ContainsKey(collision.gameObject) == true)
+        if (intersectionSegments.ContainsKey(collision.gameObject) == true && deleting == false)
         {
             squareArea -= intersectionSegments[collision.gameObject];
             intersectionSegments.Remove(collision.gameObject);
@@ -197,7 +195,6 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
     }
 
-    //находим границы и составляем массив
     public void FindBounds(Collider2D collision)
     {
         collision.gameObject.layer = 9;
@@ -369,7 +366,8 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
         foreach (GameObject go in gameObjectsToCut)
         {
-                //list.Remove(go);
+            //list.Remove(go);
+            //intersectionSegments.Remove(go);
 
                 segmentArea = 4;
                 if (intersectionSegments.ContainsKey(go))
@@ -435,10 +433,8 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         ready = true;
     }
 
-    public IEnumerator ClearLine()
+    public void ClearLine()
     {
-        yield return new WaitUntil(() => ready == true);
-        yield return new WaitForSeconds(.5f);
 
         for (int i = 0; i < toDelete.Count; i++)
         {
@@ -482,6 +478,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         SetFillingLine();
         current.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
 
+        deleting = false;
         GlobalObserver.Deleting = false;
 
     }
@@ -490,12 +487,18 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
     {
         yield return new WaitUntil(() => GlobalObserver.Deleting == false);
         GlobalObserver.Deleting = true;
+        deleting = true;
         LinecastCut(lowerBoundStart, lowerBoundEnd, CuttingMask);
+
         yield return new WaitForSeconds(0.3f);
         LinecastCut(upperBoundStart, upperBoundEnd, CuttingMask);
+
         yield return new WaitForSeconds(0.3f);
-        //Time.timeScale = 0;
-        StartCoroutine(ClearLine());
+        yield return new WaitUntil(() => ready == true);
+        yield return new WaitForSeconds(.5f);
+        Time.timeScale = 0;
+        //StartCoroutine(ClearLine());
+        ClearLine();
 
     }
 

@@ -76,7 +76,6 @@
     <Compile Include="Assets\Scripts\Terminator.cs" />
     <Compile Include="Assets\Scripts\TLeft.cs" />
     <Compile Include="Assets\Scripts\TRight.cs" />
-    <Compile Include="Assets\Triangulation.cs" />
     <Compile Include="Assets\UnitySpriteCutter\Cutters\ColliderPathsCreator.cs" />
     <Compile Include="Assets\UnitySpriteCutter\Cutters\FlatConvexCollidersCutter.cs" />
     <Compile Include="Assets\UnitySpriteCutter\Cutters\FlatConvexPolygonMeshCutter.cs" />
