@@ -81,12 +81,8 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
             Time.timeScale = 0;
         }
 #endif
-
-    }
-
-    public void FixedUpdate()
-    {
         SetFillingLine();
+
     }
 
 #if UNITY_EDITOR

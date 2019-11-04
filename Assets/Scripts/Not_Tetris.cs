@@ -29,10 +29,6 @@ public class Not_Tetris : MonoBehaviour
     public GameObject floor, terminator;
     public static bool gameover = false;
 
-    public static bool StaticRotation;
-
-    public float RotationSpeed;
-
     void Start()
     {
 
@@ -75,13 +71,11 @@ public class Not_Tetris : MonoBehaviour
         }
         else if (Input.GetKey(KeyCode.Z) || Input.GetKeyDown(KeyCode.Z) || TLeft.use == true)
         {
-            if (StaticRotation == false) { rb.AddTorque(rotSpeed); }
-            else if (StaticRotation == true) {tetramino.transform.Rotate(0, 0, RotationSpeed * Time.deltaTime);}
+           rb.AddTorque(rotSpeed); 
         }
         else if (Input.GetKey(KeyCode.X) || Input.GetKeyDown(KeyCode.X) || TRight.use == true)
         {
-            if (StaticRotation == false) { rb.AddTorque(-rotSpeed); }
-            else if (StaticRotation == true) { tetramino.transform.Rotate(0, 0,-RotationSpeed*Time.deltaTime); }
+           rb.AddTorque(-rotSpeed);
         }
 
         if (Input.GetKey(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Speed.down == true)

@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class Menu : MonoBehaviour
 {
-    public GameObject ClassicCup, PhysicCup, menu, Triggers, ButtonsForClassic, ButtonsForPhysics, Terminator, PauseButton, buttonsCanvas, menuCanvas, infoCanvas;
+    public GameObject ClassicCup, PhysicCup, menu, Triggers, ButtonsForClassic, ButtonsForPhysics, Terminator, PauseButton, menuCanvas;
 
     public Transform camera;
     public Vector3 CameraLeftUpperCorner;
@@ -16,13 +16,17 @@ public class Menu : MonoBehaviour
 
     public Text levelText, fps;
 
+    public Canvas ButtonsUI, MenuUI, InfoUI;
+
     void Start()
     {
+        Application.targetFrameRate = 30;
+
         Time.timeScale = 1;
 
-        buttonsCanvas.SetActive(false);
-        infoCanvas.SetActive(false);
-        menuCanvas.SetActive(true);
+        ButtonsUI.enabled = false;
+        InfoUI.enabled = false;
+        MenuUI.enabled = true;
 
         CameraLeftUpperCorner = Camera.main.ScreenToWorldPoint(new Vector3(0f, Camera.main.pixelHeight, 0));
 
@@ -62,8 +66,8 @@ public class Menu : MonoBehaviour
     public void Classic()
     {
 
-        buttonsCanvas.SetActive(true);
-        infoCanvas.SetActive(true);
+        ButtonsUI.enabled = true;
+        InfoUI.enabled = true;
 
         canPause = true;
         menu.SetActive(false);
@@ -71,14 +75,14 @@ public class Menu : MonoBehaviour
         ButtonsForClassic.SetActive(true);
         menuCanvas.GetComponent<Classic_Tetris>().enabled = true;
 
-
     }
 
     public void Not_Classic()
     {
 
-        buttonsCanvas.SetActive(true);
-        infoCanvas.SetActive(true);
+        ButtonsUI.enabled = true;
+        InfoUI.enabled = true;
+
         canPause = true;
         menu.SetActive(false);
         PhysicCup.SetActive(true);
@@ -86,23 +90,6 @@ public class Menu : MonoBehaviour
         Triggers.SetActive(true);
         Terminator.SetActive(true);
         menuCanvas.GetComponent<Not_Tetris>().enabled = true;
-        Not_Tetris.StaticRotation = false;
-
-    }
-
-    public void Not_Classic_StaticRot()
-    {
-
-        buttonsCanvas.SetActive(true);
-        infoCanvas.SetActive(true);
-        canPause = true;
-        menu.SetActive(false);
-        PhysicCup.SetActive(true);
-        ButtonsForPhysics.SetActive(true);
-        Triggers.SetActive(true);
-        Terminator.SetActive(true);
-        menuCanvas.GetComponent<Not_Tetris>().enabled = true;
-        Not_Tetris.StaticRotation = true;
 
     }
 
