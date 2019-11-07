@@ -677,7 +677,7 @@ ScriptsOnlyBuild:
     className: TMP_SpriteAnimator
   - hash:
       serializedVersion: 2
-      Hash: 19edbc7a96242772599d2abd053178c1
+      Hash: 4747c0a06c185857b85ee836f7fbd6ca
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: IntersectionCalculator
@@ -1668,4 +1668,4 @@ ScriptsOnlyBuild:
   platform: 13
   scenePathNames:
   - Assets/Scenes/Main.unity
-  playerPath: C:/Users/Pe3aTeJlb/Desktop/b.apk
+  playerPath: C:/Users/Pe3aTeJlb/Desktop/vv2.apk

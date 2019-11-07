@@ -9,7 +9,7 @@ using UnitySpriteCutter;
 
 public class IntersectionCalculator : MonoBehaviour, IComparable
 {
-    public float squareArea;
+    public float squareArea, prevsquareArea;
     public int requareOnce = 0;
 
     public Vector2 upperBoundStart, upperBoundEnd, lowerBoundStart, lowerBoundEnd;
@@ -45,18 +45,22 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
     public int lineNumber;
 
+    public static bool IsGameOver = false;
+
 
     public void Start()
     {
         UpperLines = this.transform.parent.GetComponentsInChildren<IntersectionCalculator>();
         sp = this.GetComponent<SpriteRenderer>();
         SetFillingLine();
-
+        IsGameOver = false;
+        prevsquareArea = squareArea;
     }
 
     public void Update()
     {
 
+        /*
         text.text = "" + squareArea;
 
 #if UNITY_EDITOR
@@ -81,7 +85,12 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
             Time.timeScale = 0;
         }
 #endif
-        SetFillingLine();
+*/
+        if (prevsquareArea != squareArea)
+        {
+            SetFillingLine();
+            prevsquareArea = squareArea;
+        }
 
     }
 
@@ -100,7 +109,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
         try
         {
-            if (GlobalObserver.Deleting == false) { 
+            if (GlobalObserver.Deleting == false && IsGameOver == false) { 
             Velocity = StartCoroutine(CheckVelocity(collision));
             }
         }
@@ -114,68 +123,73 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
     public void OnTriggerStay2D(Collider2D collision)
     {
-        if (
-            list.Contains(collision.gameObject) == false &&
-            (collision.gameObject.tag == "fragment" || collision.gameObject.tag == "floor") &&
-            toDelete.Contains(collision.gameObject) == false 
-            //&& GlobalObserver.Deleting == false
-            )
+
+        if (IsGameOver == false)
         {
-            Velocity = StartCoroutine(CheckVelocity(collision));
+
+            if (
+                list.Contains(collision.gameObject) == false &&
+                (collision.gameObject.tag == "fragment" || collision.gameObject.tag == "floor") &&
+                toDelete.Contains(collision.gameObject) == false
+                //&& GlobalObserver.Deleting == false
+                )
+            {
+                Velocity = StartCoroutine(CheckVelocity(collision));
+            }
+
+
+            if (
+                 GlobalObserver.Deleting == true &&
+                (collision.gameObject.tag == "fragment") &&
+                toDelete.Contains(collision.gameObject) == false &&
+                collision.gameObject.GetComponent<PolygonCollider2D>().bounds.center.y > lowerBoundStart.y &&
+                collision.gameObject.GetComponent<PolygonCollider2D>().bounds.center.y < upperBoundStart.y
+                )
+            {
+                toDelete.Add(collision.gameObject);
+            }
+
+
+            if (
+                intersectionSegments.ContainsKey(collision.gameObject) == true &&
+                list.Contains(collision.gameObject) &&
+                (collision.gameObject.tag == "fragment" || collision.gameObject.tag == "floor") &&
+                collision.GetComponent<Rigidbody2D>().velocity.magnitude > 0.8f)
+            {
+                //Debug.Log("Recalculate " + collision.gameObject.name + " in line " + this.name);
+                squareArea -= intersectionSegments[collision.gameObject];
+                intersectionSegments.Remove(collision.gameObject);
+                list.Remove(collision.gameObject);
+                toDelete.Remove(collision.gameObject);
+                Velocity = StartCoroutine(CheckVelocity(collision));
+            }
         }
-
-
-        if (
-             GlobalObserver.Deleting == true &&
-            (collision.gameObject.tag == "fragment") &&
-            toDelete.Contains(collision.gameObject) == false && 
-            collision.gameObject.GetComponent<PolygonCollider2D>().bounds.center.y > lowerBoundStart.y &&
-            collision.gameObject.GetComponent<PolygonCollider2D>().bounds.center.y < upperBoundStart.y
-            )
-        {
-            toDelete.Add(collision.gameObject);
-        }
-
-
-        if (
-            intersectionSegments.ContainsKey(collision.gameObject) == true && 
-            list.Contains(collision.gameObject) &&
-            (collision.gameObject.tag == "fragment" || collision.gameObject.tag == "floor") && 
-            collision.GetComponent<Rigidbody2D>().velocity.magnitude > 0.4f)
-        {
-            //Debug.Log("Recalculate " + collision.gameObject.name + " in line " + this.name);
-            squareArea -= intersectionSegments[collision.gameObject];
-            intersectionSegments.Remove(collision.gameObject);
-            list.Remove(collision.gameObject);
-            toDelete.Remove(collision.gameObject);
-            Velocity = StartCoroutine(CheckVelocity(collision));
-        }
-
-    }
+    }       
 
     public void OnTriggerExit2D(Collider2D collision)
     {
-        
-        StopCoroutine(Velocity);
-        
-        if (toDelete.Contains(collision.gameObject) == true)
+        if (IsGameOver == false)
         {
-            toDelete.Remove(collision.gameObject);
+            StopCoroutine(Velocity);
+
+            if (toDelete.Contains(collision.gameObject) == true)
+            {
+                toDelete.Remove(collision.gameObject);
+            }
+
+            if (list.Contains(collision.gameObject) == true)
+            {
+                list.Remove(collision.gameObject);
+                SetFillingLine();
+            }
+
+            if (intersectionSegments.ContainsKey(collision.gameObject) == true && deleting == false)
+            {
+                squareArea -= intersectionSegments[collision.gameObject];
+                intersectionSegments.Remove(collision.gameObject);
+                SetFillingLine();
+            }
         }
-
-        if (list.Contains(collision.gameObject) == true)
-        {
-            list.Remove(collision.gameObject);
-            SetFillingLine();
-        }
-
-        if (intersectionSegments.ContainsKey(collision.gameObject) == true && deleting == false)
-        {
-            squareArea -= intersectionSegments[collision.gameObject];
-            intersectionSegments.Remove(collision.gameObject);
-            SetFillingLine();
-        } 
-
     }
 
     public IEnumerator CheckVelocity(Collider2D collision)
@@ -474,8 +488,6 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         squareArea = 0;
         ready = false;
         requareOnce = 0;
-
-        //for (int i = lineNumber - 1; i < 20; i++){UpperLines[i].ClearUpperLines();}
         
         sp.enabled = false;
         SetFillingLine();
@@ -591,24 +603,6 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
     public int CompareTo(object obj)
     {
         throw new NotImplementedException();
-    }
-
-    public void ClearUpperLines()
-    {
-
-        list.Clear();
-        toDelete.Clear();
-        toEnable.Clear();
-        buffVector.Clear();
-        intersectionAreaPoints.Clear();
-        intersectionSegments.Clear();
-
-        squareArea = 0;
-        ready = false;
-        requareOnce = 0;
-
-        SetFillingLine();
-
     }
 
 }

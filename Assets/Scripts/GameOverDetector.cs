@@ -10,6 +10,7 @@ public class GameOverDetector : MonoBehaviour
         cache = collision.gameObject.tag;
 
         if (cache == "floor" || cache == "fragment") {
+           IntersectionCalculator.IsGameOver = true;
            root.GetComponent<Not_Tetris>().GameOver();
         }
 
