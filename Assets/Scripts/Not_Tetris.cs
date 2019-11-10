@@ -62,31 +62,34 @@ public class Not_Tetris : MonoBehaviour
     void Update()
     {
 
-        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.LeftArrow) || Left.use == true)
+        if (rb != null)
         {
-            rb.AddForce(Vector3.left * moveSpeed);
-        }
-        else if (Input.GetKey(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Right.use == true) {
-            rb.AddForce(Vector3.right * moveSpeed);
-        }
-        else if (Input.GetKey(KeyCode.Z) || Input.GetKeyDown(KeyCode.Z) || TLeft.use == true)
-        {
-           rb.AddTorque(rotSpeed); 
-        }
-        else if (Input.GetKey(KeyCode.X) || Input.GetKeyDown(KeyCode.X) || TRight.use == true)
-        {
-           rb.AddTorque(-rotSpeed);
-        }
+            if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.LeftArrow) || Left.use == true)
+            {
+                rb.AddForce(Vector3.left * moveSpeed);
+            }
+            else if (Input.GetKey(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Right.use == true)
+            {
+                rb.AddForce(Vector3.right * moveSpeed);
+            }
+            else if (Input.GetKey(KeyCode.Z) || Input.GetKeyDown(KeyCode.Z) || TLeft.use == true)
+            {
+                rb.AddTorque(rotSpeed);
+            }
+            else if (Input.GetKey(KeyCode.X) || Input.GetKeyDown(KeyCode.X) || TRight.use == true)
+            {
+                rb.AddTorque(-rotSpeed);
+            }
 
-        if (Input.GetKey(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Speed.down == true)
-        {
-            rb.AddForce(Vector3.down * accelSpeed);
+            if (Input.GetKey(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Speed.down == true)
+            {
+                rb.AddForce(Vector3.down * accelSpeed);
+            }
+            else { rb.velocity = new Vector2(rb.velocity.x, -3); }
+
+            if (rb.angularVelocity > angularSpeed) { rb.angularVelocity = angularSpeed; }
+            if (rb.angularVelocity < -angularSpeed) { rb.angularVelocity = -angularSpeed; }
         }
-        else { rb.velocity = new Vector2(rb.velocity.x, -3); }
-
-        if (rb.angularVelocity > angularSpeed) { rb.angularVelocity = angularSpeed; }
-        if (rb.angularVelocity < -angularSpeed) { rb.angularVelocity = -angularSpeed; }
-
     }
 
     public void NewTetromino()
@@ -139,9 +142,12 @@ public class Not_Tetris : MonoBehaviour
 
         terminator.SetActive(false);
         gameover = true;
-        rb.gameObject.tag = "fragment";
-        rb.gravityScale = 1;
-        rb = null;
+        if (rb != null)
+        {
+            rb.gameObject.tag = "fragment";
+            rb.gravityScale = 1;
+            rb = null;
+        }
         floor.SetActive(false);
         yield return new WaitForSeconds(3);
         SceneManager.LoadScene("Main", LoadSceneMode.Single);

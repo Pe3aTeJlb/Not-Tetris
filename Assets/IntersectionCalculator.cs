@@ -123,10 +123,8 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
     public void OnTriggerStay2D(Collider2D collision)
     {
-
         if (IsGameOver == false)
         {
-
             if (
                 list.Contains(collision.gameObject) == false &&
                 (collision.gameObject.tag == "fragment" || collision.gameObject.tag == "floor") &&
@@ -136,7 +134,6 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
             {
                 Velocity = StartCoroutine(CheckVelocity(collision));
             }
-
 
             if (
                  GlobalObserver.Deleting == true &&
@@ -148,7 +145,6 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
             {
                 toDelete.Add(collision.gameObject);
             }
-
 
             if (
                 intersectionSegments.ContainsKey(collision.gameObject) == true &&
@@ -168,9 +164,14 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
     public void OnTriggerExit2D(Collider2D collision)
     {
+
+            if (Velocity != null)
+            {
+                StopCoroutine(Velocity);
+            }
+
         if (IsGameOver == false)
         {
-            StopCoroutine(Velocity);
 
             if (toDelete.Contains(collision.gameObject) == true)
             {
@@ -195,7 +196,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
     public IEnumerator CheckVelocity(Collider2D collision)
     {
 
-        if (collision.gameObject == null) {
+        if (collision.GetComponent<Rigidbody2D>() == null) {
             StopCoroutine(Velocity);
         }
 
