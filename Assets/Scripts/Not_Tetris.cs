@@ -26,7 +26,8 @@ public class Not_Tetris : MonoBehaviour
     public static Text static_score_text, static_level_text, static_line_text;
     public static int Lines, Score, topScore, Level;
 
-    public GameObject floor, terminator;
+    public GameObject terminator;
+    public SpriteRenderer floor;
     public static bool gameover = false;
 
     void Start()
@@ -97,7 +98,6 @@ public class Not_Tetris : MonoBehaviour
 
         Preview[nextTetramino].SetActive(false);
         nextTetramino = Random.Range(0, Tetrominoes.Length);
-        //nextTetramino = 0;
         Preview[nextTetramino].SetActive(true);
 
     }
@@ -148,7 +148,7 @@ public class Not_Tetris : MonoBehaviour
             rb.gravityScale = 1;
             rb = null;
         }
-        floor.SetActive(false);
+        floor.enabled = false;
         yield return new WaitForSeconds(3);
         SceneManager.LoadScene("Main", LoadSceneMode.Single);
 

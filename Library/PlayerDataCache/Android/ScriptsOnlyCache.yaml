@@ -14,8 +14,6 @@ ScriptsOnlyBuild:
     - TLeft
     - TRight
     - Terminator
-    UnityEditor.TestRunner.dll:
-    - UnityEditor.TestTools.TestRunner.TestListCacheData
     UnityEngine.UI.dll:
     - UnityEngine.EventSystems.EventSystem
     - UnityEngine.EventSystems.StandaloneInputModule
@@ -575,7 +573,7 @@ ScriptsOnlyBuild:
     className: AnimationTrack
   - hash:
       serializedVersion: 2
-      Hash: 994408471afd00cd6a9dd006289f42f7
+      Hash: 4c9446dc4d3033efd6ae27b6fae5f0aa
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Not_Tetris
@@ -1085,7 +1083,7 @@ ScriptsOnlyBuild:
     className: TMP_SpriteAnimator
   - hash:
       serializedVersion: 2
-      Hash: 4747c0a06c185857b85ee836f7fbd6ca
+      Hash: 3f6508f573d1d742f3d79e8cd7cad2be
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: IntersectionCalculator
@@ -1668,4 +1666,4 @@ ScriptsOnlyBuild:
   platform: 13
   scenePathNames:
   - Assets/Scenes/Main.unity
-  playerPath: G:/Download/lbxm.apk
+  playerPath: C:/Users/Pe3aTeJlb/Desktop/aa3.apk

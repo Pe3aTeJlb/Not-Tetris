@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
 using UnitySpriteCutter;
 
 public class IntersectionCalculator : MonoBehaviour, IComparable
@@ -22,12 +21,10 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
     public List<GameObject> toDelete = new List<GameObject>();
     public Dictionary<GameObject, float> intersectionSegments = new Dictionary<GameObject, float>();
     public List<GameObject> toEnable = new List<GameObject>();
-    public IntersectionCalculator[] UpperLines;
 
     public bool ready;
 
     public float win;
-    public Text text;
     public SpriteRenderer sp;
     public SpriteRenderer fillingIcon, fillingIcon2;
 
@@ -43,27 +40,21 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
     public bool deleting = false;
 
-    public int lineNumber;
-
     public static bool IsGameOver = false;
-
 
     public void Start()
     {
-        UpperLines = this.transform.parent.GetComponentsInChildren<IntersectionCalculator>();
         sp = this.GetComponent<SpriteRenderer>();
         SetFillingLine();
         IsGameOver = false;
         prevsquareArea = squareArea;
+       
     }
 
     public void Update()
     {
 
         /*
-        text.text = "" + squareArea;
-
-#if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Space)) {
             //intersectionAreaPoints.Clear();
             //buffVector.Clear();
@@ -84,7 +75,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
             Time.timeScale = 0;
         }
-#endif
+
 */
         if (prevsquareArea != squareArea)
         {
@@ -93,8 +84,8 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         }
 
     }
-
-#if UNITY_EDITOR
+   
+    /*
     public static void ClearLog()
     {
         Assembly assembly = Assembly.GetAssembly(typeof(SceneView));
@@ -103,6 +94,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         method.Invoke(new object(), null);
 
     }
+    */
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
@@ -113,16 +105,14 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
             Velocity = StartCoroutine(CheckVelocity(collision));
             }
         }
-        catch (Exception e)
-        {
-            Debug.Log(e);
-        }
+        catch (Exception e) {Debug.Log(e);}
 
     }
-#endif
 
     public void OnTriggerStay2D(Collider2D collision)
     {
+
+        Debug.Log(collision.GetComponent<Rigidbody2D>().velocity);
         if (IsGameOver == false)
         {
             if (
@@ -150,9 +140,9 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
                 intersectionSegments.ContainsKey(collision.gameObject) == true &&
                 list.Contains(collision.gameObject) &&
                 (collision.gameObject.tag == "fragment" || collision.gameObject.tag == "floor") &&
-                collision.GetComponent<Rigidbody2D>().velocity.magnitude > 0.8f)
+                (collision.GetComponent<Rigidbody2D>().velocity.x < -1.5f || collision.GetComponent<Rigidbody2D>().velocity.x > 1.5f)
+                )
             {
-                //Debug.Log("Recalculate " + collision.gameObject.name + " in line " + this.name);
                 squareArea -= intersectionSegments[collision.gameObject];
                 intersectionSegments.Remove(collision.gameObject);
                 list.Remove(collision.gameObject);
@@ -362,6 +352,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
             }
 
         }
+
     }
 
     void LinecastCut(Vector2 lineStart, Vector2 lineEnd, int layerMask = Physics2D.AllLayers)
@@ -381,8 +372,6 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
         foreach (GameObject go in gameObjectsToCut)
         {
-            //list.Remove(go);
-            //intersectionSegments.Remove(go);
 
                 segmentArea = 4;
                 if (intersectionSegments.ContainsKey(go))
@@ -398,7 +387,6 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
                 lineStart = lineStart,
                 lineEnd = lineEnd,
                 gameObject = go,
-                //gameObjectCreationMode = SpriteCutterInput.GameObjectCreationMode.CUT_OFF_ONE,
             });
 
 
@@ -411,8 +399,6 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
                 Rigidbody2D newRigidbody = output.secondSideGameObject.AddComponent<Rigidbody2D>();
                 newRigidbody.gravityScale = 1;
 
-               // output.firstSideGameObject.GetComponent<Rigidbody2D>().isKinematic = true;
-              //  output.secondSideGameObject.GetComponent<Rigidbody2D>().isKinematic = true;
                 output.firstSideGameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
                 output.secondSideGameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
 
@@ -459,7 +445,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
             {
                 toDelete[i].layer = 10;
             }
-            catch (Exception e) { Debug.Log(e); }
+            catch (Exception e) {Debug.Log(e);}
         }
 
         for (int i = 0; i < toEnable.Count; i++)
@@ -468,11 +454,10 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
             {
                 if (toEnable[i].transform != null && toEnable[i].GetComponent<Rigidbody2D>() != null)
                 {
-                    //toEnable[i].GetComponent<Rigidbody2D>().isKinematic = false;
                     toEnable[i].GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
                 }
             }
-            catch (Exception e) { Debug.LogWarning(e); }
+            catch (Exception e) { Debug.LogWarning(e);}
         }
 
         list.Clear();
