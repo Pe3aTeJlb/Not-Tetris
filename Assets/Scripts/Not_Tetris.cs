@@ -26,7 +26,7 @@ public class Not_Tetris : MonoBehaviour
     public static Text static_score_text, static_level_text, static_line_text;
     public static int Lines, Score, topScore, Level;
 
-    public GameObject terminator;
+    public GameObject terminator, floor2;
     public SpriteRenderer floor;
     public static bool gameover = false;
 
@@ -149,6 +149,7 @@ public class Not_Tetris : MonoBehaviour
             rb = null;
         }
         floor.enabled = false;
+        floor2.SetActive(false);
         yield return new WaitForSeconds(3);
         SceneManager.LoadScene("Main", LoadSceneMode.Single);
 

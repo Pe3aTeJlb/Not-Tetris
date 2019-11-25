@@ -112,7 +112,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
     public void OnTriggerStay2D(Collider2D collision)
     {
 
-        Debug.Log(collision.GetComponent<Rigidbody2D>().velocity);
+       // Debug.Log(collision.GetComponent<Rigidbody2D>().velocity);
         if (IsGameOver == false)
         {
             if (
@@ -140,7 +140,11 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
                 intersectionSegments.ContainsKey(collision.gameObject) == true &&
                 list.Contains(collision.gameObject) &&
                 (collision.gameObject.tag == "fragment" || collision.gameObject.tag == "floor") &&
-                (collision.GetComponent<Rigidbody2D>().velocity.x < -1.5f || collision.GetComponent<Rigidbody2D>().velocity.x > 1.5f)
+                (collision.GetComponent<Rigidbody2D>().velocity.y < -1.5f 
+                //|| 
+                //collision.GetComponent<Rigidbody2D>().velocity.x < -2.5f ||
+               // collision.GetComponent<Rigidbody2D>().velocity.x > 2f 
+                )
                 )
             {
                 squareArea -= intersectionSegments[collision.gameObject];
@@ -497,8 +501,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         yield return new WaitForSeconds(0.3f);
         yield return new WaitUntil(() => ready == true);
         yield return new WaitForSeconds(.5f);
-        //Time.timeScale = 0;
-        //StartCoroutine(ClearLine());
+
         ClearLine();
 
     }
@@ -523,7 +526,6 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         if (toDelete.Contains(a) != true && rb1.bounds.center.y < upperBoundStart.y && rb1.bounds.center.y > lowerBoundStart.y && rb1.bounds.size.y > 0.1f)
         {
             
-            //Debug.Log("Add in to Delete " + a.name + " in line " + this.name + " from 562 ");
             toEnable.Add(a);
             toDelete.Add(a);
 
@@ -532,12 +534,11 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         else
         {
             toEnable.Add(a);
-            //Debug.Log("Nothing happening with " + a.name + " in line " + this.name); 
         }
 
         if (toDelete.Contains(b) != true && rb2.bounds.center.y < upperBoundStart.y && rb2.bounds.center.y > lowerBoundStart.y && rb2.bounds.size.y > 0.1f)
         {
-           // Debug.Log("Add in to Delete " + b.name + " in line " + this.name + " from 569");
+
             toEnable.Add(b);
             toDelete.Add(b);
 
@@ -546,7 +547,6 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         else
         {
             toEnable.Add(b);
-            //Debug.Log("Nothing happening with " + b.name + " in line " + this.name); 
         }
 
 

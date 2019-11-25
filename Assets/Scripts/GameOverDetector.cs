@@ -2,7 +2,7 @@
 
 public class GameOverDetector : MonoBehaviour
 {
-    public GameObject root, trigger_root;
+    public GameObject root;
     private string cache;
 
     public void OnTriggerStay2D(Collider2D collision)
