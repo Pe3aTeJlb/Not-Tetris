@@ -216,7 +216,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
     {
         collision.gameObject.layer = 9;
 
-        //Watch.Start();
+        Watch.Start();
 
         RaycastHit2D[] hits = Physics2D.LinecastAll(upperBoundStart, upperBoundEnd, CalculationMask);
         RaycastHit2D[] reversHits = Physics2D.LinecastAll(upperBoundEnd, upperBoundStart, CalculationMask);
@@ -224,9 +224,9 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         RaycastHit2D[] reversHits2 = Physics2D.LinecastAll(lowerBoundEnd, lowerBoundStart, CalculationMask);
         TimeSpan ts = Watch.Elapsed;
 
-      //  Watch.Stop();
-       // UnityEngine.Debug.Log("Time for builtin points" + ts);
-      //  Watch.Reset();
+        Watch.Stop();
+        UnityEngine.Debug.Log("Time for builtin points" + ts);
+        Watch.Reset();
 
 
         collision.gameObject.layer = 8;
@@ -252,51 +252,61 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         if (dich > 0) {} else {buffVector.Reverse(); }
 
 
-
-
-
-
+		UnityEngine.Debug.Log("Using point " + buffVector[0]);
         Watch.Start();
+		
+		if(buffVector[0].y < lowerBoundStart.y){
+			
+					UnityEngine.Debug.Log("shit2");
+                    intersectionAreaPoints.Add(IntersectionPoint(lowerBoundStart, lowerBoundEnd, buffVector[0], buffVector[1]));
+					
+			
+		}
+		
         for (int i = 1; i < buffVector.Count; i++)
         {
-
-            if (buffVector[i].y > upperBoundStart.y && upstart != true && i!=0)
+			UnityEngine.Debug.Log("Using point " + buffVector[i]);
+			
+            if (buffVector[i].y > upperBoundStart.y && upstart != true)
             {
                 upstart = true;
                 inside1 = false;
 
-
                 if (buffVector[i - 1].y < lowerBoundStart.y)
                 {
+					UnityEngine.Debug.Log("shit");
                     intersectionAreaPoints.Add(IntersectionPoint(lowerBoundStart, lowerBoundEnd, buffVector[i], buffVector[i - 1]));
-                    UnityEngine.Debug.Log("320 " + buffVector[i - 1] + " " + buffVector[i] + " " + IntersectionPoint(lowerBoundStart, lowerBoundEnd, buffVector[i], buffVector[i - 1]));
+					intersectionAreaPoints.Add(IntersectionPoint(upperBoundStart, upperBoundEnd, buffVector[i], buffVector[i - 1]));
+                    //UnityEngine.Debug.Log("320 " + buffVector[i - 1] + " " + buffVector[i] + " " + IntersectionPoint(lowerBoundStart, lowerBoundEnd, buffVector[i], buffVector[i - 1]));
                 }
 
-                if (buffVector[i - 1].y < upperBoundStart.y)
+                else if (buffVector[i - 1].y < upperBoundStart.y && buffVector[i - 1].y > lowerBoundStart.y )
                 {
                     intersectionAreaPoints.Add(IntersectionPoint(upperBoundStart, upperBoundEnd, buffVector[i], buffVector[i - 1]));
-                    UnityEngine.Debug.Log("271 " + buffVector[i - 1] + " " + buffVector[i] + " " + IntersectionPoint(upperBoundStart, upperBoundEnd, buffVector[i], buffVector[i - 1]));
+                    //UnityEngine.Debug.Log("271 " + buffVector[i - 1] + " " + buffVector[i] + " " + IntersectionPoint(upperBoundStart, upperBoundEnd, buffVector[i], buffVector[i - 1]));
                 }
-
-
+				else if (buffVector[i - 1].y > upperBoundStart.y){
+					
+				}
 
             }
             else if (buffVector[i].y < upperBoundStart.y && upstart == true)
             {
                 upstart = false;
 
-                UnityEngine.Debug.Log("l 280 " + buffVector[i-1] + " " + buffVector[i] + " " + IntersectionPoint(upperBoundStart, upperBoundEnd, buffVector[i], buffVector[i-1]));
+                //UnityEngine.Debug.Log("l 280 " + buffVector[i-1] + " " + buffVector[i] + " " + IntersectionPoint(upperBoundStart, upperBoundEnd, buffVector[i], buffVector[i-1]));
                 intersectionAreaPoints.Add(IntersectionPoint(upperBoundStart, upperBoundEnd, buffVector[i], buffVector[i -1]));
 
                 if (buffVector[i].y > lowerBoundStart.y)
                 {
                     forGodsakeItAddedSomething = true;
-                    intersectionAreaPoints.Add(buffVector[i+1]);
+                    intersectionAreaPoints.Add(buffVector[i]);
+					//UnityEngine.Debug.Log("l 293 " + buffVector[i]);
                 }
                 else
                 {
                     lowstart = true;
-                    UnityEngine.Debug.Log("l 290 " + buffVector[i-1] + " " + buffVector[i] + " " + IntersectionPoint(lowerBoundStart, lowerBoundEnd, buffVector[i], buffVector[i - 1]));
+                    //UnityEngine.Debug.Log("l 290 " + buffVector[i-1] + " " + buffVector[i] + " " + IntersectionPoint(lowerBoundStart, lowerBoundEnd, buffVector[i], buffVector[i - 1]));
                     intersectionAreaPoints.Add(IntersectionPoint(lowerBoundStart, lowerBoundEnd, buffVector[i], buffVector[i - 1]));
                 }
 
@@ -307,7 +317,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
                 lowstart = true;
                 inside2 = false;
 
-                UnityEngine.Debug.Log("l 301 " + buffVector[i-1] + " " + buffVector[i] + " " + IntersectionPoint(lowerBoundStart, lowerBoundEnd, buffVector[i], buffVector[i - 1]));
+                //UnityEngine.Debug.Log("l 301 " + buffVector[i-1] + " " + buffVector[i] + " " + IntersectionPoint(lowerBoundStart, lowerBoundEnd, buffVector[i], buffVector[i - 1]));
                 intersectionAreaPoints.Add(IntersectionPoint(lowerBoundStart, lowerBoundEnd, buffVector[i], buffVector[i - 1]));
 
             }
@@ -316,22 +326,23 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
                 lowstart = false;
 
-                UnityEngine.Debug.Log("l 310 " + buffVector[i-1] + " " + buffVector[i] + " " + IntersectionPoint(lowerBoundStart, lowerBoundEnd, buffVector[i], buffVector[i -1]));
+                //UnityEngine.Debug.Log("l 310 " + buffVector[i-1] + " " + buffVector[i] + " " + IntersectionPoint(lowerBoundStart, lowerBoundEnd, buffVector[i], buffVector[i -1]));
                 intersectionAreaPoints.Add(IntersectionPoint(lowerBoundStart, lowerBoundEnd, buffVector[i], buffVector[i - 1]));
 
                 if (buffVector[i].y < upperBoundStart.y)
                 {
                     forGodsakeItAddedSomething = true;
-                    intersectionAreaPoints.Add(buffVector[i + 1]);
+                    intersectionAreaPoints.Add(buffVector[i]);
+					//UnityEngine.Debug.Log("l 325 " + buffVector[i]);
                 }
                 else if (buffVector[i].y > upperBoundStart.y) {
                     intersectionAreaPoints.Add(IntersectionPoint(lowerBoundStart, lowerBoundEnd, buffVector[i], buffVector[i - 1]));
-                    UnityEngine.Debug.Log("320 " + buffVector[i - 1] + " " + buffVector[i] + " " + IntersectionPoint(lowerBoundStart, lowerBoundEnd, buffVector[i], buffVector[i - 1]));
+                    //UnityEngine.Debug.Log("320 " + buffVector[i - 1] + " " + buffVector[i] + " " + IntersectionPoint(lowerBoundStart, lowerBoundEnd, buffVector[i], buffVector[i - 1]));
                 }
                 else
                 {
                     upstart = true;
-                    UnityEngine.Debug.Log("l 325 " + buffVector[i-1] + " "+ buffVector[i]  + " " + IntersectionPoint(upperBoundStart, upperBoundEnd, buffVector[i], buffVector[i - 1]));
+                    //UnityEngine.Debug.Log("l 325 " + buffVector[i-1] + " "+ buffVector[i]  + " " + IntersectionPoint(upperBoundStart, upperBoundEnd, buffVector[i], buffVector[i - 1]));
                     intersectionAreaPoints.Add(IntersectionPoint(upperBoundStart, upperBoundEnd, buffVector[i], buffVector[i - 1]));
                 }
 
@@ -339,31 +350,24 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
             else if (buffVector[i].y < upperBoundStart.y && buffVector[i].y > lowerBoundStart.y)
             {
                 forGodsakeItAddedSomething = true;
-                intersectionAreaPoints.Add(buffVector[i+1]);
+                intersectionAreaPoints.Add(buffVector[i]);
+				//UnityEngine.Debug.Log("l 343 " + buffVector[i]);
             }
 
         }
+		
+		if(intersectionAreaPoints[0] != intersectionAreaPoints[intersectionAreaPoints.Count-1]){
+			intersectionAreaPoints.Add(intersectionAreaPoints[0]);
+		}
 
+/*
+        TimeSpan ts2 = Watch.Elapsed;
+        Watch.Stop();
+        UnityEngine.Debug.Log("Time for manual" + ts2);
+        Watch.Reset();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-       // TimeSpan ts2 = Watch.Elapsed;
-       // Watch.Stop();
-      //  UnityEngine.Debug.Log("Time for manual" + ts2);
-      //  Watch.Reset();
-
-      //  Watch.Start();
+        Watch.Start();
+      
         for (int i = 0; i < buffVector.Count; i++)
         {
 
@@ -427,11 +431,11 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
         }
 
-      //  TimeSpan ts3 = Watch.Elapsed;
-      //  Watch.Stop();
-      //  UnityEngine.Debug.Log("Time for build in calc" + ts3);
-      //  Watch.Reset();
-
+        TimeSpan ts3 = Watch.Elapsed;
+        Watch.Stop();
+        UnityEngine.Debug.Log("Time for build in calc" + ts3);
+        Watch.Reset();
+      
 
         if (forGodsakeItAddedSomething == false && reversHits.Length != 0 && hits.Length != 0 && hits2.Length != 0 && reversHits2.Length != 0)
         {
@@ -447,33 +451,14 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
          //   UnityEngine.Debug.Log("Time for buildin worst" + ts4);
         //    Watch.Reset();
 
-         //   Watch.Start();
-
-            for (int i = 0; i < buffVector.Count; i++)
-            {
-                if (i != buffVector.Count - 1)
-                {
-                    //UnityEngine.Debug.Log(IntersectionPoint(upperBoundStart, upperBoundEnd, buffVector[i], buffVector[i + 1]));
-                   // UnityEngine.Debug.Log(IntersectionPoint(lowerBoundStart, lowerBoundEnd, buffVector[i], buffVector[i + 1]));
-                }
-                else{
-                   // UnityEngine.Debug.Log(IntersectionPoint(upperBoundStart, upperBoundEnd, buffVector[0], buffVector[buffVector.Count-1]));
-                   // UnityEngine.Debug.Log(IntersectionPoint(lowerBoundStart, lowerBoundEnd, buffVector[0], buffVector[buffVector.Count - 1]));
-                }
-
-            }
-         //   TimeSpan ts5 = Watch.Elapsed;
-         //   Watch.Stop();
-          //  UnityEngine.Debug.Log("Time for manual worst" + ts5);
-          //  Watch.Reset();
         }
-
+*/
         if (toDelete.Contains(collision.gameObject) != true && (pl.bounds.center.y < upperBoundStart.y && pl.bounds.center.y > lowerBoundStart.y) && ( (inside1 == true && inside2 == true) && (reversHits.Length == 0 && hits.Length == 0 && hits2.Length == 0 && reversHits2.Length == 0)) )
         {
             toDelete.Add(collision.gameObject);
         }
 
-        buffVector.Clear();
+        //buffVector.Clear();
         CalculateIntersection(collision);
 
     }
@@ -496,7 +481,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
             squareArea += buff_squareArea;
         }
 
-        intersectionAreaPoints.Clear();
+       // intersectionAreaPoints.Clear();
 
         SetFillingLine();
 
