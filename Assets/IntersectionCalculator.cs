@@ -6,6 +6,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 using UnitySpriteCutter;
+using UnityEngine.UI;
 
 public class IntersectionCalculator : MonoBehaviour, IComparable
 {
@@ -46,6 +47,14 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
     Stopwatch Watch = new Stopwatch();
     Vector2 technic = new Vector2(-100, -100);
 
+    public bool ignore;
+    public IntersectionCalculator lowerline;
+
+    public Toggle a;
+    public bool alt;
+
+    public int frame;
+
     public void Start()
     {
         sp = this.GetComponent<SpriteRenderer>();
@@ -54,11 +63,20 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         prevsquareArea = squareArea;
 
         Vector2 v = IntersectionPoint(new Vector2(0,0), new Vector2(1, 0), new Vector2(0, 1), new Vector2(1, 1));
-       
+        frame = 0;
     }
 
     public void Update()
     {
+        alt = a.isOn;
+
+        if (frame < 31) {
+            frame += 1;
+        }
+        if (frame > 30)
+        {
+            frame = 0;
+        }
 
         /*
         if (Input.GetKeyDown(KeyCode.Space)) {
@@ -117,50 +135,51 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
     public void OnTriggerStay2D(Collider2D collision)
     {
-
-       // Debug.Log(collision.GetComponent<Rigidbody2D>().velocity);
-        if (IsGameOver == false)
+        if (frame == 0 || frame == 15 || frame == 30)
         {
-            if (
-                list.Contains(collision.gameObject) == false &&
-                (collision.gameObject.tag == "fragment" || collision.gameObject.tag == "floor") &&
-                toDelete.Contains(collision.gameObject) == false
-                //&& GlobalObserver.Deleting == false
-                )
-            {
-                Velocity = StartCoroutine(CheckVelocity(collision));
-            }
+            //UnityEngine.Debug.Log("12");
 
-            if (
-                 GlobalObserver.Deleting == true &&
-                (collision.gameObject.tag == "fragment") &&
-                toDelete.Contains(collision.gameObject) == false &&
-                collision.gameObject.GetComponent<PolygonCollider2D>().bounds.center.y > lowerBoundStart.y &&
-                collision.gameObject.GetComponent<PolygonCollider2D>().bounds.center.y < upperBoundStart.y
-                )
+            if (IsGameOver == false)
             {
-                toDelete.Add(collision.gameObject);
-            }
 
-            if (
-                intersectionSegments.ContainsKey(collision.gameObject) == true &&
-                list.Contains(collision.gameObject) &&
-                (collision.gameObject.tag == "fragment" || collision.gameObject.tag == "floor") &&
-                (
-                collision.GetComponent<Rigidbody2D>().velocity.magnitude > 0.8f
-                //Mathf.Abs(collision.GetComponent<Rigidbody2D>().angularVelocity) > 120
-                //collision.GetComponent<Rigidbody2D>().velocity.y < -1.5f 
-                //|| 
-                //collision.GetComponent<Rigidbody2D>().velocity.x < -2.5f ||
-                // collision.GetComponent<Rigidbody2D>().velocity.x > 2f 
-                )
-                )
-            {
-                squareArea -= intersectionSegments[collision.gameObject];
-                intersectionSegments.Remove(collision.gameObject);
-                list.Remove(collision.gameObject);
-                toDelete.Remove(collision.gameObject);
-                Velocity = StartCoroutine(CheckVelocity(collision));
+                if (
+                        list.Contains(collision.gameObject) == false &&
+                        (collision.gameObject.tag == "fragment" || collision.gameObject.tag == "floor") &&
+                        toDelete.Contains(collision.gameObject) == false
+                    //&& GlobalObserver.Deleting == false
+                    )
+                {
+                    Velocity = StartCoroutine(CheckVelocity(collision));
+                }
+
+                if (
+                         GlobalObserver.Deleting == true &&
+                        (collision.gameObject.tag == "fragment") &&
+                        toDelete.Contains(collision.gameObject) == false &&
+                        collision.gameObject.GetComponent<PolygonCollider2D>().bounds.center.y > lowerBoundStart.y &&
+                        collision.gameObject.GetComponent<PolygonCollider2D>().bounds.center.y < upperBoundStart.y
+                    )
+                {
+                    toDelete.Add(collision.gameObject);
+                }
+
+                if (
+                        intersectionSegments.ContainsKey(collision.gameObject) == true &&
+                        list.Contains(collision.gameObject) &&
+                        (collision.gameObject.tag == "fragment" || collision.gameObject.tag == "floor") &&
+                        (
+                        collision.GetComponent<Rigidbody2D>().velocity.magnitude > 1.5f
+                        //Mathf.Abs(collision.GetComponent<Rigidbody2D>().angularVelocity) > 120
+                        )
+                    )
+                {
+                    squareArea -= intersectionSegments[collision.gameObject];
+                    intersectionSegments.Remove(collision.gameObject);
+                    list.Remove(collision.gameObject);
+                    toDelete.Remove(collision.gameObject);
+                    Velocity = StartCoroutine(CheckVelocity(collision));
+                }
+
             }
         }
     }       
@@ -172,9 +191,6 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
             {
                 StopCoroutine(Velocity);
             }
-
-       // if (IsGameOver == false)
-       // {
 
             if (toDelete.Contains(collision.gameObject) == true)
             {
@@ -193,7 +209,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
                 intersectionSegments.Remove(collision.gameObject);
                 SetFillingLine();
             }
-        //}
+
     }
 
     public IEnumerator CheckVelocity(Collider2D collision)
@@ -215,25 +231,10 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
     public void FindBounds(Collider2D collision)
     {
-        //collision.gameObject.layer = 9;
-/*
-        UnityEngine.Debug.Log("time for" + name);
-        Watch.Start();
 
-        RaycastHit2D[] hits = Physics2D.LinecastAll(upperBoundStart, upperBoundEnd, CalculationMask);
-        RaycastHit2D[] reversHits = Physics2D.LinecastAll(upperBoundEnd, upperBoundStart, CalculationMask);
-        RaycastHit2D[] hits2 = Physics2D.LinecastAll(lowerBoundStart, lowerBoundEnd, CalculationMask);
-        RaycastHit2D[] reversHits2 = Physics2D.LinecastAll(lowerBoundEnd, lowerBoundStart, CalculationMask);
-        TimeSpan ts = Watch.Elapsed;
-
-        Watch.Stop();
-        UnityEngine.Debug.Log("Time for builtin points" + ts);
-        Watch.Reset();
-        */
-        //collision.gameObject.layer = 8;
 
         bool upstart=false, lowstart = false;
-        //bool forGodsakeItAddedSomething = false;
+        bool forGodsakeItAddedSomething = false;
         bool inside1 = true, inside2 = true;
         
         PolygonCollider2D pl = collision.gameObject.GetComponent<PolygonCollider2D>();
@@ -253,149 +254,174 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         if (dich > 0) {} else {buffVector.Reverse(); }
 
         #region
-       
-        Watch.Start();
-		
-		if(buffVector[0].y < lowerBoundStart.y)
+        if (alt == true)
         {
+            Watch.Start();
 
-            lowstart = true;
-            inside2 = false;
-
-            Vector2 a = IntersectionPoint(lowerBoundStart, lowerBoundEnd, buffVector[0], buffVector[1]);
-            if (a != technic) { intersectionAreaPoints.Add(a); }
-		}
-		
-		if(buffVector[0].y < upperBoundStart.y && buffVector[0].y > lowerBoundStart.y){
-           intersectionAreaPoints.Add(buffVector[0]);
-		}
-
-        if (buffVector[0].y > upperBoundStart.y)
-        {
-            upstart = true;
-        }
-
-        for (int i = 1; i < buffVector.Count; i++)
-        {
-			
-            if (buffVector[i].y > upperBoundStart.y && upstart != true)
-            {
-                upstart = true;
-                inside1 = false;
-
-                if (buffVector[i - 1].y < lowerBoundStart.y)
-                {
-
-                    Vector2 a = IntersectionPoint(lowerBoundStart, lowerBoundEnd, buffVector[i], buffVector[i - 1]);
-                    if (a != technic) { intersectionAreaPoints.Add(a); }
-
-                    Vector2 b = IntersectionPoint(upperBoundStart, upperBoundEnd, buffVector[i], buffVector[i - 1]);
-                    if (b != technic) { intersectionAreaPoints.Add(b); }
-
-                }
-
-                else if (buffVector[i - 1].y < upperBoundStart.y && buffVector[i - 1].y > lowerBoundStart.y )
-                {
-
-                    Vector2 a = IntersectionPoint(upperBoundStart, upperBoundEnd, buffVector[i], buffVector[i - 1]);
-                    if (a != technic) { intersectionAreaPoints.Add(a); }
-
-                }
-				else if (buffVector[i - 1].y > upperBoundStart.y){
-					
-				}
-
-            }
-            else if (buffVector[i].y < upperBoundStart.y && upstart == true)
-            {
-                upstart = false;
-
-                Vector2 a = IntersectionPoint(upperBoundStart, upperBoundEnd, buffVector[i], buffVector[i - 1]);
-                if (a != technic) { intersectionAreaPoints.Add(a); }
-
-                if (buffVector[i].y > lowerBoundStart.y)
-                {
-                    intersectionAreaPoints.Add(buffVector[i]);
-                }
-                else
-                {
-                    lowstart = true;
-              
-                    Vector2 b = IntersectionPoint(lowerBoundStart, lowerBoundEnd, buffVector[i], buffVector[i - 1]);
-                    if (b != technic) { intersectionAreaPoints.Add(b); }
-
-                }
-
-            }
-            else if (buffVector[i].y < lowerBoundStart.y && lowstart != true)
+            if (buffVector[0].y < lowerBoundStart.y)
             {
 
                 lowstart = true;
                 inside2 = false;
 
-                Vector2 a = IntersectionPoint(lowerBoundStart, lowerBoundEnd, buffVector[i], buffVector[i - 1]);
+                Vector2 a = IntersectionPoint(lowerBoundStart, lowerBoundEnd, buffVector[0], buffVector[1]);
                 if (a != technic) { intersectionAreaPoints.Add(a); }
-
-
             }
-            else if (buffVector[i].y > lowerBoundStart.y && lowstart == true)
+
+            if (buffVector[0].y < upperBoundStart.y && buffVector[0].y > lowerBoundStart.y)
+            {
+                intersectionAreaPoints.Add(buffVector[0]);
+            }
+
+            if (buffVector[0].y > upperBoundStart.y)
+            {
+                upstart = true;
+            }
+
+            for (int i = 1; i < buffVector.Count; i++)
             {
 
-                lowstart = false;
-
-                Vector2 a = IntersectionPoint(lowerBoundStart, lowerBoundEnd, buffVector[i], buffVector[i - 1]);
-                if (a != technic) { intersectionAreaPoints.Add(a); }
-
-                if (buffVector[i].y < upperBoundStart.y)
-                {
-                    intersectionAreaPoints.Add(buffVector[i]);
-
-                }
-                else if (buffVector[i].y > upperBoundStart.y) {
-
-                    Vector2 b = IntersectionPoint(lowerBoundStart, lowerBoundEnd, buffVector[i], buffVector[i - 1]);
-                    if (b != technic) { intersectionAreaPoints.Add(b); }
-
-                }
-                else
+                if (buffVector[i].y > upperBoundStart.y && upstart != true)
                 {
                     upstart = true;
+                    inside1 = false;
 
-                    Vector2 c = IntersectionPoint(upperBoundStart, upperBoundEnd, buffVector[i], buffVector[i - 1]);
-                    if (c != technic) { intersectionAreaPoints.Add(c); }
+                    if (buffVector[i - 1].y < lowerBoundStart.y)
+                    {
 
+                        Vector2 a = IntersectionPoint(lowerBoundStart, lowerBoundEnd, buffVector[i], buffVector[i - 1]);
+                        if (a != technic) { intersectionAreaPoints.Add(a); }
+
+                        Vector2 b = IntersectionPoint(upperBoundStart, upperBoundEnd, buffVector[i], buffVector[i - 1]);
+                        if (b != technic) { intersectionAreaPoints.Add(b); }
+
+                    }
+
+                    else if (buffVector[i - 1].y < upperBoundStart.y && buffVector[i - 1].y > lowerBoundStart.y)
+                    {
+
+                        Vector2 a = IntersectionPoint(upperBoundStart, upperBoundEnd, buffVector[i], buffVector[i - 1]);
+                        if (a != technic) { intersectionAreaPoints.Add(a); }
+
+                    }
+                    else if (buffVector[i - 1].y > upperBoundStart.y)
+                    {
+
+                    }
+
+                }
+                else if (buffVector[i].y < upperBoundStart.y && upstart == true)
+                {
+                    upstart = false;
+
+                    Vector2 a = IntersectionPoint(upperBoundStart, upperBoundEnd, buffVector[i], buffVector[i - 1]);
+                    if (a != technic) { intersectionAreaPoints.Add(a); }
+
+                    if (buffVector[i].y > lowerBoundStart.y)
+                    {
+                        intersectionAreaPoints.Add(buffVector[i]);
+                    }
+                    else
+                    {
+                        lowstart = true;
+
+                        Vector2 b = IntersectionPoint(lowerBoundStart, lowerBoundEnd, buffVector[i], buffVector[i - 1]);
+                        if (b != technic) { intersectionAreaPoints.Add(b); }
+
+                    }
+
+                }
+                else if (buffVector[i].y < lowerBoundStart.y && lowstart != true)
+                {
+
+                    lowstart = true;
+                    inside2 = false;
+
+                    Vector2 a = IntersectionPoint(lowerBoundStart, lowerBoundEnd, buffVector[i], buffVector[i - 1]);
+                    if (a != technic) { intersectionAreaPoints.Add(a); }
+
+
+                }
+                else if (buffVector[i].y > lowerBoundStart.y && lowstart == true)
+                {
+
+                    lowstart = false;
+
+                    Vector2 a = IntersectionPoint(lowerBoundStart, lowerBoundEnd, buffVector[i], buffVector[i - 1]);
+                    if (a != technic) { intersectionAreaPoints.Add(a); }
+
+                    if (buffVector[i].y < upperBoundStart.y)
+                    {
+                        intersectionAreaPoints.Add(buffVector[i]);
+
+                    }
+                    else if (buffVector[i].y > upperBoundStart.y)
+                    {
+
+                        Vector2 b = IntersectionPoint(lowerBoundStart, lowerBoundEnd, buffVector[i], buffVector[i - 1]);
+                        if (b != technic) { intersectionAreaPoints.Add(b); }
+
+                    }
+                    else
+                    {
+                        upstart = true;
+
+                        Vector2 c = IntersectionPoint(upperBoundStart, upperBoundEnd, buffVector[i], buffVector[i - 1]);
+                        if (c != technic) { intersectionAreaPoints.Add(c); }
+
+                    }
+
+                }
+                else if (buffVector[i].y < upperBoundStart.y && buffVector[i].y > lowerBoundStart.y)
+                {
+                    intersectionAreaPoints.Add(buffVector[i]);
                 }
 
             }
-            else if (buffVector[i].y < upperBoundStart.y && buffVector[i].y > lowerBoundStart.y)
+
+            if (intersectionAreaPoints[0] != 
+                intersectionAreaPoints[intersectionAreaPoints.Count-1])
             {
-                intersectionAreaPoints.Add(buffVector[i]);
+                intersectionAreaPoints.Add(intersectionAreaPoints[0]);
             }
 
+            if (toDelete.Contains(collision.gameObject) != true && (pl.bounds.center.y < upperBoundStart.y && pl.bounds.center.y > lowerBoundStart.y) && ((inside1 == true && inside2 == true)))
+            {
+                toDelete.Add(collision.gameObject);
+            }
+
+            TimeSpan ts2 = Watch.Elapsed;
+            Watch.Stop();
+            UnityEngine.Debug.Log("Time for manual" + ts2);
+            Watch.Reset();
         }
-		
-		if(intersectionAreaPoints[0] != intersectionAreaPoints[intersectionAreaPoints.Count-1]){
-			intersectionAreaPoints.Add(intersectionAreaPoints[0]);
-		}
-
-        if (toDelete.Contains(collision.gameObject) != true && (pl.bounds.center.y < upperBoundStart.y && pl.bounds.center.y > lowerBoundStart.y) && ((inside1 == true && inside2 == true)))
-        {
-            toDelete.Add(collision.gameObject);
-        }
-
-        TimeSpan ts2 = Watch.Elapsed;
-        Watch.Stop();
-        UnityEngine.Debug.Log("Time for manual" + ts2);
-        Watch.Reset();
-
         #endregion
 
         #region
-        /*
-        Watch.Start();
-      
-        for (int i = 0; i < buffVector.Count; i++)
+        if (alt == false)
         {
+            collision.gameObject.layer = 9;
+
+            UnityEngine.Debug.Log("time for" + name);
+            Watch.Start();
+
+            RaycastHit2D[] hits = Physics2D.LinecastAll(upperBoundStart, upperBoundEnd, CalculationMask);
+            RaycastHit2D[] reversHits = Physics2D.LinecastAll(upperBoundEnd, upperBoundStart, CalculationMask);
+            RaycastHit2D[] hits2 = Physics2D.LinecastAll(lowerBoundStart, lowerBoundEnd, CalculationMask);
+            RaycastHit2D[] reversHits2 = Physics2D.LinecastAll(lowerBoundEnd, lowerBoundStart, CalculationMask);
+            TimeSpan ts = Watch.Elapsed;
+
+            Watch.Stop();
+            UnityEngine.Debug.Log("Time for builtin points" + ts);
+            Watch.Reset();
+
+            collision.gameObject.layer = 8;
+
+
+            Watch.Start();
+
+            for (int i = 0; i < buffVector.Count; i++)
+            {
 
                 if (buffVector[i].y > upperBoundStart.y && upstart != true && reversHits.Length != 0)
                 {
@@ -406,26 +432,26 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
                 }
                 else if (buffVector[i].y < upperBoundStart.y && upstart == true && hits.Length != 0)
-                { 
+                {
                     upstart = false;
                     intersectionAreaPoints.Add(hits[0].point);
 
                     if (buffVector[i].y > lowerBoundStart.y)
                     {
-                                forGodsakeItAddedSomething = true;
-                                intersectionAreaPoints.Add(buffVector[i]);
+                        forGodsakeItAddedSomething = true;
+                        intersectionAreaPoints.Add(buffVector[i]);
                     }
-                    else if(hits2.Length!=0)
+                    else if (hits2.Length != 0)
                     {
-                                lowstart = true;
-                                intersectionAreaPoints.Add(hits2[0].point);
+                        lowstart = true;
+                        intersectionAreaPoints.Add(hits2[0].point);
 
                     }
 
                 }
                 else if (buffVector[i].y < lowerBoundStart.y && lowstart != true && hits2.Length != 0)
                 {
-                
+
                     lowstart = true;
                     inside2 = false;
                     intersectionAreaPoints.Add(hits2[0].point);
@@ -433,19 +459,19 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
                 }
                 else if (buffVector[i].y > lowerBoundStart.y && lowstart == true && reversHits2.Length != 0)
                 {
-                  
+
                     lowstart = false;
                     intersectionAreaPoints.Add(reversHits2[0].point);
 
                     if (buffVector[i].y < upperBoundStart.y)
                     {
-                            forGodsakeItAddedSomething = true;
-                            intersectionAreaPoints.Add(buffVector[i]);
+                        forGodsakeItAddedSomething = true;
+                        intersectionAreaPoints.Add(buffVector[i]);
                     }
-                    else if(reversHits.Length != 0)
+                    else if (reversHits.Length != 0)
                     {
-                            upstart = true;
-                            intersectionAreaPoints.Add(reversHits[0].point);
+                        upstart = true;
+                        intersectionAreaPoints.Add(reversHits[0].point);
                     }
 
                 }
@@ -455,38 +481,38 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
                     intersectionAreaPoints.Add(buffVector[i]);
                 }
 
-        }
+            }
 
-        TimeSpan ts3 = Watch.Elapsed;
-        Watch.Stop();
-        UnityEngine.Debug.Log("Time for build in calc" + ts3);
-        Watch.Reset();
-      
-
-        if (forGodsakeItAddedSomething == false && reversHits.Length != 0 && hits.Length != 0 && hits2.Length != 0 && reversHits2.Length != 0)
-        {
-            Watch.Start();
-            intersectionAreaPoints.Clear();
-            intersectionAreaPoints.Add(reversHits[0].point);
-            intersectionAreaPoints.Add(hits[0].point);
-            intersectionAreaPoints.Add(hits2[0].point);
-            intersectionAreaPoints.Add(reversHits2[0].point);
-            intersectionAreaPoints.Add(reversHits[0].point);
-
-            TimeSpan ts4 = Watch.Elapsed;
+            TimeSpan ts3 = Watch.Elapsed;
             Watch.Stop();
-            UnityEngine.Debug.Log("Time for buildin worst" + ts4);
+            UnityEngine.Debug.Log("Time for build in calc" + ts3);
             Watch.Reset();
 
-        }
-     
-        
 
-        if (toDelete.Contains(collision.gameObject) != true && (pl.bounds.center.y < upperBoundStart.y && pl.bounds.center.y > lowerBoundStart.y) && ( (inside1 == true && inside2 == true) && (reversHits.Length == 0 && hits.Length == 0 && hits2.Length == 0 && reversHits2.Length == 0)) )
-        {
-            toDelete.Add(collision.gameObject);
-        }
-           */
+            if (forGodsakeItAddedSomething == false && reversHits.Length != 0 && hits.Length != 0 && hits2.Length != 0 && reversHits2.Length != 0)
+            {
+                Watch.Start();
+                intersectionAreaPoints.Clear();
+                intersectionAreaPoints.Add(reversHits[0].point);
+                intersectionAreaPoints.Add(hits[0].point);
+                intersectionAreaPoints.Add(hits2[0].point);
+                intersectionAreaPoints.Add(reversHits2[0].point);
+                intersectionAreaPoints.Add(reversHits[0].point);
+
+                TimeSpan ts4 = Watch.Elapsed;
+                Watch.Stop();
+                UnityEngine.Debug.Log("Time for buildin worst" + ts4);
+                Watch.Reset();
+
+            }
+
+
+
+            if (toDelete.Contains(collision.gameObject) != true && (pl.bounds.center.y < upperBoundStart.y && pl.bounds.center.y > lowerBoundStart.y) && ((inside1 == true && inside2 == true) && (reversHits.Length == 0 && hits.Length == 0 && hits2.Length == 0 && reversHits2.Length == 0)))
+            {
+                toDelete.Add(collision.gameObject);
+            }
+        }  
         #endregion
 
         buffVector.Clear();
@@ -667,9 +693,24 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
     public IEnumerator wait()
     {
+        if (ignore == false) {
+			
+			for (int i = 0; i < list.Count; i++)
+        {
+            try
+            {
+                list[i].GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+            }
+            catch (Exception e) { UnityEngine.Debug.Log(e);}
+        }
+			
+            yield return new WaitUntil(() => lowerline.deleting == false);
+        }
         yield return new WaitUntil(() => GlobalObserver.Deleting == false);
+
         GlobalObserver.Deleting = true;
         deleting = true;
+
         LinecastCut(lowerBoundStart, lowerBoundEnd, CuttingMask);
 
         yield return new WaitForSeconds(0.3f);
