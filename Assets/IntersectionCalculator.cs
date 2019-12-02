@@ -11,7 +11,7 @@ using UnityEngine.UI;
 public class IntersectionCalculator : MonoBehaviour, IComparable
 {
     public float squareArea, prevsquareArea;
-    public int requareOnce = 0;
+    int requareOnce = 0;
 
     public Vector2 upperBoundStart, upperBoundEnd, lowerBoundStart, lowerBoundEnd;
     public LayerMask CalculationMask, CuttingMask;
@@ -162,6 +162,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
                         collision.gameObject.GetComponent<PolygonCollider2D>().bounds.center.y < upperBoundStart.y
                     )
                 {
+                    UnityEngine.Debug.Log("toDelte" + collision.gameObject.name + " in line " + this.name + " in Line 165");
                     toDelete.Add(collision.gameObject);
                 }
 
@@ -388,6 +389,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
             if (toDelete.Contains(collision.gameObject) != true && (pl.bounds.center.y < upperBoundStart.y && pl.bounds.center.y > lowerBoundStart.y) && ((inside1 == true && inside2 == true)))
             {
+                UnityEngine.Debug.Log("toDelte" + collision.gameObject.name + " in line " + this.name + " in Line 391");
                 toDelete.Add(collision.gameObject);
             }
 
@@ -563,6 +565,53 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
     }
 
+    public IEnumerator wait()
+    {
+
+        yield return new WaitForEndOfFrame();
+        deleting = true;
+
+        if (ignore == false)
+        {
+
+            if (lowerline.deleting == true || lowerline.waiting == true)
+            {
+                waiting = true;
+            }
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                try
+                {
+                    list[i].GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+                }
+                catch (Exception e) { UnityEngine.Debug.Log(e); }
+            }
+
+            yield return new WaitUntil(() => lowerline.deleting == false);
+            yield return new WaitUntil(() => lowerline.waiting == false);
+        }
+
+        yield return new WaitUntil(() => GlobalObserver.Deleting == false);
+
+        GlobalObserver.Deleting = true;
+
+        LinecastCut(lowerBoundStart, lowerBoundEnd, CuttingMask);
+        UnityEngine.Debug.Log("cut low line");
+
+        //yield return new WaitForSeconds(0.3f);
+        yield return new WaitUntil(() => ready == true);
+        LinecastCut(upperBoundStart, upperBoundEnd, CuttingMask);
+        UnityEngine.Debug.Log("cut up line");
+
+        //yield return new WaitForSeconds(0.3f);
+        yield return new WaitUntil(() => ready == true);
+        yield return new WaitForSeconds(.5f);
+
+        ClearLine();
+
+    }
+
     void LinecastCut(Vector2 lineStart, Vector2 lineEnd, int layerMask = Physics2D.AllLayers)
     {
 
@@ -636,11 +685,60 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
                 PolygonCollider2D rb2 = output.secondSideGameObject.GetComponent<PolygonCollider2D>();
 
                 StartCoroutine(wait2(output.firstSideGameObject, output.secondSideGameObject));
-
+                
             }
         }
 
         ready = true;
+    }
+
+    public IEnumerator wait2(GameObject a, GameObject b)
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        PolygonCollider2D rb1 = a.GetComponent<PolygonCollider2D>();
+        PolygonCollider2D rb2 = b.GetComponent<PolygonCollider2D>();
+
+        if (a.GetComponent<MeshRenderer>() != null)
+        {
+            a.GetComponent<MeshRenderer>().enabled = true;
+        }
+
+        if (b.GetComponent<MeshRenderer>() != null)
+        {
+            b.GetComponent<MeshRenderer>().enabled = true;
+        }
+
+        if (toDelete.Contains(a) != true && rb1.bounds.center.y < upperBoundStart.y && rb1.bounds.center.y > lowerBoundStart.y && rb1.bounds.size.y > 0.1f)
+        {
+            UnityEngine.Debug.Log("toDelte " + a.name + " in line " + this.name + " in Line 757");
+            toEnable.Add(a);
+            toDelete.Add(a);
+
+        }
+        else if (rb1.bounds.size.y < 0.1f) { Destroy(a); }
+
+        else if (toDelete.Contains(a) != true)
+        {
+            UnityEngine.Debug.Log("toEnable " + a.name + " in line " + this.name + " in Line 766");
+            toEnable.Add(a);
+        }
+
+        if (toDelete.Contains(b) != true && rb2.bounds.center.y < upperBoundStart.y && rb2.bounds.center.y > lowerBoundStart.y && rb2.bounds.size.y > 0.1f)
+        {
+            UnityEngine.Debug.Log("toDelte " + a.name + " in line " + this.name + " in Line 772");
+            toEnable.Add(b);
+            toDelete.Add(b);
+
+        }
+        else if (rb2.bounds.size.y < 0.1f) { Destroy(b); }
+        else if (toDelete.Contains(b) != true)
+        {
+            UnityEngine.Debug.Log("toEnable " + a.name + " in line " + this.name + " in Line 780");
+            toEnable.Add(b);
+        }
+
+        //ready = true;
     }
 
     public void ClearLine()
@@ -689,99 +787,6 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         waiting = false;
         deleting = false;
         GlobalObserver.Deleting = false;
-
-    }
-
-    public IEnumerator wait()
-    {
-
-        yield return new WaitForEndOfFrame();
-
-        if (ignore == false)
-        {
-
-            if (lowerline.deleting == true || lowerline.waiting == true) {
-                UnityEngine.Debug.Log("ok");
-                waiting = true;
-            }
-			
-			for (int i = 0; i < list.Count; i++)
-            {
-                try
-                {
-                    list[i].GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
-                }
-                catch (Exception e) { UnityEngine.Debug.Log(e);}
-            }
-			
-            yield return new WaitUntil(() => lowerline.deleting == false);
-            yield return new WaitUntil(() => lowerline.waiting == false);
-        }
-
-        
-
-        yield return new WaitUntil(() => GlobalObserver.Deleting == false);
-
-        GlobalObserver.Deleting = true;
-        deleting = true;
-
-        LinecastCut(lowerBoundStart, lowerBoundEnd, CuttingMask);
-
-        yield return new WaitForSeconds(0.3f);
-        LinecastCut(upperBoundStart, upperBoundEnd, CuttingMask);
-
-        yield return new WaitForSeconds(0.3f);
-        yield return new WaitUntil(() => ready == true);
-        yield return new WaitForSeconds(.5f);
-
-        ClearLine();
-
-    }
-
-    public IEnumerator wait2(GameObject a, GameObject b)
-    {
-        yield return new WaitForSeconds(0.1f);
-
-        PolygonCollider2D rb1 = a.GetComponent<PolygonCollider2D>();
-        PolygonCollider2D rb2 = b.GetComponent<PolygonCollider2D>();
-
-        if (a.GetComponent<MeshRenderer>() != null)
-        {
-            a.GetComponent<MeshRenderer>().enabled = true;
-        }
-
-        if (b.GetComponent<MeshRenderer>() != null)
-        {
-            b.GetComponent<MeshRenderer>().enabled = true;
-        }
-
-        if (toDelete.Contains(a) != true && rb1.bounds.center.y < upperBoundStart.y && rb1.bounds.center.y > lowerBoundStart.y && rb1.bounds.size.y > 0.1f)
-        {
-            
-            toEnable.Add(a);
-            toDelete.Add(a);
-
-        }
-        else if (rb1.bounds.size.y < 0.1f) { Destroy(a); }
-
-        else if (toDelete.Contains(a) != true)
-        {
-            toEnable.Add(a);
-        }
-
-        if (toDelete.Contains(b) != true && rb2.bounds.center.y < upperBoundStart.y && rb2.bounds.center.y > lowerBoundStart.y && rb2.bounds.size.y > 0.1f)
-        {
-
-            toEnable.Add(b);
-            toDelete.Add(b);
-
-        }
-        else if (rb2.bounds.size.y < 0.1f) { Destroy(b); }
-        else if (toDelete.Contains(b) != true)
-        {
-            toEnable.Add(b);
-        }
-
 
     }
 
