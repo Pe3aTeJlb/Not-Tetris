@@ -55,6 +55,8 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
     public int frame;
 
+    public bool waiting;
+
     public void Start()
     {
         sp = this.GetComponent<SpriteRenderer>();
@@ -64,6 +66,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
         Vector2 v = IntersectionPoint(new Vector2(0,0), new Vector2(1, 0), new Vector2(0, 1), new Vector2(1, 1));
         frame = 0;
+        waiting = false;
     }
 
     public void Update()
@@ -137,7 +140,6 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
     {
         if (frame == 0 || frame == 15 || frame == 30)
         {
-            //UnityEngine.Debug.Log("12");
 
             if (IsGameOver == false)
             {
@@ -379,8 +381,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
             }
 
-            if (intersectionAreaPoints[0] != 
-                intersectionAreaPoints[intersectionAreaPoints.Count-1])
+            if (intersectionAreaPoints[0] != intersectionAreaPoints[intersectionAreaPoints.Count-1])
             {
                 intersectionAreaPoints.Add(intersectionAreaPoints[0]);
             }
@@ -602,7 +603,6 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
                 output.firstSideGameObject.tag = "fragment";
                 output.secondSideGameObject.tag = "fragment";
 
-
                 Rigidbody2D newRigidbody = output.secondSideGameObject.AddComponent<Rigidbody2D>();
                 newRigidbody.gravityScale = 1;
 
@@ -686,6 +686,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         SetFillingLine();
         current.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
 
+        waiting = false;
         deleting = false;
         GlobalObserver.Deleting = false;
 
@@ -693,19 +694,32 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
     public IEnumerator wait()
     {
-        if (ignore == false) {
+
+        yield return new WaitForEndOfFrame();
+
+        if (ignore == false)
+        {
+
+            if (lowerline.deleting == true || lowerline.waiting == true) {
+                UnityEngine.Debug.Log("ok");
+                waiting = true;
+            }
 			
 			for (int i = 0; i < list.Count; i++)
-        {
-            try
             {
-                list[i].GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+                try
+                {
+                    list[i].GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+                }
+                catch (Exception e) { UnityEngine.Debug.Log(e);}
             }
-            catch (Exception e) { UnityEngine.Debug.Log(e);}
-        }
 			
             yield return new WaitUntil(() => lowerline.deleting == false);
+            yield return new WaitUntil(() => lowerline.waiting == false);
         }
+
+        
+
         yield return new WaitUntil(() => GlobalObserver.Deleting == false);
 
         GlobalObserver.Deleting = true;
@@ -750,7 +764,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         }
         else if (rb1.bounds.size.y < 0.1f) { Destroy(a); }
 
-        else
+        else if (toDelete.Contains(a) != true)
         {
             toEnable.Add(a);
         }
@@ -763,7 +777,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
         }
         else if (rb2.bounds.size.y < 0.1f) { Destroy(b); }
-        else
+        else if (toDelete.Contains(b) != true)
         {
             toEnable.Add(b);
         }
