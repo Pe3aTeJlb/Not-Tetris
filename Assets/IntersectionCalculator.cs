@@ -382,7 +382,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
 
             }
 
-            if (intersectionAreaPoints[0] != intersectionAreaPoints[intersectionAreaPoints.Count-1])
+            if ( intersectionAreaPoints.Count != 0 && intersectionAreaPoints[0] != intersectionAreaPoints[intersectionAreaPoints.Count-1])
             {
                 intersectionAreaPoints.Add(intersectionAreaPoints[0]);
             }
