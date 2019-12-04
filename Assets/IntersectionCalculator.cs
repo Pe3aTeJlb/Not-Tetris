@@ -10,7 +10,7 @@ using UnityEngine.UI;
 
 public class IntersectionCalculator : MonoBehaviour, IComparable
 {
-    public float squareArea, prevsquareArea;
+    public float squareArea;
     int requareOnce = 0;
 
     public Vector2 upperBoundStart, upperBoundEnd, lowerBoundStart, lowerBoundEnd;
@@ -62,7 +62,6 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         sp = this.GetComponent<SpriteRenderer>();
         SetFillingLine();
         IsGameOver = false;
-        prevsquareArea = squareArea;
 
         Vector2 v = IntersectionPoint(new Vector2(0,0), new Vector2(1, 0), new Vector2(0, 1), new Vector2(1, 1));
         frame = 0;
@@ -104,11 +103,11 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         }
 
 */
-        if (prevsquareArea != squareArea)
+        if (frame == 0 || frame == 15 || frame == 30)
         {
             SetFillingLine();
-            prevsquareArea = squareArea;
-        }
+        }   
+        
 
     }
    
@@ -579,11 +578,11 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
                 waiting = true;
             }
 
-            for (int i = 0; i < list.Count; i++)
+            for (int i = 0; i < toDelete.Count; i++)
             {
                 try
                 {
-                    list[i].GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+                    toDelete[i].GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
                 }
                 catch (Exception e) { UnityEngine.Debug.Log(e); }
             }
