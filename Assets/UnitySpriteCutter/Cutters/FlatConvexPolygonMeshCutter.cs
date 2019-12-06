@@ -87,20 +87,33 @@ namespace UnitySpriteCutter.Cutters {
 			return result.ToArray();
 		}
 
-		static Vector2[] GenerateProportionalUVs( Vector3[] vertices, Mesh original ) {
+		static Vector2[] GenerateProportionalUVs( Vector3[] vertices, Mesh original ) 
+		{
+
 			Vector2[] result = new Vector2[ vertices.Length ];
 
-			int vertexIndexToCalculateDiff = 0;
+			int vertexIndexToCalculateDiff = 2;
+
+			/*
 			for ( int i = 1; i < original.vertexCount; i++ ) {
+
 				if ( original.vertices[ 0 ].x != original.vertices[ i ].x &&
-				     original.vertices[ 0 ].y != original.vertices[ i ].y ) {
+				     original.vertices[ 0 ].y != original.vertices[ i ].y 
+					) 
+				{
+					Debug.Log(i);
 					vertexIndexToCalculateDiff = i;
 					break;
 				}
+
 			}
+
 			if ( vertexIndexToCalculateDiff == 0 ) {
 				throw new System.Exception( "Couldn't find vertexes with different x and y coordinates!" );
 			}
+
+			vertexIndexToCalculateDiff = 2;
+			*/
 
 			Vector3 twoFirstVerticesDiff = original.vertices[ vertexIndexToCalculateDiff ] - original.vertices[ 0 ];
 			Vector2 twoFirstUVsDiff = original.uv[ vertexIndexToCalculateDiff ] - original.uv[ 0 ];
@@ -110,8 +123,7 @@ namespace UnitySpriteCutter.Cutters {
 
 			for ( int i = 0; i < vertices.Length; i++ ) {
 				result[ i ] = ( vertices[ i ] - original.vertices[ 0 ] );
-				result[ i ] = new Vector2( result[ i ].x * distanceToUVMap.x,
-				                           result[ i ].y * distanceToUVMap.y );
+				result[ i ] = new Vector2( result[ i ].x * distanceToUVMap.x, result[ i ].y * distanceToUVMap.y );
 				result[ i ] += original.uv[ 0 ];
 			}
 

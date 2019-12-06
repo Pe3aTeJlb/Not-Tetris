@@ -2,8 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Reflection;
-using UnityEditor;
 using UnityEngine;
 using UnitySpriteCutter;
 using UnityEngine.UI;
@@ -80,29 +78,6 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
             frame = 0;
         }
 
-        /*
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            //intersectionAreaPoints.Clear();
-            //buffVector.Clear();
-            // StartCoroutine(wait());\
-
-            ClearLog();
-        }
-
-        if (Input.GetKeyDown(KeyCode.V))
-        {
-
-            Time.timeScale = 1;
-            ClearLog();
-        }
-
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-
-            Time.timeScale = 0;
-        }
-
-*/
         if (frame == 0 || frame == 15 || frame == 30)
         {
             SetFillingLine();
@@ -110,17 +85,6 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         
 
     }
-   
-    /*
-    public static void ClearLog()
-    {
-        Assembly assembly = Assembly.GetAssembly(typeof(SceneView));
-        Type type = assembly.GetType("UnityEditor.LogEntries");
-        MethodInfo method = type.GetMethod("Clear");
-        method.Invoke(new object(), null);
-
-    }
-    */
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
@@ -147,7 +111,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
                         list.Contains(collision.gameObject) == false &&
                         (collision.gameObject.tag == "fragment" || collision.gameObject.tag == "floor") &&
                         toDelete.Contains(collision.gameObject) == false
-                    //&& GlobalObserver.Deleting == false
+                        //&& GlobalObserver.Deleting == false
                     )
                 {
                     Velocity = StartCoroutine(CheckVelocity(collision));
@@ -161,7 +125,6 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
                         collision.gameObject.GetComponent<PolygonCollider2D>().bounds.center.y < upperBoundStart.y
                     )
                 {
-                    UnityEngine.Debug.Log("toDelte" + collision.gameObject.name + " in line " + this.name + " in Line 165");
                     toDelete.Add(collision.gameObject);
                 }
 
@@ -234,7 +197,6 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
     public void FindBounds(Collider2D collision)
     {
 
-
         bool upstart=false, lowstart = false;
         bool forGodsakeItAddedSomething = false;
         bool inside1 = true, inside2 = true;
@@ -258,7 +220,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         #region
         if (alt == true)
         {
-            Watch.Start();
+            //Watch.Start();
 
             if (buffVector[0].y < lowerBoundStart.y)
             {
@@ -387,15 +349,14 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
             }
 
             if (toDelete.Contains(collision.gameObject) != true && (pl.bounds.center.y < upperBoundStart.y && pl.bounds.center.y > lowerBoundStart.y) && ((inside1 == true && inside2 == true)))
-            {
-                UnityEngine.Debug.Log("toDelte" + collision.gameObject.name + " in line " + this.name + " in Line 391");
+            { 
                 toDelete.Add(collision.gameObject);
             }
 
-            TimeSpan ts2 = Watch.Elapsed;
-            Watch.Stop();
-            UnityEngine.Debug.Log("Time for manual" + ts2);
-            Watch.Reset();
+           // TimeSpan ts2 = Watch.Elapsed;
+           // Watch.Stop();
+           // UnityEngine.Debug.Log("Time for manual" + ts2);
+           // Watch.Reset();
         }
         #endregion
 
@@ -557,14 +518,14 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
                 current = GameObject.FindGameObjectWithTag("tetramino");
                 current.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
 
-                StartCoroutine(wait());
+                StartCoroutine(CutQueue());
             }
 
         }
 
     }
 
-    public IEnumerator wait()
+    public IEnumerator CutQueue()
     {
 
         yield return new WaitForEndOfFrame();
@@ -596,12 +557,10 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         GlobalObserver.Deleting = true;
 
         LinecastCut(lowerBoundStart, lowerBoundEnd, CuttingMask);
-        UnityEngine.Debug.Log("cut low line");
 
         //yield return new WaitForSeconds(0.3f);
         yield return new WaitUntil(() => ready == true);
         LinecastCut(upperBoundStart, upperBoundEnd, CuttingMask);
-        UnityEngine.Debug.Log("cut up line");
 
         //yield return new WaitForSeconds(0.3f);
         yield return new WaitUntil(() => ready == true);
@@ -683,7 +642,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
                 PolygonCollider2D rb1 = output.firstSideGameObject.GetComponent<PolygonCollider2D>();
                 PolygonCollider2D rb2 = output.secondSideGameObject.GetComponent<PolygonCollider2D>();
 
-                StartCoroutine(wait2(output.firstSideGameObject, output.secondSideGameObject));
+                StartCoroutine(SortCutObjects(output.firstSideGameObject, output.secondSideGameObject));
                 
             }
         }
@@ -691,53 +650,63 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
         ready = true;
     }
 
-    public IEnumerator wait2(GameObject a, GameObject b)
+    public IEnumerator SortCutObjects(GameObject a, GameObject b)
     {
         yield return new WaitForSeconds(0.1f);
 
-        PolygonCollider2D rb1 = a.GetComponent<PolygonCollider2D>();
-        PolygonCollider2D rb2 = b.GetComponent<PolygonCollider2D>();
 
-        if (a.GetComponent<MeshRenderer>() != null)
+        if (a != null)
         {
-            a.GetComponent<MeshRenderer>().enabled = true;
+
+            if (a.GetComponent<MeshRenderer>() != null)
+            {
+                a.GetComponent<MeshRenderer>().enabled = true;
+            }
+
+            PolygonCollider2D rb1 = a.GetComponent<PolygonCollider2D>();
+
+
+            if (toDelete.Contains(a) != true && rb1.bounds.center.y < upperBoundStart.y && rb1.bounds.center.y > lowerBoundStart.y && rb1.bounds.size.y > 0.1f)
+            {
+
+                toEnable.Add(a);
+                toDelete.Add(a);
+
+            }
+            else if (rb1.bounds.size.y < 0.1f) { Destroy(a); }
+
+            else if (toDelete.Contains(a) != true)
+            {
+                toEnable.Add(a);
+            }
         }
 
-        if (b.GetComponent<MeshRenderer>() != null)
+        if (b != null)
         {
-            b.GetComponent<MeshRenderer>().enabled = true;
+
+            if (b.GetComponent<MeshRenderer>() != null)
+            {
+                b.GetComponent<MeshRenderer>().enabled = true;
+            }
+
+            PolygonCollider2D rb2 = b.GetComponent<PolygonCollider2D>();
+
+
+            if (toDelete.Contains(b) != true && rb2.bounds.center.y < upperBoundStart.y && rb2.bounds.center.y > lowerBoundStart.y && rb2.bounds.size.y > 0.1f)
+            {
+
+                toEnable.Add(b);
+                toDelete.Add(b);
+
+            }
+            else if (rb2.bounds.size.y < 0.1f) { Destroy(b); }
+            else if (toDelete.Contains(b) != true)
+            {
+
+                toEnable.Add(b);
+            }
         }
 
-        if (toDelete.Contains(a) != true && rb1.bounds.center.y < upperBoundStart.y && rb1.bounds.center.y > lowerBoundStart.y && rb1.bounds.size.y > 0.1f)
-        {
-            UnityEngine.Debug.Log("toDelte " + a.name + " in line " + this.name + " in Line 757");
-            toEnable.Add(a);
-            toDelete.Add(a);
-
-        }
-        else if (rb1.bounds.size.y < 0.1f) { Destroy(a); }
-
-        else if (toDelete.Contains(a) != true)
-        {
-            UnityEngine.Debug.Log("toEnable " + a.name + " in line " + this.name + " in Line 766");
-            toEnable.Add(a);
-        }
-
-        if (toDelete.Contains(b) != true && rb2.bounds.center.y < upperBoundStart.y && rb2.bounds.center.y > lowerBoundStart.y && rb2.bounds.size.y > 0.1f)
-        {
-            UnityEngine.Debug.Log("toDelte " + a.name + " in line " + this.name + " in Line 772");
-            toEnable.Add(b);
-            toDelete.Add(b);
-
-        }
-        else if (rb2.bounds.size.y < 0.1f) { Destroy(b); }
-        else if (toDelete.Contains(b) != true)
-        {
-            UnityEngine.Debug.Log("toEnable " + a.name + " in line " + this.name + " in Line 780");
-            toEnable.Add(b);
-        }
-
-        //ready = true;
     }
 
     public void ClearLine()
