@@ -23,6 +23,7 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.CanvasScaler
     - UnityEngine.UI.GraphicRaycaster
     - UnityEngine.UI.Image
+    - UnityEngine.UI.InputField
     - UnityEngine.UI.Text
     - UnityEngine.UI.Toggle
   sceneClasses:
@@ -69,6 +70,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 9386}
     - Class: 114
       Script: {instanceID: 9394}
+    - Class: 114
+      Script: {instanceID: 9396}
     - Class: 114
       Script: {instanceID: 9430}
     - Class: 114
@@ -680,7 +683,7 @@ ScriptsOnlyBuild:
     className: TMP_SpriteAnimator
   - hash:
       serializedVersion: 2
-      Hash: 6bfb9c4b5be9b93f2c8868839ba7aa7c
+      Hash: f1c11f0064eee4096f65e295c0ab20d7
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: IntersectionCalculator

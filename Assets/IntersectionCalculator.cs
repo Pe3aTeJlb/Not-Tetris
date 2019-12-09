@@ -49,7 +49,9 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
     public IntersectionCalculator lowerline;
 
     public Toggle a;
+    public InputField b;
     public bool alt;
+    public float per;
 
     public int frame;
 
@@ -69,6 +71,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
     public void Update()
     {
         alt = a.isOn;
+        per = float.Parse(b.text);
 
         if (frame < 31) {
             frame += 1;
@@ -133,7 +136,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
                         list.Contains(collision.gameObject) &&
                         (collision.gameObject.tag == "fragment" || collision.gameObject.tag == "floor") &&
                         (
-                        collision.GetComponent<Rigidbody2D>().velocity.magnitude > 1.5f
+                        collision.GetComponent<Rigidbody2D>().velocity.magnitude > per
                         //Mathf.Abs(collision.GetComponent<Rigidbody2D>().angularVelocity) > 120
                         )
                     )
@@ -544,6 +547,7 @@ public class IntersectionCalculator : MonoBehaviour, IComparable
                 try
                 {
                     toDelete[i].GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+                    toEnable.Add(toDelete[i]);
                 }
                 catch (Exception e) { UnityEngine.Debug.Log(e); }
             }
