@@ -116,16 +116,7 @@ D:\Not-Tetris\Temp\bin\Debug\System.Xml.XmlDocument.dll
 D:\Not-Tetris\Temp\bin\Debug\System.Xml.XmlSerializer.dll
 D:\Not-Tetris\Temp\bin\Debug\System.Xml.XPath.dll
 D:\Not-Tetris\Temp\bin\Debug\System.Xml.XPath.XDocument.dll
-D:\Not-Tetris\Temp\bin\Debug\Unity.Analytics.DataPrivacy.dll
-D:\Not-Tetris\Temp\bin\Debug\Unity.Analytics.Editor.dll
-D:\Not-Tetris\Temp\bin\Debug\Unity.Analytics.StandardEvents.dll
-D:\Not-Tetris\Temp\bin\Debug\Unity.Analytics.Tracker.dll
-D:\Not-Tetris\Temp\bin\Debug\Unity.CollabProxy.Editor.dll
 D:\Not-Tetris\Temp\bin\Debug\Unity.Locator.dll
-D:\Not-Tetris\Temp\bin\Debug\Unity.TextMeshPro.dll
-D:\Not-Tetris\Temp\bin\Debug\Unity.TextMeshPro.Editor.dll
-D:\Not-Tetris\Temp\bin\Debug\Unity.Timeline.dll
-D:\Not-Tetris\Temp\bin\Debug\Unity.Timeline.Editor.dll
 D:\Not-Tetris\Temp\bin\Debug\UnityEditor.dll
 D:\Not-Tetris\Temp\bin\Debug\UnityEngine.AccessibilityModule.dll
 D:\Not-Tetris\Temp\bin\Debug\UnityEngine.AIModule.dll
@@ -169,7 +160,6 @@ D:\Not-Tetris\Temp\bin\Debug\UnityEngine.TLSModule.dll
 D:\Not-Tetris\Temp\bin\Debug\UnityEngine.UI.dll
 D:\Not-Tetris\Temp\bin\Debug\UnityEngine.UIElementsModule.dll
 D:\Not-Tetris\Temp\bin\Debug\UnityEngine.UIModule.dll
-D:\Not-Tetris\Temp\bin\Debug\UnityEngine.UmbraModule.dll
 D:\Not-Tetris\Temp\bin\Debug\UnityEngine.UNETModule.dll
 D:\Not-Tetris\Temp\bin\Debug\UnityEngine.UnityAnalyticsModule.dll
 D:\Not-Tetris\Temp\bin\Debug\UnityEngine.UnityConnectModule.dll
@@ -197,12 +187,6 @@ D:\Not-Tetris\Temp\bin\Debug\Unity.IvyParser.dll
 D:\Not-Tetris\Temp\bin\Debug\Unity.CecilTools.dll
 D:\Not-Tetris\Temp\bin\Debug\UnityEngine.xml
 D:\Not-Tetris\Temp\bin\Debug\UnityEditor.xml
-D:\Not-Tetris\Temp\bin\Debug\Unity.Timeline.Editor.pdb
-D:\Not-Tetris\Temp\bin\Debug\Unity.TextMeshPro.Editor.pdb
-D:\Not-Tetris\Temp\bin\Debug\Unity.Timeline.pdb
-D:\Not-Tetris\Temp\bin\Debug\Unity.CollabProxy.Editor.pdb
-D:\Not-Tetris\Temp\bin\Debug\Unity.TextMeshPro.pdb
-D:\Not-Tetris\Temp\bin\Debug\Unity.Analytics.DataPrivacy.pdb
 D:\Not-Tetris\Temp\bin\Debug\UnityEngine.AIModule.xml
 D:\Not-Tetris\Temp\bin\Debug\UnityEngine.ARModule.xml
 D:\Not-Tetris\Temp\bin\Debug\UnityEngine.AccessibilityModule.xml
@@ -243,7 +227,6 @@ D:\Not-Tetris\Temp\bin\Debug\UnityEngine.TilemapModule.xml
 D:\Not-Tetris\Temp\bin\Debug\UnityEngine.UIModule.xml
 D:\Not-Tetris\Temp\bin\Debug\UnityEngine.UIElementsModule.xml
 D:\Not-Tetris\Temp\bin\Debug\UnityEngine.UNETModule.xml
-D:\Not-Tetris\Temp\bin\Debug\UnityEngine.UmbraModule.xml
 D:\Not-Tetris\Temp\bin\Debug\UnityEngine.UnityAnalyticsModule.xml
 D:\Not-Tetris\Temp\bin\Debug\UnityEngine.UnityConnectModule.xml
 D:\Not-Tetris\Temp\bin\Debug\UnityEngine.UnityTestProtocolModule.xml
@@ -269,3 +252,10 @@ D:\Not-Tetris\obj\Debug\Assembly-CSharp.csproj.CoreCompileInputs.cache
 D:\Not-Tetris\obj\Debug\Assembly-CSharp.csproj.CopyComplete
 D:\Not-Tetris\obj\Debug\Assembly-CSharp.dll
 D:\Not-Tetris\obj\Debug\Assembly-CSharp.pdb
+D:\Not-Tetris\Temp\bin\Debug\Unity.Analytics.DataPrivacy.dll
+D:\Not-Tetris\Temp\bin\Debug\Unity.Analytics.StandardEvents.dll
+D:\Not-Tetris\Temp\bin\Debug\UnityEngine.Advertisements.dll
+D:\Not-Tetris\Temp\bin\Debug\UnityEngine.Monetization.dll
+D:\Not-Tetris\Temp\bin\Debug\UnityEngine.Monetization.pdb
+D:\Not-Tetris\Temp\bin\Debug\UnityEngine.Advertisements.pdb
+D:\Not-Tetris\Temp\bin\Debug\Unity.Analytics.DataPrivacy.pdb

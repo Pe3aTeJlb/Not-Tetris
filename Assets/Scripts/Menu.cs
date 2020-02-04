@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.Advertisements;
 
 public class Menu : MonoBehaviour
 {
@@ -17,6 +19,16 @@ public class Menu : MonoBehaviour
     public Text levelText, fps;
 
     public Canvas ButtonsUI, MenuUI, InfoUI;
+
+    //Unity ADS
+    public bool CanShowAdd;
+    Coroutine timer;
+
+    private string gameId = "3446907";
+    private string placementId = "video";
+    private bool testMode = false;
+    public bool PressRelease = false;
+
 
     void Start()
     {
@@ -41,20 +53,36 @@ public class Menu : MonoBehaviour
         ButtonsForPhysics.SetActive(false);
         Terminator.SetActive(false);
 
+        CanShowAdd = false;
+
+        Advertisement.Initialize(gameId, testMode);
+
     }
 
     public void Update()
     {
         //fps.text = "" + 1 / Time.deltaTime;
-
         if (Input.GetKeyDown(KeyCode.Escape) && pause == true && canPause == true)
         {
+            if (PressRelease == false) {
+
+                if (CanShowAdd == false)
+                {
+                    StopCoroutine(timer);
+                }
+                else
+                {
+                    if (Advertisement.IsReady(placementId)) {
+                        Advertisement.Show();
+                    }
+                }
+
+            }
             SceneManager.LoadScene("Main", LoadSceneMode.Single);
         }
 
         if (Input.GetKeyDown(KeyCode.Escape) && pause != true && canPause == true)
         {
-
             Time.timeScale = 0;
             pause = true;
             PauseButton.SetActive(true);
@@ -65,6 +93,7 @@ public class Menu : MonoBehaviour
 
     public void Classic()
     {
+        timer = StartCoroutine(IngameTimeForAdd());
 
         ButtonsUI.enabled = true;
         InfoUI.enabled = true;
@@ -79,6 +108,7 @@ public class Menu : MonoBehaviour
 
     public void Not_Classic()
     {
+        timer = StartCoroutine(IngameTimeForAdd());
 
         ButtonsUI.enabled = true;
         InfoUI.enabled = true;
@@ -102,7 +132,6 @@ public class Menu : MonoBehaviour
 
     }
 
-
     public void IncreaseLevel()
     {
         Level++;
@@ -119,6 +148,11 @@ public class Menu : MonoBehaviour
         }
         else { }
 
+    }
+
+    public IEnumerator IngameTimeForAdd(){
+        yield return new WaitForSeconds(15);
+        CanShowAdd = true;
     }
 
 }
