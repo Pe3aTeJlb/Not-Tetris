@@ -329,7 +329,9 @@ public class Classic_Tetris : MonoBehaviour
         if (Score > topScore) {
             PlayerPrefs.SetInt("HighScore", Score);
         }
-   
+        Menu.CallAdd();
+
+
         SceneManager.LoadScene("Main", LoadSceneMode.Single);
 
     }

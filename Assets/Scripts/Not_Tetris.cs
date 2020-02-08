@@ -151,6 +151,7 @@ public class Not_Tetris : MonoBehaviour
         floor.enabled = false;
         floor2.SetActive(false);
         yield return new WaitForSeconds(3);
+        Menu.CallAdd();
         SceneManager.LoadScene("Main", LoadSceneMode.Single);
 
     }

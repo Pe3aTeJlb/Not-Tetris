@@ -25,7 +25,7 @@ public class Menu : MonoBehaviour
     Coroutine timer;
 
     private string gameId = "3446907";
-    private string placementId = "video";
+    private static string placementId = "video";
     private bool testMode = false;
     public bool PressRelease = false;
 
@@ -153,6 +153,15 @@ public class Menu : MonoBehaviour
     public IEnumerator IngameTimeForAdd(){
         yield return new WaitForSeconds(15);
         CanShowAdd = true;
+    }
+
+    public static void CallAdd() {
+
+        if (Advertisement.IsReady(placementId))
+        {
+            Advertisement.Show();
+        }
+
     }
 
 }
